@@ -1,0 +1,5 @@
+venv/
+src/
+data/
+*.py
+requirements.txt

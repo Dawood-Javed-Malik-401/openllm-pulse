@@ -6,21 +6,22 @@
   <title>OpenLLM Pulse — Ecosystem Intelligence & EDA Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #060913;
-      --bg-secondary: #0f172a;
-      --card-bg: rgba(15, 23, 42, 0.72);
-      --card-border: rgba(56, 189, 248, 0.16);
-      --card-border-hover: rgba(56, 189, 248, 0.55);
+      --bg-deep: #040711;
+      --bg-surface: #0b1120;
+      --card-bg: rgba(15, 23, 42, 0.65);
+      --card-border: rgba(56, 189, 248, 0.18);
+      --card-border-hover: rgba(56, 189, 248, 0.6);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent-cyan: #38bdf8;
       --accent-indigo: #818cf8;
+      --accent-violet: #c084fc;
       --accent-emerald: #34d399;
-      --accent-rose: #fb7185;
       --accent-amber: #fbbf24;
+      --accent-rose: #fb7185;
     }
 
     * {
@@ -35,74 +36,50 @@
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-primary);
+      background-color: var(--bg-deep);
       color: var(--text-main);
       line-height: 1.6;
       overflow-x: hidden;
-      position: relative;
       min-height: 100vh;
     }
 
-    /* Animated Ambient Background Glows */
-    body::before,
-    body::after {
-      content: "";
+    /* Top Scroll Progress Bar */
+    #scroll-progress {
       position: fixed;
-      width: 550px;
-      height: 550px;
-      border-radius: 50%;
-      filter: blur(140px);
-      z-index: -1;
-      opacity: 0.25;
-      pointer-events: none;
-      animation: floatOrb 18s infinite alternate ease-in-out;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo), var(--accent-emerald));
+      z-index: 9999;
+      box-shadow: 0 0 12px var(--accent-cyan);
+      transition: width 0.08s ease-out;
     }
 
-    body::before {
-      top: -120px;
-      left: -120px;
-      background: radial-gradient(circle, var(--accent-cyan), var(--accent-indigo));
-    }
-
-    body::after {
-      bottom: -150px;
-      right: -120px;
-      background: radial-gradient(circle, var(--accent-emerald), var(--accent-indigo));
-      animation-delay: -9s;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(60px, 40px) scale(1.12); }
-      100% { transform: translate(-40px, 80px) scale(0.95); }
-    }
-
-    /* Subtle Tech Grid Overlay */
-    .bg-grid {
+    /* Interactive Neural Network Canvas */
+    #neural-canvas {
       position: fixed;
       inset: 0;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 44px 44px;
+      width: 100%;
+      height: 100%;
       z-index: -1;
       pointer-events: none;
     }
 
-    /* Sticky Top Navigation Bar */
+    /* Sticky Glass Navigation Bar */
     nav {
       position: sticky;
       top: 0;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(6, 9, 19, 0.8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      padding: 0.9rem 2rem;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(4, 7, 17, 0.78);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.85rem 2rem;
     }
 
     .nav-container {
-      max-width: 1400px;
+      max-width: 1440px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -116,8 +93,10 @@
       align-items: center;
       gap: 0.75rem;
       font-weight: 800;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       letter-spacing: -0.02em;
+      color: #ffffff;
+      text-decoration: none;
     }
 
     .pulse-dot {
@@ -135,72 +114,316 @@
       100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
     }
 
-    .nav-meta {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Navbar Roll-Number Hover Pills */
+    .nav-team-pills {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
     }
 
-    .nav-meta span {
-      color: var(--accent-cyan);
+    .nav-pill-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-right: 0.25rem;
       font-weight: 600;
     }
 
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem 4rem;
+    .roll-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 999px;
+      padding: 0.32rem 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent-cyan);
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
     }
 
-    /* Hero Header Section */
+    .roll-pill .roll-code {
+      font-weight: 700;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+
+    .roll-pill .member-name {
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: #ffffff;
+      transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, margin-left 0.35s ease;
+    }
+
+    .roll-pill:hover {
+      border-color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.14);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .roll-pill:hover .roll-code {
+      color: var(--accent-emerald);
+    }
+
+    .roll-pill:hover .member-name {
+      max-width: 200px;
+      opacity: 1;
+      margin-left: 0.55rem;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    /* Hero Section */
     .hero {
       text-align: center;
-      padding: 2.5rem 1rem 3rem;
-      animation: fadeDown 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      padding: 2.5rem 1rem 2rem;
+      animation: heroEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
+    @keyframes heroEntrance {
+      from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .hero-tag {
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.42rem 1.1rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 4.8vw, 3.6rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      background: linear-gradient(135deg, #ffffff 10%, #38bdf8 55%, #818cf8 85%, #c084fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-subtitle {
+      max-width: 820px;
+      margin: 0 auto 2.5rem;
+      color: var(--text-muted);
+      font-size: 1.06rem;
+    }
+
+    /* Interactive Team Hover-Reveal Showcase */
+    .team-section {
+      max-width: 1120px;
+      margin: 0 auto 3rem;
+    }
+
+    .team-header-hint {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
+      color: var(--accent-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .member-card {
+      position: relative;
+      height: 108px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.25rem;
+      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    .member-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(129, 140, 248, 0.18), rgba(52, 211, 153, 0.18));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Default State: Roll Number Focused */
+    .member-roll-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+
+    .roll-number-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hover-prompt {
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--accent-cyan);
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 0.4rem 1rem;
-      border-radius: 999px;
-      margin-bottom: 1.25rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.1rem, 4.5vw, 3.35rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      background: linear-gradient(135deg, #ffffff 15%, #38bdf8 65%, #818cf8 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      max-width: 780px;
-      margin: 0 auto 2rem;
       color: var(--text-muted);
-      font-size: 1.05rem;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Hover State: Revealed Student Identity */
+    .member-reveal-view {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      opacity: 0;
+      transform: translateY(22px) scale(0.94);
+      transition: all 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .revealed-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.15rem;
+    }
+
+    .revealed-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent-emerald);
+      font-weight: 600;
+    }
+
+    .revealed-role {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .member-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--accent-emerald);
+      box-shadow: 0 16px 36px -10px rgba(52, 211, 153, 0.3);
+    }
+
+    .member-card:hover::before {
+      opacity: 1;
+    }
+
+    .member-card:hover .member-roll-view {
+      opacity: 0;
+      transform: translateY(-22px) scale(0.9);
+    }
+
+    .member-card:hover .member-reveal-view {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Animated Pipeline Architecture Stepper */
+    .pipeline-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .pipeline-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stage-node {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .stage-node:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-3px);
+    }
+
+    .stage-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .stage-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #ffffff;
+      margin-bottom: 0.15rem;
+    }
+
+    .stage-tech {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--text-muted);
     }
 
     /* KPI Metrics Strip */
@@ -215,12 +438,12 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 1.35rem 1.25rem;
+      padding: 1.3rem 1.25rem;
       text-align: left;
       backdrop-filter: blur(12px);
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
       position: relative;
       overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
     .kpi-card::after {
@@ -231,21 +454,19 @@
       width: 100%;
       height: 3px;
       background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo));
-      opacity: 0.7;
     }
 
     .kpi-card:hover {
       transform: translateY(-4px);
       border-color: var(--card-border-hover);
-      box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.2);
     }
 
     .kpi-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.85rem;
-      font-weight: 700;
+      font-size: 1.9rem;
+      font-weight: 800;
       color: #ffffff;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
     }
 
     .kpi-label {
@@ -254,7 +475,7 @@
       font-weight: 500;
     }
 
-    /* Interactive Category Filter Buttons */
+    /* Filter Bar */
     .filter-bar {
       display: flex;
       justify-content: center;
@@ -265,10 +486,10 @@
 
     .filter-btn {
       font-family: 'Inter', sans-serif;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       color: var(--text-muted);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0.6rem 1.25rem;
+      padding: 0.62rem 1.3rem;
       border-radius: 999px;
       cursor: pointer;
       font-size: 0.88rem;
@@ -278,18 +499,18 @@
 
     .filter-btn:hover {
       color: var(--text-main);
-      border-color: rgba(56, 189, 248, 0.4);
+      border-color: rgba(56, 189, 248, 0.45);
       transform: translateY(-2px);
     }
 
     .filter-btn.active {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
-      color: #060913;
+      color: #040711;
       border-color: transparent;
-      box-shadow: 0 6px 20px -4px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 6px 22px -4px rgba(56, 189, 248, 0.55);
     }
 
-    /* Plots Grid */
+    /* 7 EDA Plots Grid with Cursor Spotlight */
     .plots-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -300,19 +521,40 @@
       grid-column: span 6;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 1.5rem;
+      border-radius: 20px;
+      padding: 1.6rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
       opacity: 0;
-      transform: translateY(28px);
+      transform: translateY(30px);
       transition: 
-        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
         border-color 0.35s ease,
         box-shadow 0.35s ease,
         opacity 0.55s ease;
+    }
+
+    /* Dynamic Mouse-Tracking Spotlight Overlay */
+    .plot-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(56, 189, 248, 0.11),
+        transparent 40%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .plot-card:hover::before {
+      opacity: 1;
     }
 
     .plot-card.visible {
@@ -325,9 +567,8 @@
     }
 
     .plot-card:hover {
-      transform: translateY(-6px);
       border-color: var(--card-border-hover);
-      box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.18);
+      box-shadow: 0 22px 45px -15px rgba(56, 189, 248, 0.22);
     }
 
     @media (max-width: 1024px) {
@@ -348,34 +589,34 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.25rem 0.65rem;
-      border-radius: 6px;
+      padding: 0.28rem 0.7rem;
+      border-radius: 8px;
       background: rgba(56, 189, 248, 0.12);
       color: var(--accent-cyan);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.28);
       white-space: nowrap;
     }
 
     .step-pill.emerald {
       background: rgba(52, 211, 153, 0.12);
       color: var(--accent-emerald);
-      border-color: rgba(52, 211, 153, 0.25);
+      border-color: rgba(52, 211, 153, 0.28);
     }
 
     .step-pill.amber {
       background: rgba(251, 191, 36, 0.12);
       color: var(--accent-amber);
-      border-color: rgba(251, 191, 36, 0.25);
+      border-color: rgba(251, 191, 36, 0.28);
     }
 
     .step-pill.rose {
       background: rgba(251, 113, 133, 0.12);
       color: var(--accent-rose);
-      border-color: rgba(251, 113, 133, 0.25);
+      border-color: rgba(251, 113, 133, 0.28);
     }
 
     .plot-card h2 {
-      font-size: 1.22rem;
+      font-size: 1.24rem;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: -0.01em;
@@ -384,10 +625,9 @@
     .plot-desc {
       color: var(--text-muted);
       font-size: 0.92rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.25rem;
     }
 
-    /* Image Frame & Hover Zoom Effect */
     .img-wrapper {
       position: relative;
       border-radius: 12px;
@@ -396,7 +636,6 @@
       padding: 8px;
       border: 1px solid rgba(255, 255, 255, 0.15);
       cursor: zoom-in;
-      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.04);
     }
 
     .img-wrapper img {
@@ -408,24 +647,25 @@
     }
 
     .img-wrapper:hover img {
-      transform: scale(1.022);
+      transform: scale(1.024);
     }
 
     .zoom-hint {
       position: absolute;
       bottom: 14px;
       right: 14px;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(4, 7, 17, 0.88);
       color: #ffffff;
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.35rem 0.7rem;
-      border-radius: 6px;
-      backdrop-filter: blur(4px);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      backdrop-filter: blur(6px);
       opacity: 0;
       transform: translateY(6px);
       transition: all 0.25s ease;
       pointer-events: none;
+      border: 1px solid rgba(56, 189, 248, 0.35);
     }
 
     .img-wrapper:hover .zoom-hint {
@@ -439,18 +679,18 @@
       align-items: center;
       margin-top: 1rem;
       padding-top: 0.85rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.76rem;
       color: var(--text-muted);
     }
 
-    /* Lightbox Modal */
+    /* Fullscreen Lightbox with Gallery Controls */
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(6, 9, 19, 0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(4, 7, 17, 0.94);
+      backdrop-filter: blur(16px);
       z-index: 9999;
       display: flex;
       flex-direction: column;
@@ -468,12 +708,12 @@
     }
 
     .lightbox-content {
-      max-width: 94vw;
-      max-height: 84vh;
+      max-width: 92vw;
+      max-height: 80vh;
       background: #ffffff;
       padding: 10px;
-      border-radius: 12px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      border-radius: 14px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.75);
       transform: scale(0.92);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -484,17 +724,43 @@
 
     .lightbox-content img {
       max-width: 100%;
-      max-height: 80vh;
+      max-height: 76vh;
       display: block;
-      border-radius: 6px;
+      border-radius: 8px;
+    }
+
+    .lightbox-bar {
+      margin-top: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .lightbox-caption {
-      margin-top: 1rem;
       color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .lb-btn {
+      background: rgba(30, 41, 59, 0.9);
+      color: #ffffff;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
       font-weight: 600;
-      font-size: 1rem;
-      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .lb-btn:hover {
+      background: var(--accent-cyan);
+      color: #040711;
     }
 
     .lightbox-close {
@@ -512,7 +778,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     .lightbox-close:hover {
@@ -523,42 +789,145 @@
 
     footer {
       text-align: center;
-      padding: 3rem 1rem 1rem;
+      padding: 3rem 1rem 1.5rem;
       color: var(--text-muted);
       font-size: 0.9rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.07);
-      margin-top: 3.5rem;
-    }
-
-    footer strong {
-      color: var(--text-main);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 4rem;
     }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
+  <div id="scroll-progress"></div>
+  <canvas id="neural-canvas"></canvas>
 
-  <!-- Top Sticky Bar -->
+  <!-- Sticky Top Navbar with Roll-Number Hover Pills -->
   <nav>
     <div class="nav-container">
-      <div class="brand">
+      <a href="#" class="brand">
         <div class="pulse-dot"></div>
         <span>OpenLLM Pulse</span>
-      </div>
-      <div class="nav-meta">
-        Dawood Javed Malik &bull; <span>2025-AI-401</span> &bull; UET Lahore
+      </a>
+
+      <div class="nav-team-pills" aria-label="Team Roll Numbers — Hover to reveal names">
+        <span class="nav-pill-label">Team (Hover ID):</span>
+        <div class="roll-pill">
+          <span class="roll-code">2025-AI-401</span>
+          <span class="member-name">Dawood Javed Malik</span>
+        </div>
+        <div class="roll-pill">
+          <span class="roll-code">2025-AI-421</span>
+          <span class="member-name">Abdullah Hanif</span>
+        </div>
+        <div class="roll-pill">
+          <span class="roll-code">2025-AI-392</span>
+          <span class="member-name">Hafiz Ahmad</span>
+        </div>
+        <div class="roll-pill">
+          <span class="roll-code">2025-AI-397</span>
+          <span class="member-name">Abdullah Malik</span>
+        </div>
       </div>
     </div>
   </nav>
 
   <div class="container">
-    <!-- Hero Section -->
+    <!-- Hero Header -->
     <section class="hero">
-      <div class="hero-tag">Programming for AI &bull; Project 1: ETL + EDA Pipeline</div>
+      <div class="hero-badge">Programming for AI &bull; Project 1: ETL + EDA Pipeline &bull; UET Lahore</div>
       <h1>Automated Ecosystem Intelligence &amp; Scaling Benchmark</h1>
-      <p>
-        End-to-end Exploratory Data Analysis across hundreds of open-source AI models extracted from the Hugging Face Hub REST API, validated with Pydantic, engineered with Pandas &amp; NumPy, and persisted to SQLite3 &amp; CSV.
+      <p class="hero-subtitle">
+        End-to-end Exploratory Data Analysis across 400+ open-source AI models extracted from the Hugging Face Hub REST API, validated with Pydantic, engineered into 24 analytical features with Pandas &amp; NumPy, and persisted in SQLite3 &amp; CSV.
       </p>
+
+      <!-- Interactive 4-Member Roll-Number Hover Showcase -->
+      <div class="team-section">
+        <div class="team-header-hint">
+          <span>&#9679; Hover Cursor Over Any Roll Number Below to Reveal Developer Identity &#9679;</span>
+        </div>
+        <div class="team-grid">
+          <!-- Member 1 -->
+          <div class="member-card">
+            <div class="member-roll-view">
+              <div class="roll-number-badge">2025-AI-401</div>
+              <div class="hover-prompt">Hover to Reveal Name</div>
+            </div>
+            <div class="member-reveal-view">
+              <div class="revealed-name">Dawood Javed Malik</div>
+              <div class="revealed-meta">Roll No: 2025-AI-401</div>
+              <div class="revealed-role">BSCS (AI) &bull; UET Lahore</div>
+            </div>
+          </div>
+
+          <!-- Member 2 -->
+          <div class="member-card">
+            <div class="member-roll-view">
+              <div class="roll-number-badge">2025-AI-421</div>
+              <div class="hover-prompt">Hover to Reveal Name</div>
+            </div>
+            <div class="member-reveal-view">
+              <div class="revealed-name">Abdullah Hanif</div>
+              <div class="revealed-meta">Roll No: 2025-AI-421</div>
+              <div class="revealed-role">BSCS (AI) &bull; UET Lahore</div>
+            </div>
+          </div>
+
+          <!-- Member 3 -->
+          <div class="member-card">
+            <div class="member-roll-view">
+              <div class="roll-number-badge">2025-AI-392</div>
+              <div class="hover-prompt">Hover to Reveal Name</div>
+            </div>
+            <div class="member-reveal-view">
+              <div class="revealed-name">Hafiz Ahmad</div>
+              <div class="revealed-meta">Roll No: 2025-AI-392</div>
+              <div class="revealed-role">BSCS (AI) &bull; UET Lahore</div>
+            </div>
+          </div>
+
+          <!-- Member 4 -->
+          <div class="member-card">
+            <div class="member-roll-view">
+              <div class="roll-number-badge">2025-AI-397</div>
+              <div class="hover-prompt">Hover to Reveal Name</div>
+            </div>
+            <div class="member-reveal-view">
+              <div class="revealed-name">Abdullah Malik</div>
+              <div class="revealed-meta">Roll No: 2025-AI-397</div>
+              <div class="revealed-role">BSCS (AI) &bull; UET Lahore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline Architecture Strip -->
+      <div class="pipeline-strip">
+        <div class="stage-node">
+          <div class="stage-num">Stage 01 // Extract</div>
+          <div class="stage-title">Multi-Category API</div>
+          <div class="stage-tech">requests &bull; 4 HF Tasks</div>
+        </div>
+        <div class="stage-node">
+          <div class="stage-num">Stage 02 // Validate</div>
+          <div class="stage-title">Schema Enforcement</div>
+          <div class="stage-tech">Pydantic v2 BaseModel</div>
+        </div>
+        <div class="stage-node">
+          <div class="stage-num">Stage 03 // Transform</div>
+          <div class="stage-title">24-Column Engineering</div>
+          <div class="stage-tech">Pandas 3.1 &bull; VRAM &amp; IQR</div>
+        </div>
+        <div class="stage-node">
+          <div class="stage-num">Stage 04 // Load</div>
+          <div class="stage-title">Dual Persistence</div>
+          <div class="stage-tech">SQLite3 DB + CSV</div>
+        </div>
+        <div class="stage-node">
+          <div class="stage-num">Stage 05 // Visual EDA</div>
+          <div class="stage-title">7 Statistical Plots</div>
+          <div class="stage-tech">Seaborn &bull; 300 DPI PNGs</div>
+        </div>
+      </div>
 
       <!-- Animated KPI Strip -->
       <div class="kpi-grid">
@@ -580,11 +949,11 @@
         </div>
       </div>
 
-      <!-- Interactive Filter Controls -->
+      <!-- Filter Buttons -->
       <div class="filter-bar">
         <button class="filter-btn active" onclick="filterCharts('all', this)">All 7 Visualizations</button>
         <button class="filter-btn" onclick="filterCharts('ecosystem', this)">Architecture &amp; Scaling</button>
-        <button class="filter-btn" onclick="filterCharts('engagement', this)">Community &amp; Correlations</button>
+        <button class="filter-btn" onclick="filterCharts('engagement', this)">Engagement &amp; Correlations</button>
         <button class="filter-btn" onclick="filterCharts('leaderboard', this)">Timeline &amp; Pulse Leaderboard</button>
       </div>
     </section>
@@ -604,9 +973,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/1_architecture_distribution.png', '1. Top 10 Open-Source Model Architectures')">
+          <div class="img-wrapper" onclick="openLightbox(0)">
             <img src="outputs/1_architecture_distribution.png" alt="Top 10 Open-Source Model Architectures" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/1_architecture_distribution.png</span>
@@ -627,9 +996,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/2_size_tier_distribution.png', '2. LLM Parameter Size Tier Distribution')">
+          <div class="img-wrapper" onclick="openLightbox(1)">
             <img src="outputs/2_size_tier_distribution.png" alt="LLM Parameter Size Tier Distribution" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/2_size_tier_distribution.png</span>
@@ -650,9 +1019,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/3_license_breakdown.png', '3. Top 8 Open-Source Licenses Breakdown')">
+          <div class="img-wrapper" onclick="openLightbox(2)">
             <img src="outputs/3_license_breakdown.png" alt="Top 8 Open-Source Licenses Breakdown" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/3_license_breakdown.png</span>
@@ -673,9 +1042,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/4_downloads_vs_likes_scatter.png', '4. Community Engagement: Downloads vs. Likes (Log Scale)')">
+          <div class="img-wrapper" onclick="openLightbox(3)">
             <img src="outputs/4_downloads_vs_likes_scatter.png" alt="Community Engagement: Downloads vs. Likes" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/4_downloads_vs_likes_scatter.png</span>
@@ -696,9 +1065,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/5_correlation_heatmap.png', '5. Pearson Correlation Heatmap of Key Model Metrics')">
+          <div class="img-wrapper" onclick="openLightbox(4)">
             <img src="outputs/5_correlation_heatmap.png" alt="Pearson Correlation Heatmap" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/5_correlation_heatmap.png</span>
@@ -719,9 +1088,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/6_release_timeline.png', '6. Monthly Model Release Velocity Timeline')">
+          <div class="img-wrapper" onclick="openLightbox(5)">
             <img src="outputs/6_release_timeline.png" alt="Monthly Model Release Velocity Timeline" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/6_release_timeline.png</span>
@@ -742,9 +1111,9 @@
           </p>
         </div>
         <div>
-          <div class="img-wrapper" onclick="openLightbox('outputs/7_top_pulse_leaderboard.png', '7. Top 15 Open-Source Models by Composite Pulse Score (0–100)')">
+          <div class="img-wrapper" onclick="openLightbox(6)">
             <img src="outputs/7_top_pulse_leaderboard.png" alt="Top 15 Open-Source Models by Composite Pulse Score" loading="lazy" />
-            <span class="zoom-hint">Click to Expand</span>
+            <span class="zoom-hint">Click to Expand Fullscreen</span>
           </div>
           <div class="card-footer">
             <span>outputs/7_top_pulse_leaderboard.png</span>
@@ -758,63 +1127,137 @@
     <footer>
       <p>
         <strong>OpenLLM Pulse: Automated Ecosystem Intelligence, Benchmark &amp; Scaling Pipeline</strong><br />
-        Developed by <strong>Dawood Javed Malik (2025-AI-401)</strong> &bull; Department of Computer Science (AI), UET Lahore
+        Team: <strong>2025-AI-401</strong> (Dawood Javed Malik) &bull; <strong>2025-AI-421</strong> (Abdullah Hanif) &bull; <strong>2025-AI-392</strong> (Hafiz Ahmad) &bull; <strong>2025-AI-397</strong> (Abdullah Malik)
       </p>
     </footer>
   </div>
 
-  <!-- Full-Screen Lightbox Modal -->
+  <!-- Full-Screen Interactive Lightbox -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <button class="lightbox-close" onclick="closeLightbox(event)" aria-label="Close modal">&times;</button>
     <div class="lightbox-content">
       <img id="lightbox-img" src="" alt="Expanded Chart" />
     </div>
-    <div class="lightbox-caption" id="lightbox-caption"></div>
+    <div class="lightbox-bar">
+      <button class="lb-btn" onclick="changeSlide(-1, event)">&larr; Prev Chart</button>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+      <button class="lb-btn" onclick="changeSlide(1, event)">Next Chart &rarr;</button>
+      <a id="lightbox-download" class="lb-btn" href="" download>Download PNG</a>
+    </div>
   </div>
 
   <script>
-    // 1. Staggered Scroll-Reveal Animation using IntersectionObserver
+    // 1. Scroll Progress Indicator
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('scroll-progress').style.width = pct + '%';
+    });
+
+    // 2. Interactive Neural Particle Canvas
+    const canvas = document.getElementById('neural-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    for (let i = 0; i < 55; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 1.8 + 0.8
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          let p2 = particles[j];
+          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 135) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(56, 189, 248, ${0.12 * (1 - dist / 135)})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // 3. Dynamic Cursor Spotlight on Plot Cards
+    document.querySelectorAll('.plot-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // 4. Staggered Scroll-Reveal Animation
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
+      entries.forEach((entry, idx) => {
         if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, index * 90);
+          setTimeout(() => entry.target.classList.add('visible'), idx * 85);
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('.plot-card').forEach(card => observer.observe(card));
 
-    // 2. Animated Number Counters for Hero KPI Cards
+    // 5. Animated KPI Number Counters
     document.querySelectorAll('.kpi-value').forEach(counter => {
       const target = +counter.getAttribute('data-target');
       const suffix = counter.getAttribute('data-suffix') || '';
-      const duration = 1200;
+      const duration = 1300;
       const startTime = performance.now();
 
-      function updateCounter(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeOut = 1 - Math.pow(1 - progress, 3);
-        counter.textContent = Math.floor(easeOut * target) + suffix;
-        if (progress < 1) {
-          requestAnimationFrame(updateCounter);
-        } else {
-          counter.textContent = target + suffix;
-        }
+      function tick(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        counter.textContent = Math.floor(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else counter.textContent = target + suffix;
       }
-      requestAnimationFrame(updateCounter);
+      requestAnimationFrame(tick);
     });
 
-    // 3. Category Filter Logic with Smooth Re-Animation
+    // 6. Category Filter Controls
     function filterCharts(category, btn) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      const cards = document.querySelectorAll('.plot-card');
-      cards.forEach(card => {
+      document.querySelectorAll('.plot-card').forEach(card => {
         const match = category === 'all' || card.getAttribute('data-category') === category;
         if (match) {
           card.style.display = 'flex';
@@ -826,13 +1269,36 @@
       });
     }
 
-    // 4. Full-Screen Lightbox Modal Controls (Click or ESC key)
-    function openLightbox(src, caption) {
-      const lb = document.getElementById('lightbox');
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox-caption').textContent = caption;
-      lb.classList.add('open');
+    // 7. Fullscreen Gallery Lightbox with Next/Prev Support
+    const charts = [
+      { src: 'outputs/1_architecture_distribution.png', title: '1. Top 10 Open-Source Model Architectures' },
+      { src: 'outputs/2_size_tier_distribution.png', title: '2. LLM Parameter Size Tier Distribution' },
+      { src: 'outputs/3_license_breakdown.png', title: '3. Top 8 Open-Source Licenses Breakdown' },
+      { src: 'outputs/4_downloads_vs_likes_scatter.png', title: '4. Community Engagement: Downloads vs. Likes' },
+      { src: 'outputs/5_correlation_heatmap.png', title: '5. Pearson Correlation Heatmap of Key Metrics' },
+      { src: 'outputs/6_release_timeline.png', title: '6. Monthly Model Release Velocity Timeline' },
+      { src: 'outputs/7_top_pulse_leaderboard.png', title: '7. Top 15 Open-Source Models by Composite Pulse Score' }
+    ];
+    let currentIndex = 0;
+
+    function updateLightboxView() {
+      const item = charts[currentIndex];
+      document.getElementById('lightbox-img').src = item.src;
+      document.getElementById('lightbox-caption').textContent = item.title;
+      document.getElementById('lightbox-download').href = item.src;
+    }
+
+    function openLightbox(index) {
+      currentIndex = index;
+      updateLightboxView();
+      document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
+    }
+
+    function changeSlide(step, e) {
+      if (e) e.stopPropagation();
+      currentIndex = (currentIndex + step + charts.length) % charts.length;
+      updateLightboxView();
     }
 
     function closeLightbox(e) {
@@ -843,9 +1309,15 @@
     }
 
     document.addEventListener('keydown', (e) => {
+      const lb = document.getElementById('lightbox');
+      if (!lb.classList.contains('open')) return;
       if (e.key === 'Escape') {
-        document.getElementById('lightbox').classList.remove('open');
+        lb.classList.remove('open');
         document.body.style.overflow = '';
+      } else if (e.key === 'ArrowRight') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
       }
     });
   </script>
