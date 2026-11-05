@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenLLM Pulse — Ecosystem Intelligence & EDA Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #060913;
+      --bg-secondary: #0f172a;
+      --card-bg: rgba(15, 23, 42, 0.72);
+      --card-border: rgba(56, 189, 248, 0.16);
+      --card-border-hover: rgba(56, 189, 248, 0.55);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #818cf8;
+      --accent-emerald: #34d399;
+      --accent-rose: #fb7185;
+      --accent-amber: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Animated Ambient Background Glows */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 550px;
+      height: 550px;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: -1;
+      opacity: 0.25;
+      pointer-events: none;
+      animation: floatOrb 18s infinite alternate ease-in-out;
+    }
+
+    body::before {
+      top: -120px;
+      left: -120px;
+      background: radial-gradient(circle, var(--accent-cyan), var(--accent-indigo));
+    }
+
+    body::after {
+      bottom: -150px;
+      right: -120px;
+      background: radial-gradient(circle, var(--accent-emerald), var(--accent-indigo));
+      animation-delay: -9s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.12); }
+      100% { transform: translate(-40px, 80px) scale(0.95); }
+    }
+
+    /* Subtle Tech Grid Overlay */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Sticky Top Navigation Bar */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(6, 9, 19, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 0.9rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .pulse-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+      animation: pulseRing 2s infinite;
+    }
+
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+
+    .nav-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-meta span {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    /* Hero Header Section */
+    .hero {
+      text-align: center;
+      padding: 2.5rem 1rem 3rem;
+      animation: fadeDown 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.1rem, 4.5vw, 3.35rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 15%, #38bdf8 65%, #818cf8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 0 auto 2rem;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* KPI Metrics Strip */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.15rem;
+      margin-bottom: 2.75rem;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.35rem 1.25rem;
+      text-align: left;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo));
+      opacity: 0.7;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.2);
+    }
+
+    .kpi-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+    }
+
+    .kpi-label {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Interactive Category Filter Buttons */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      font-family: 'Inter', sans-serif;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.6rem 1.25rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .filter-btn:hover {
+      color: var(--text-main);
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+      color: #060913;
+      border-color: transparent;
+      box-shadow: 0 6px 20px -4px rgba(56, 189, 248, 0.5);
+    }
+
+    /* Plots Grid */
+    .plots-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.75rem;
+    }
+
+    .plot-card {
+      grid-column: span 6;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(14px);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: 
+        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        opacity 0.55s ease;
+    }
+
+    .plot-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .plot-card.full-span {
+      grid-column: span 12;
+    }
+
+    .plot-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.18);
+    }
+
+    @media (max-width: 1024px) {
+      .plot-card {
+        grid-column: span 12;
+      }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .step-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      white-space: nowrap;
+    }
+
+    .step-pill.emerald {
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--accent-emerald);
+      border-color: rgba(52, 211, 153, 0.25);
+    }
+
+    .step-pill.amber {
+      background: rgba(251, 191, 36, 0.12);
+      color: var(--accent-amber);
+      border-color: rgba(251, 191, 36, 0.25);
+    }
+
+    .step-pill.rose {
+      background: rgba(251, 113, 133, 0.12);
+      color: var(--accent-rose);
+      border-color: rgba(251, 113, 133, 0.25);
+    }
+
+    .plot-card h2 {
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .plot-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Image Frame & Hover Zoom Effect */
+    .img-wrapper {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: zoom-in;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .img-wrapper:hover img {
+      transform: scale(1.022);
+    }
+
+    .zoom-hint {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+    }
+
+    .img-wrapper:hover .zoom-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 9, 19, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-content {
+      max-width: 94vw;
+      max-height: 84vh;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lightbox.open .lightbox-content {
+      transform: scale(1);
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 80vh;
+      display: block;
+      border-radius: 6px;
+    }
+
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      background: var(--accent-rose);
+      border-color: var(--accent-rose);
+      transform: rotate(90deg);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 1rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      margin-top: 3.5rem;
+    }
+
+    footer strong {
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Top Sticky Bar -->
+  <nav>
+    <div class="nav-container">
+      <div class="brand">
+        <div class="pulse-dot"></div>
+        <span>OpenLLM Pulse</span>
+      </div>
+      <div class="nav-meta">
+        Dawood Javed Malik &bull; <span>2025-AI-401</span> &bull; UET Lahore
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-tag">Programming for AI &bull; Project 1: ETL + EDA Pipeline</div>
+      <h1>Automated Ecosystem Intelligence &amp; Scaling Benchmark</h1>
+      <p>
+        End-to-end Exploratory Data Analysis across hundreds of open-source AI models extracted from the Hugging Face Hub REST API, validated with Pydantic, engineered with Pandas &amp; NumPy, and persisted to SQLite3 &amp; CSV.
+      </p>
+
+      <!-- Animated KPI Strip -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value" data-target="400" data-suffix="+">0</div>
+          <div class="kpi-label">Multi-Task Models Extracted</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-target="4" data-suffix=" Tasks">0</div>
+          <div class="kpi-label">Hugging Face API Modalities</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-target="24" data-suffix=" Cols">0</div>
+          <div class="kpi-label">Engineered SQLite &amp; CSV Features</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-target="7" data-suffix=" Plots">0</div>
+          <div class="kpi-label">300 DPI Seaborn Visualizations</div>
+        </div>
+      </div>
+
+      <!-- Interactive Filter Controls -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCharts('all', this)">All 7 Visualizations</button>
+        <button class="filter-btn" onclick="filterCharts('ecosystem', this)">Architecture &amp; Scaling</button>
+        <button class="filter-btn" onclick="filterCharts('engagement', this)">Community &amp; Correlations</button>
+        <button class="filter-btn" onclick="filterCharts('leaderboard', this)">Timeline &amp; Pulse Leaderboard</button>
+      </div>
+    </section>
+
+    <!-- 7 High-Resolution EDA Charts -->
+    <main class="plots-grid" id="plots-container">
+
+      <!-- Plot 1 -->
+      <article class="plot-card" data-category="ecosystem">
+        <div>
+          <div class="card-header">
+            <h2>1. Top 10 Open-Source Model Architectures</h2>
+            <span class="step-pill">Chart 01 / 07</span>
+          </div>
+          <p class="plot-desc">
+            Evaluates architectural dominance across the open-source AI landscape, highlighting repository volume across Llama, Qwen, Mistral, BERT, Gemma, and specialized transformer families.
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/1_architecture_distribution.png', '1. Top 10 Open-Source Model Architectures')">
+            <img src="outputs/1_architecture_distribution.png" alt="Top 10 Open-Source Model Architectures" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/1_architecture_distribution.png</span>
+            <span>300 DPI &bull; Seaborn Barplot</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plot 2 -->
+      <article class="plot-card" data-category="ecosystem">
+        <div>
+          <div class="card-header">
+            <h2>2. LLM Parameter Size Tier Distribution</h2>
+            <span class="step-pill emerald">Chart 02 / 07</span>
+          </div>
+          <p class="plot-desc">
+            Categorizes models parsed via regex (including Mixture-of-Experts 8x7B patterns) into practical scaling tiers: Small (&le;3B), Medium (3B–10B), Large (10B–35B), and XL (&gt;35B).
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/2_size_tier_distribution.png', '2. LLM Parameter Size Tier Distribution')">
+            <img src="outputs/2_size_tier_distribution.png" alt="LLM Parameter Size Tier Distribution" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/2_size_tier_distribution.png</span>
+            <span>300 DPI &bull; Scaling Countplot</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plot 3 -->
+      <article class="plot-card" data-category="ecosystem">
+        <div>
+          <div class="card-header">
+            <h2>3. Top 8 Open-Source Licenses Breakdown</h2>
+            <span class="step-pill amber">Chart 03 / 07</span>
+          </div>
+          <p class="plot-desc">
+            Tracks commercial vs. research permissiveness across top repositories by extracting license metadata tags (Apache-2.0, MIT, Llama3, CC-BY-NC, and custom model licenses).
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/3_license_breakdown.png', '3. Top 8 Open-Source Licenses Breakdown')">
+            <img src="outputs/3_license_breakdown.png" alt="Top 8 Open-Source Licenses Breakdown" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/3_license_breakdown.png</span>
+            <span>300 DPI &bull; License Distribution</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plot 4 -->
+      <article class="plot-card" data-category="engagement">
+        <div>
+          <div class="card-header">
+            <h2>4. Community Engagement: Downloads vs. Likes</h2>
+            <span class="step-pill rose">Chart 04 / 07</span>
+          </div>
+          <p class="plot-desc">
+            Log-log bivariate scatter analysis mapping 30-day downloads against community likes across all 4 task pipelines, styled by statistical IQR viral outlier detection.
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/4_downloads_vs_likes_scatter.png', '4. Community Engagement: Downloads vs. Likes (Log Scale)')">
+            <img src="outputs/4_downloads_vs_likes_scatter.png" alt="Community Engagement: Downloads vs. Likes" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/4_downloads_vs_likes_scatter.png</span>
+            <span>300 DPI &bull; Log-Scale Scatter</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plot 5 -->
+      <article class="plot-card" data-category="engagement">
+        <div>
+          <div class="card-header">
+            <h2>5. Pearson Correlation Heatmap of Key Metrics</h2>
+            <span class="step-pill">Chart 05 / 07</span>
+          </div>
+          <p class="plot-desc">
+            Annotated correlation matrix measuring linear dependencies across parameter count, FP16 VRAM requirements, downloads, community likes, daily velocity, model age, and Pulse Score.
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/5_correlation_heatmap.png', '5. Pearson Correlation Heatmap of Key Model Metrics')">
+            <img src="outputs/5_correlation_heatmap.png" alt="Pearson Correlation Heatmap" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/5_correlation_heatmap.png</span>
+            <span>300 DPI &bull; Pearson Matrix</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plot 6 -->
+      <article class="plot-card" data-category="leaderboard">
+        <div>
+          <div class="card-header">
+            <h2>6. Monthly Model Release Velocity Timeline</h2>
+            <span class="step-pill emerald">Chart 06 / 07</span>
+          </div>
+          <p class="plot-desc">
+            Time-series release trend tracking the monthly creation rate of top-performing open-source models over the most recent 24 active months on the Hugging Face Hub.
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/6_release_timeline.png', '6. Monthly Model Release Velocity Timeline')">
+            <img src="outputs/6_release_timeline.png" alt="Monthly Model Release Velocity Timeline" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/6_release_timeline.png</span>
+            <span>300 DPI &bull; Time-Series Lineplot</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plot 7 (Full Width Featured Leaderboard) -->
+      <article class="plot-card full-span" data-category="leaderboard">
+        <div>
+          <div class="card-header">
+            <h2>7. Top 15 Open-Source Models by Composite Pulse Score (0–100)</h2>
+            <span class="step-pill amber">Chart 07 / 07 &bull; Featured Leaderboard</span>
+          </div>
+          <p class="plot-desc">
+            Final benchmark leaderboard ranking repositories by their 0–100 Composite Pulse Score—synthesizing log-normalized 30-day downloads (40%), community likes (30%), daily download velocity (20%), and documentation tag completeness (10%).
+          </p>
+        </div>
+        <div>
+          <div class="img-wrapper" onclick="openLightbox('outputs/7_top_pulse_leaderboard.png', '7. Top 15 Open-Source Models by Composite Pulse Score (0–100)')">
+            <img src="outputs/7_top_pulse_leaderboard.png" alt="Top 15 Open-Source Models by Composite Pulse Score" loading="lazy" />
+            <span class="zoom-hint">Click to Expand</span>
+          </div>
+          <div class="card-footer">
+            <span>outputs/7_top_pulse_leaderboard.png</span>
+            <span>300 DPI &bull; Composite Benchmark Leaderboard</span>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <footer>
+      <p>
+        <strong>OpenLLM Pulse: Automated Ecosystem Intelligence, Benchmark &amp; Scaling Pipeline</strong><br />
+        Developed by <strong>Dawood Javed Malik (2025-AI-401)</strong> &bull; Department of Computer Science (AI), UET Lahore
+      </p>
+    </footer>
+  </div>
+
+  <!-- Full-Screen Lightbox Modal -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)" aria-label="Close modal">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Expanded Chart" />
+    </div>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  <script>
+    // 1. Staggered Scroll-Reveal Animation using IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 90);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.plot-card').forEach(card => observer.observe(card));
+
+    // 2. Animated Number Counters for Hero KPI Cards
+    document.querySelectorAll('.kpi-value').forEach(counter => {
+      const target = +counter.getAttribute('data-target');
+      const suffix = counter.getAttribute('data-suffix') || '';
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        counter.textContent = Math.floor(easeOut * target) + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = target + suffix;
+        }
+      }
+      requestAnimationFrame(updateCounter);
+    });
+
+    // 3. Category Filter Logic with Smooth Re-Animation
+    function filterCharts(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.plot-card');
+      cards.forEach(card => {
+        const match = category === 'all' || card.getAttribute('data-category') === category;
+        if (match) {
+          card.style.display = 'flex';
+          requestAnimationFrame(() => card.classList.add('visible'));
+        } else {
+          card.classList.remove('visible');
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 4. Full-Screen Lightbox Modal Controls (Click or ESC key)
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-caption').textContent = caption;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+      if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>
