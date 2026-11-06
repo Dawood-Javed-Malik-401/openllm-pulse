@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenLLM Pulse — 3D Ecosystem Intelligence & Interactive Benchmark Studio</title>
+  <title>OpenLLM Pulse — 3D Cyber Intelligence Studio & Generative Pipeline Benchmark</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Three.js for Real 3D WebGL Objects & Chart.js for Live Interactive Charts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Load Three.js for 3D WebGL and Chart.js for Live Interactivity -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --bg-void: #03060e;
-      --bg-panel: rgba(11, 18, 34, 0.78);
-      --bg-panel-solid: #0b1222;
-      --border-glass: rgba(56, 189, 248, 0.22);
-      --border-glow: rgba(56, 189, 248, 0.65);
+      --bg-panel: rgba(11, 18, 34, 0.76);
+      --bg-panel-solid: #090e1a;
+      --border-glass: rgba(56, 189, 248, 0.18);
+      --border-glow: rgba(56, 189, 248, 0.55);
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --cyan: #38bdf8;
@@ -25,6 +25,7 @@
       --emerald: #34d399;
       --amber: #fbbf24;
       --rose: #fb7185;
+      --red-alert: #f43f5e;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,311 +39,255 @@
       min-height: 100vh;
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #03060e; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3); }
-    ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
-
-    /* Top Scroll Progress */
-    #scroll-bar {
-      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--emerald));
-      z-index: 10000; box-shadow: 0 0 15px var(--cyan);
-    }
-
-    /* Ambient Cyber Grid */
+    /* Cinematic Cyber overlays */
     .cyber-grid {
       position: fixed; inset: 0; z-index: -2; pointer-events: none;
       background-image:
-        linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(circle at 50% 30%, black 30%, transparent 85%);
+        linear-gradient(to right, rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 50% 40%, black 20%, transparent 85%);
     }
 
-    /* Top Command Navbar */
+    #progress-tracker {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--emerald));
+      z-index: 11000; box-shadow: 0 0 16px var(--cyan);
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #03060e; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 1px solid rgba(56,189,248,0.2); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+    /* Sticky Top Control Navbar */
     header.topbar {
       position: sticky; top: 0; z-index: 1000;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      background: rgba(3, 6, 14, 0.82);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.16);
-      padding: 0.75rem 1.75rem;
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      background: rgba(3, 6, 14, 0.85);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.14);
+      padding: 0.8rem 1.75rem;
     }
 
     .topbar-inner {
-      max-width: 1540px; margin: 0 auto;
+      max-width: 1560px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
     }
 
-    .brand-logo {
+    .brand {
       display: flex; align-items: center; gap: 0.75rem;
       text-decoration: none; color: #fff;
       font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.3rem;
     }
 
-    .brand-orb {
-      width: 14px; height: 14px; border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 14px var(--emerald);
-      animation: pulseOrb 2s infinite;
+    .pulse-orb {
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--emerald); box-shadow: 0 0 14px var(--emerald);
+      animation: flashOrb 2s infinite;
     }
 
-    @keyframes pulseOrb {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--emerald); }
-      50% { transform: scale(1.25); box-shadow: 0 0 24px var(--cyan); }
+    @keyframes flashOrb {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px var(--emerald); }
+      50% { transform: scale(1.25); box-shadow: 0 0 20px var(--cyan); }
     }
 
-    .nav-links {
-      display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;
-    }
-
-    .nav-links a {
+    .nav-tabs { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; }
+    .nav-tabs a {
       color: var(--text-secondary); text-decoration: none;
       font-size: 0.84rem; font-weight: 600;
-      padding: 0.45rem 0.9rem; border-radius: 8px;
-      transition: all 0.25s;
+      padding: 0.45rem 0.85rem; border-radius: 8px;
+      transition: all 0.2s;
     }
+    .nav-tabs a:hover { color: #fff; background: rgba(56, 189, 248, 0.12); }
 
-    .nav-links a:hover {
-      color: #fff; background: rgba(56, 189, 248, 0.12);
-    }
-
-    /* Interactive Roll Number Hover Pills in Navbar */
-    .roll-cluster {
-      display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
-    }
-
-    .roll-chip {
+    /* Navbar Roll-Number Hover Pills (Glassmorphic) */
+    .pills-container { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+    .chip-pills {
       display: inline-flex; align-items: center;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 999px;
-      padding: 0.3rem 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; color: var(--cyan);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 999px; padding: 0.3rem 0.75rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--cyan);
       cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .roll-chip .r-id { font-weight: 700; }
-    .roll-chip .r-name {
+    .chip-pills .c-id { font-weight: 700; }
+    .chip-pills .c-name {
       max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap;
       font-family: 'Inter', sans-serif; font-weight: 600; color: #fff;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .roll-chip:hover {
-      border-color: var(--emerald);
-      background: rgba(52, 211, 153, 0.15);
-      box-shadow: 0 0 18px rgba(52, 211, 153, 0.35);
-      transform: translateY(-2px);
+    .chip-pills:hover {
+      border-color: var(--emerald); background: rgba(52, 211, 153, 0.16);
+      box-shadow: 0 0 16px rgba(52, 211, 153, 0.3); transform: translateY(-1.5px);
     }
-    .roll-chip:hover .r-id { color: var(--emerald); }
-    .roll-chip:hover .r-name { max-width: 180px; opacity: 1; margin-left: 0.5rem; }
+    .chip-pills:hover .c-id { color: var(--emerald); }
+    .chip-pills:hover .c-name { max-width: 160px; opacity: 1; margin-left: 0.5rem; }
 
-    /* Main Container */
-    .workspace {
-      max-width: 1540px; margin: 0 auto; padding: 1.5rem 1.75rem 4rem;
+    /* Main Container Workspace */
+    .studio-workspace { max-width: 1560px; margin: 0 auto; padding: 1rem 1.75rem 4rem; }
+
+    /* REAL 3D HERO SECTION WITH AI specs AND VOLUMETRIC SCALAR */
+    .hero-panel {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem; align-items: center; padding: 1.5rem 0 3rem;
     }
+    @media (max-width: 1120px) { .hero-panel { grid-template-columns: 1fr; } }
 
-    /* 3D Hero Command Split */
-    .hero-split {
-      display: grid; grid-template-columns: 1.15fr 0.85fr;
-      gap: 2rem; align-items: center;
-      padding: 2rem 0 3rem;
-    }
-
-    @media (max-width: 1080px) {
-      .hero-split { grid-template-columns: 1fr; }
-    }
-
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 0.5rem;
+    .tagline {
+      display: inline-flex; align-items: center; gap: 0.55rem;
       font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
       color: var(--cyan); background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 0.38rem 0.95rem; border-radius: 999px;
-      margin-bottom: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em;
+      border: 1px solid rgba(56, 189, 248, 0.32);
+      padding: 0.4rem 0.95rem; border-radius: 999px;
+      margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.08em;
     }
 
-    .hero-title {
+    .headline {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.2rem, 4.2vw, 3.5rem);
+      font-size: clamp(2.3rem, 4.4vw, 3.4rem);
       font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 15%, var(--cyan) 55%, var(--violet) 95%);
+      background: linear-gradient(135deg, #ffffff 10%, var(--cyan) 55%, var(--violet) 85%, var(--rose) 100%);
       -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1.1rem;
+      -webkit-text-fill-color: transparent; margin-bottom: 1rem;
     }
 
-    .hero-desc {
-      color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65;
-      margin-bottom: 1.75rem; max-width: 680px;
+    .synopsis {
+      color: var(--text-secondary); font-size: 1.02rem; line-height: 1.62;
+      margin-bottom: 2rem; max-width: 660px;
     }
 
-    /* 4-Member 3D Hover Identity Matrix */
-    .identity-matrix-title {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--amber); margin-bottom: 0.75rem;
+    /* Kinetic 4-Member Identity Matrix Card Grid */
+    .team-holo-title {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+      text-transform: uppercase; letter-spacing: 0.09em;
+      color: var(--amber); margin-bottom: 0.8rem;
       display: flex; align-items: center; gap: 0.5rem;
     }
 
-    .team-holo-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem;
-      margin-bottom: 1.75rem;
-    }
+    .matrix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+    @media (max-width: 550px) { .matrix-grid { grid-template-columns: 1fr; } }
 
-    @media (max-width: 550px) {
-      .team-holo-grid { grid-template-columns: 1fr; }
-    }
-
-    .holo-card {
-      position: relative; height: 86px;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 34, 0.9));
-      border: 1px solid rgba(56, 189, 248, 0.25);
+    .matrix-card {
+      position: relative; height: 94px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(11, 18, 34, 0.9));
+      border: 1px solid rgba(56, 189, 248, 0.22);
       border-radius: 14px; overflow: hidden; cursor: pointer;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.6);
     }
-
-    .holo-card::before {
+    .matrix-card::before {
       content: ""; position: absolute; inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(56, 189, 248, 0.16), rgba(52, 211, 153, 0.16), transparent);
+      background: linear-gradient(110deg, transparent, rgba(56, 189, 248, 0.16), rgba(52, 211, 153, 0.16), transparent);
       transform: translateX(-100%); transition: transform 0.65s ease;
     }
+    .matrix-card:hover::before { transform: translateX(100%); }
 
-    .holo-card:hover::before { transform: translateX(100%); }
+    .m-front { display: flex; flex-direction: column; align-items: center; transition: all 0.38s ease; }
+    .m-roll { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800; color: var(--cyan); letter-spacing: 0.04em; }
+    .m-sub { font-size: 0.66rem; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; }
 
-    .holo-front {
-      display: flex; flex-direction: column; align-items: center;
-      transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .holo-roll {
-      font-family: 'JetBrains Mono', monospace; font-size: 1.2rem;
-      font-weight: 800; color: var(--cyan); letter-spacing: 0.04em;
-    }
-
-    .holo-sub {
-      font-size: 0.68rem; font-family: 'JetBrains Mono', monospace;
-      color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;
-    }
-
-    .holo-back {
+    .m-back {
       position: absolute; inset: 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       opacity: 0; transform: translateY(18px) scale(0.92);
       transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(6, 12, 26, 0.92);
+      background: rgba(4, 8, 20, 0.95);
     }
+    .m-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .m-verified { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--emerald); font-weight: 600; }
 
-    .holo-name {
-      font-family: 'Space Grotesk', sans-serif; font-size: 1.12rem;
-      font-weight: 700; color: #fff;
+    .matrix-card:hover {
+      border-color: var(--emerald); transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 14px 32px -6px rgba(52, 211, 153, 0.28);
     }
+    .matrix-card:hover .m-front { opacity: 0; transform: translateY(-18px) scale(0.9); }
+    .matrix-card:hover .m-back { opacity: 1; transform: translateY(0) scale(1); }
 
-    .holo-verified {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
-      color: var(--emerald); font-weight: 600;
-    }
-
-    .holo-card:hover {
-      border-color: var(--emerald);
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 30px -6px rgba(52, 211, 153, 0.32);
-    }
-
-    .holo-card:hover .holo-front { opacity: 0; transform: translateY(-18px) scale(0.9); }
-    .holo-card:hover .holo-back { opacity: 1; transform: translateY(0) scale(1); }
-
-    /* Right Hero: Interactive 3D WebGL Viewport Window */
-    .webgl-window {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-glass);
+    /* WebGL Outer Frame Box & Interactive Scene controls */
+    .studio-panel-3d {
+      background: var(--bg-panel); border: 1px solid var(--border-glass);
       border-radius: 18px; overflow: hidden;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75), 0 0 35px rgba(56, 189, 248, 0.12);
-      backdrop-filter: blur(16px);
-      display: flex; flex-direction: column;
-      height: 450px; position: relative;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.08);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; height: 460px; position: relative;
     }
-
-    .window-titlebar {
+    .panel-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.65rem 1rem;
-      background: rgba(3, 6, 14, 0.85);
+      padding: 0.65rem 1rem; background: rgba(3, 6, 14, 0.9);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       user-select: none;
     }
+    .header-dots { display: flex; gap: 6px; align-items: center; }
+    .header-dot { width: 11px; height: 11px; border-radius: 50%; cursor: pointer; }
+    .header-dot.red { background: var(--red-alert); }
+    .header-dot.yellow { background: var(--amber); }
+    .header-dot.green { background: var(--emerald); }
 
-    .win-dots { display: flex; gap: 6px; align-items: center; }
-    .win-dot { width: 11px; height: 11px; border-radius: 50%; cursor: pointer; }
-    .win-dot.red { background: #ef4444; }
-    .win-dot.yellow { background: #f59e0b; }
-    .win-dot.green { background: #10b981; }
-
-    .win-title {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
-      color: var(--text-secondary); font-weight: 600;
+    .header-title { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text-secondary); font-weight: 600; }
+    .header-actions { display: flex; gap: 0.4rem; }
+    .config-btn {
+      background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      padding: 0.22rem 0.55rem; border-radius: 6px; cursor: pointer; transition: all 0.2s;
     }
-
-    .win-actions { display: flex; gap: 0.4rem; }
-    .win-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-primary);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-      padding: 0.22rem 0.55rem; border-radius: 6px; cursor: pointer;
-      transition: all 0.2s;
-    }
-    .win-btn:hover, .win-btn.active {
+    .config-btn:hover, .config-btn.active {
       background: var(--cyan); color: #03060e; border-color: var(--cyan); font-weight: 700;
     }
 
-    #three-container {
-      flex: 1; width: 100%; height: 100%; cursor: grab; position: relative;
-    }
-    #three-container:active { cursor: grabbing; }
+    #three-canvas-holder { flex: 1; width: 100%; height: 100%; cursor: grab; position: relative; }
+    #three-canvas-holder:active { cursor: grabbing; }
 
-    .webgl-hud {
+    /* Animated After Effects "Specimen Scans" UI overlay */
+    .cyber-overlays-overlay {
+      position: absolute; inset: 0; pointer-events: none; z-index: 5;
+    }
+    .specimen-tag {
+      position: absolute; top: 18px; right: 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; background: rgba(244, 63, 94, 0.12); color: var(--rose);
+      border: 1px solid rgba(244, 63, 94, 0.35); padding: 0.25rem 0.6rem; border-radius: 4px;
+      animation: blinkText 2s infinite alternate;
+    }
+    .crosshairs-target {
+      position: absolute; width: 22px; height: 22px; border: 1px solid rgba(56, 189, 248, 0.45);
+      border-radius: 50%; top: 52%; left: 50%; transform: translate(-50%, -50%);
+    }
+    .crosshairs-target::before, .crosshairs-target::after {
+      content: ""; position: absolute; background: rgba(56, 189, 248, 0.5);
+    }
+    .crosshairs-target::before { width: 32px; height: 1px; top: 10px; left: -5px; }
+    .crosshairs-target::after { height: 32px; width: 1px; left: 10px; top: -5px; }
+
+    @keyframes blinkText { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    .ai-attribution-tag {
       position: absolute; bottom: 12px; left: 14px; right: 14px;
       display: flex; justify-content: space-between; align-items: center;
       pointer-events: none; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; color: var(--cyan);
-      background: rgba(3, 6, 14, 0.7); padding: 0.4rem 0.75rem;
-      border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2);
+      font-size: 0.7rem; color: var(--cyan);
+      background: rgba(3, 6, 14, 0.75); padding: 0.4rem 0.75rem;
+      border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.18);
     }
 
-    /* KPI Telemetry Bar */
-    .kpi-ribbon {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem; margin-bottom: 3rem;
+    /* TELEMETRY METRIC TILE CARDS */
+    .telem-ribbon {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.15rem; margin-bottom: 2.5rem;
     }
-
-    .kpi-tile {
+    .telem-tile {
       background: var(--bg-panel); border: 1px solid var(--border-glass);
-      border-radius: 14px; padding: 1.2rem 1.35rem;
-      position: relative; overflow: hidden;
+      border-radius: 14px; padding: 1.25rem; position: relative; overflow: hidden;
       transition: all 0.3s ease;
     }
-
-    .kpi-tile:hover {
+    .telem-tile:hover {
       transform: translateY(-4px); border-color: var(--cyan);
-      box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 12px 32px -10px rgba(56, 189, 248, 0.25);
     }
-
-    .kpi-tile .k-val {
-      font-family: 'Space Grotesk', sans-serif; font-size: 2rem;
-      font-weight: 700; color: #fff;
-    }
-
-    .kpi-tile .k-lbl {
-      font-size: 0.82rem; color: var(--text-secondary); font-weight: 500;
-    }
-
-    .kpi-tile .k-tag {
+    .telem-tile .t-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.95rem; font-weight: 700; color: #fff; }
+    .telem-tile .t-lbl { font-size: 0.82rem; color: var(--text-secondary); font-weight: 500; }
+    .telem-tile .t-badge {
       position: absolute; top: 12px; right: 12px;
       font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
       color: var(--emerald); background: rgba(52, 211, 153, 0.12);
@@ -350,37 +295,39 @@
     }
 
     /* Section Headers */
-    .section-head {
+    .stage-section-header {
       display: flex; align-items: flex-end; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-      margin: 3.5rem 0 1.5rem; padding-bottom: 0.85rem;
+      flex-wrap: wrap; gap: 1rem; margin: 3rem 0 1.5rem; padding-bottom: 0.85rem;
       border-bottom: 1px solid rgba(56, 189, 248, 0.18);
     }
-
-    .section-head h2 {
-      font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem;
-      font-weight: 700; color: #fff;
+    .stage-section-header h2 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; font-weight: 700; color: #fff;
       display: flex; align-items: center; gap: 0.65rem;
     }
+    .stage-section-header p { color: var(--text-secondary); font-size: 0.92rem; }
 
-    .section-head p { color: var(--text-secondary); font-size: 0.92rem; }
+    /* CINEMATIC BIOLUMINESCENT NETWORK DATA FLOW */
+    .flow-scroller {
+      background: rgba(11, 18, 34, 0.45); border: 1px solid var(--border-glass);
+      border-radius: 18px; padding: 1.5rem; margin-bottom: 2.5rem;
+      position: relative; overflow: hidden; box-shadow: inset 0 0 45px rgba(56, 189, 248, 0.03);
+    }
+    #dataPipelineCanvas {
+      width: 100%; height: 380px; display: block; border-radius: 12px;
+    }
 
-    /* Adjustable Window Workspace for the 7 Python PNG Plots */
+    /* CUSTOM WINDOWS INTERFACE (7 PYTHON PNG GRAPHICS) */
     .toolbar-row {
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;
     }
-
-    .filter-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-
+    .pills-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .filter-pill {
       background: rgba(15, 23, 42, 0.85); color: var(--text-secondary);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 0.5rem 1.1rem; border-radius: 999px;
-      font-size: 0.84rem; font-weight: 600; cursor: pointer;
-      transition: all 0.25s;
+      padding: 0.5rem 1.15rem; border-radius: 999px;
+      font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.25s;
     }
-
     .filter-pill:hover { color: #fff; border-color: var(--cyan); }
     .filter-pill.active {
       background: linear-gradient(135deg, var(--cyan), var(--indigo));
@@ -388,22 +335,14 @@
       box-shadow: 0 4px 18px rgba(56, 189, 248, 0.45);
     }
 
-    .window-grid {
-      display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.4rem;
-    }
-
+    .window-container-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.4rem; }
     .app-window {
-      grid-column: span 6;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-glass);
-      border-radius: 16px; overflow: hidden;
-      display: flex; flex-direction: column;
-      backdrop-filter: blur(16px);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.65);
-      resize: vertical;
+      grid-column: span 6; background: var(--bg-panel);
+      border: 1px solid var(--border-glass); border-radius: 16px;
+      overflow: hidden; display: flex; flex-direction: column;
+      backdrop-filter: blur(16px); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 14px 34px -12px rgba(0,0,0,0.65);
     }
-
     .app-window.span-4 { grid-column: span 4; }
     .app-window.span-6 { grid-column: span 6; }
     .app-window.span-12 { grid-column: span 12; }
@@ -415,29 +354,21 @@
 
     .app-window:hover {
       border-color: var(--border-glow);
-      box-shadow: 0 20px 45px -12px rgba(56, 189, 248, 0.22);
+      box-shadow: 0 20px 45px -12px rgba(56, 189, 248, 0.2);
     }
+    .window-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem; flex: 1; }
+    .win-caption { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
 
-    .window-body {
-      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.9rem; flex: 1;
-    }
-
-    .win-desc {
-      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;
-    }
-
-    .img-stage {
+    .image-stage-box {
       position: relative; border-radius: 10px; overflow: hidden;
       background: #ffffff; padding: 6px; cursor: zoom-in;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
-    .img-stage img {
+    .image-stage-box img {
       width: 100%; height: auto; display: block; border-radius: 6px;
       transition: transform 0.35s ease;
     }
-
-    .img-stage:hover img { transform: scale(1.02); }
+    .image-stage-box:hover img { transform: scale(1.02); }
 
     .win-statusbar {
       display: flex; justify-content: space-between; align-items: center;
@@ -446,547 +377,515 @@
       border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    /* Interactive Chart.js Studio Grid */
-    .live-charts-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem;
-    }
-    @media (max-width: 980px) {
-      .live-charts-grid { grid-template-columns: 1fr; }
-    }
-    .chart-box {
+    /* Interactive Data Visualization Canvas */
+    .telemetry-plots-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+    @media (max-width: 980px) { .telemetry-plots-grid { grid-template-columns: 1fr; } }
+    .chart-panel-card {
       background: var(--bg-panel); border: 1px solid var(--border-glass);
       border-radius: 16px; padding: 1.25rem; height: 360px;
       display: flex; flex-direction: column;
     }
-    .chart-canvas-wrap { flex: 1; position: relative; min-height: 0; }
+    .canvas-wrapper { flex: 1; position: relative; min-height: 0; }
 
-    /* Hardware VRAM Calculator & Model Recommender */
-    .vram-studio {
+    /* HARDWARE VRAM CALC / BENCHMARK RECOMMENDER */
+    .recommender-flex-box {
       display: grid; grid-template-columns: 1fr 1.4fr; gap: 1.5rem;
       background: var(--bg-panel); border: 1px solid var(--border-glass);
       border-radius: 18px; padding: 1.75rem;
     }
+    @media (max-width: 980px) { .recommender-flex-box { grid-template-columns: 1fr; } }
 
-    @media (max-width: 980px) {
-      .vram-studio { grid-template-columns: 1fr; }
-    }
-
-    .control-group { margin-bottom: 1.25rem; }
-    .control-group label {
+    .slider-field { margin-bottom: 1.25rem; }
+    .slider-field label {
       display: flex; justify-content: space-between;
       font-size: 0.86rem; font-weight: 600; margin-bottom: 0.5rem;
     }
-    .control-group input[type="range"] {
-      width: 100%; accent-color: var(--cyan); cursor: pointer;
+    .slider-field input[type="range"] { width: 100%; accent-color: var(--cyan); cursor: pointer; }
+    .control-dropdown {
+      width: 100%; padding: 0.65rem 0.9rem; background: #060b16; color: #fff;
+      border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px;
+      font-family: 'Inter', sans-serif;
     }
-    .control-select {
-      width: 100%; padding: 0.65rem 0.9rem;
-      background: #060b16; color: #fff;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 10px; font-family: 'Inter', sans-serif;
+    .model-cards-holder {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.85rem; max-height: 360px; overflow-y: auto; padding-right: 4px;
     }
+    .card-recommendation {
+      background: rgba(6, 11, 22, 0.85); border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 12px; padding: 1rem; transition: all 0.25s;
+    }
+    .card-recommendation:hover { border-color: var(--emerald); transform: translateY(-3px); }
 
-    .rec-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 0.9rem; max-height: 360px; overflow-y: auto; padding-right: 4px;
+    /* Interactive Data Explorer Sorter */
+    .toolbar-search { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+    .text-search {
+      flex: 1; min-width: 250px; padding: 0.7rem 1rem; background: var(--bg-panel); color: #fff;
+      border: 1px solid var(--border-glass); border-radius: 10px; font-size: 0.9rem;
     }
-
-    .rec-card {
-      background: rgba(6, 11, 22, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.22);
-      border-radius: 12px; padding: 1rem;
-      transition: all 0.25s;
-    }
-    .rec-card:hover {
-      border-color: var(--emerald); transform: translateY(-3px);
-    }
-
-    /* Interactive Data Explorer Table */
-    .table-controls {
-      display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;
-    }
-    .search-input {
-      flex: 1; min-width: 240px; padding: 0.7rem 1rem;
-      background: var(--bg-panel); color: #fff;
-      border: 1px solid var(--border-glass); border-radius: 10px;
-      font-size: 0.9rem;
-    }
-    .data-table-wrap {
+    .data-matrix-box {
       background: var(--bg-panel); border: 1px solid var(--border-glass);
       border-radius: 16px; overflow-x: auto;
     }
-    table.pulse-table {
-      width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;
-    }
-    .pulse-table th {
-      background: rgba(3, 6, 14, 0.9); color: var(--cyan);
+    table.data-matrix { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    .data-matrix th {
+      background: rgba(3, 6, 14, 0.92); color: var(--cyan);
       font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
       text-transform: uppercase; padding: 0.9rem 1rem;
       border-bottom: 1px solid rgba(56, 189, 248, 0.2);
       cursor: pointer; white-space: nowrap;
     }
-    .pulse-table td {
-      padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      white-space: nowrap;
-    }
-    .pulse-table tr:hover { background: rgba(56, 189, 248, 0.06); }
+    .data-matrix td { padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); white-space: nowrap; }
+    .data-matrix tr:hover { background: rgba(56, 189, 248, 0.06); }
 
-    .score-bar {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--emerald);
-    }
+    .pulse-bar { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--emerald); }
 
-    /* Interactive Code & ETL Console Simulator */
-    .terminal-window {
-      background: #050811; border: 1px solid rgba(56, 189, 248, 0.28);
-      border-radius: 16px; overflow: hidden;
-    }
-    .term-tabs {
-      display: flex; gap: 0.3rem; background: #090f1e;
-      padding: 0.5rem 0.85rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      overflow-x: auto;
-    }
-    .term-tab {
-      background: transparent; color: var(--text-secondary);
-      border: none; padding: 0.45rem 0.9rem; border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
-      cursor: pointer;
-    }
-    .term-tab.active {
-      background: rgba(56, 189, 248, 0.16); color: var(--cyan); font-weight: 700;
-    }
-    .term-body {
-      padding: 1.35rem; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem; color: #cbd5e1; line-height: 1.65;
-      overflow-x: auto; max-height: 360px; white-space: pre;
-    }
+    /* Source code simulation panel */
+    .console-box-sim { background: #050811; border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 16px; overflow: hidden; }
+    .sim-bar-tabs { display: flex; gap: 0.3rem; background: #090f1e; padding: 0.5rem 0.85rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); overflow-x: auto; }
+    .sim-tab-item { background: transparent; color: var(--text-secondary); border: none; padding: 0.45rem 0.9rem; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; cursor: pointer; }
+    .sim-tab-item.active { background: rgba(56, 189, 248, 0.16); color: var(--cyan); font-weight: 700; }
+    .sim-output { padding: 1.35rem; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: #cbd5e1; line-height: 1.65; overflow-x: auto; max-height: 360px; white-space: pre; }
 
-    /* Fullscreen Lightbox */
-    .lightbox {
+    /* Lightbox modal overlay */
+    .lightbox-frame-modal {
       position: fixed; inset: 0; background: rgba(3, 6, 14, 0.94);
       backdrop-filter: blur(18px); z-index: 10000;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s;
     }
-    .lightbox.open { opacity: 1; pointer-events: auto; }
-    .lightbox img {
-      max-width: 92vw; max-height: 78vh; border-radius: 10px;
-      background: #fff; padding: 10px;
-      box-shadow: 0 25px 70px rgba(0,0,0,0.85);
-      transition: transform 0.25s ease;
+    .lightbox-frame-modal.open { opacity: 1; pointer-events: auto; }
+    .lightbox-frame-modal img {
+      max-width: 92vw; max-height: 78vh; border-radius: 10px; background: #fff; padding: 10px; box-shadow: 0 25px 70px rgba(0,0,0,0.85); transition: transform 0.25s ease;
     }
-    .lb-controls {
-      margin-top: 1.1rem; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
-    }
+    .lightbox-panel-ui { margin-top: 1.1rem; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
 
     footer {
       text-align: center; padding: 3rem 1rem 1.5rem;
-      border-top: 1px solid rgba(56, 189, 248, 0.15);
+      border-top: 1px solid rgba(56, 189, 248, 0.14);
       margin-top: 4rem; color: var(--text-secondary); font-size: 0.88rem;
     }
   </style>
 </head>
 <body>
-  <div id="scroll-bar"></div>
+  <div id="progress-tracker"></div>
   <div class="cyber-grid"></div>
 
-  <!-- Sticky Command Bar -->
+  <!-- Command Control Top Navbar with Roll-Number Hover Pills -->
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="#" class="brand-logo">
-        <span class="brand-orb"></span>
-        <span>OpenLLM Pulse <small style="font-size:0.72rem; color:var(--cyan); font-family:'JetBrains Mono',monospace;">v3.0 STUDIO</small></span>
+      <a href="#" class="brand">
+        <span class="pulse-orb"></span>
+        <span>OpenLLM Pulse <small style="font-size:0.72rem; color:var(--cyan); font-family:'JetBrains Mono',monospace;">v4.0 STUDIO</small></span>
       </a>
 
-      <nav class="nav-links">
-        <a href="#windows-sec">7 EDA Windows</a>
-        <a href="#interactive-sec">Live Charts</a>
-        <a href="#vram-sec">VRAM Calculator</a>
-        <a href="#explorer-sec">Dataset Explorer</a>
-        <a href="#terminal-sec">ETL Code &amp; Logs</a>
+      <nav class="nav-links nav-tabs">
+        <a href="#pipeline-sec">Bioluminescent Pipeline</a>
+        <a href="#windows-sec">Adjustable EDA Windows</a>
+        <a href="#interactive-sec">Telemetry Dashboard</a>
+        <a href="#vram-sec">VRAM Solver</a>
+        <a href="#explorer-sec">Explorer Matrix</a>
+        <a href="#terminal-sec">Simulation Panel</a>
       </nav>
 
-      <!-- Roll Numbers in Navbar (Hover Reveals Name) -->
-      <div class="roll-cluster" title="Hover over any Roll Number to reveal developer name">
-        <div class="roll-chip"><span class="r-id">2025-AI-401</span><span class="r-name">Dawood Javed Malik</span></div>
-        <div class="roll-chip"><span class="r-id">2025-AI-421</span><span class="r-name">Abdullah Hanif</span></div>
-        <div class="roll-chip"><span class="r-id">2025-AI-392</span><span class="r-name">Hafiz Ahmad</span></div>
-        <div class="roll-chip"><span class="r-id">2025-AI-397</span><span class="r-name">Abdullah Malik</span></div>
+      <!-- Glassmorphic navbar hover-reveal chips (BSCS BS-UET Student Group) -->
+      <div class="pills-container" title="Hover roll number to decrypt student group">
+        <div class="chip-pills"><span class="c-id">2025-AI-401</span><span class="c-name">Dawood Javed Malik</span></div>
+        <div class="chip-pills"><span class="c-id">2025-AI-421</span><span class="c-name">Abdullah Hanif</span></div>
+        <div class="chip-pills"><span class="c-id">2025-AI-392</span><span class="c-name">Hafiz Ahmad</span></div>
+        <div class="chip-pills"><span class="c-id">2025-AI-397</span><span class="c-name">Abdullah Malik</span></div>
       </div>
     </div>
   </header>
 
-  <div class="workspace">
-    <!-- HERO SECTION WITH REAL INTERACTIVE 3D WEBGL SCENE -->
-    <section class="hero-split">
+  <div class="workspace studio-workspace">
+    <!-- CINEMATIC DENSE HERO & 3D WebGL GRAPH ICS MODULE -->
+    <section class="hero-panel">
       <div>
-        <div class="hero-tag">&#9889; Programming for AI &bull; End-to-End ETL + EDA Intelligence</div>
-        <h1 class="hero-title">OpenLLM Pulse: 3D Ecosystem &amp; Scaling Studio</h1>
-        <p class="hero-desc">
-          An automated multi-category data engineering pipeline that extracts 400+ open-source AI models from the Hugging Face REST API, validates schemas via <strong>Pydantic v2</strong>, engineers 24 benchmark features (VRAM footprints, quantization formats, IQR viral outliers &amp; 0–100 Pulse Score) with <strong>Pandas &amp; NumPy</strong>, and persists to <strong>SQLite3 &amp; CSV</strong>.
+        <div class="tagline">&#128304; Programming for AI &bull; Project 1: Pipeline Dashboard</div>
+        <h1 class="headline">OpenLLM Pulse: Automated Ecosystem &amp; Scaling Studio</h1>
+        <p class="synopsis">
+          A multi-category data engineering pipeline that extracts 400+ open-source AI models from the Hugging Face REST API, validates schemas via <strong>Pydantic v2</strong>, engineers 24 benchmark features (VRAM footprints, quantization formats, IQR viral outliers &amp; 0–100 Pulse Score) with <strong>Pandas &amp; NumPy</strong>, and persists to <strong>SQLite3 &amp; CSV</strong>.
         </p>
 
-        <div class="identity-matrix-title">&#9672; Project Engineering Team — Hover Cursor Over Roll No. to Reveal Identity</div>
-        <div class="team-holo-grid">
-          <div class="holo-card">
-            <div class="holo-front">
-              <div class="holo-roll">2025-AI-401</div>
-              <div class="holo-sub">Hover Cursor to Decrypt</div>
+        <!-- 4-Member 3D Holographic Identity Showcase -->
+        <div class="team-holo-title">&#9672; Project Engineering Group (Hover ID to Decrypt)</div>
+        <div class="matrix-grid">
+          <!-- Card 1 -->
+          <div class="matrix-card">
+            <div class="m-front">
+              <div class="m-roll">2025-AI-401</div>
+              <div class="m-sub">Hover to reveal info</div>
             </div>
-            <div class="holo-back">
-              <div class="holo-name">Dawood Javed Malik</div>
-              <div class="holo-verified">&#10003; 2025-AI-401 &bull; UET Lahore</div>
-            </div>
-          </div>
-
-          <div class="holo-card">
-            <div class="holo-front">
-              <div class="holo-roll">2025-AI-421</div>
-              <div class="holo-sub">Hover Cursor to Decrypt</div>
-            </div>
-            <div class="holo-back">
-              <div class="holo-name">Abdullah Hanif</div>
-              <div class="holo-verified">&#10003; 2025-AI-421 &bull; UET Lahore</div>
+            <div class="m-back">
+              <div class="m-name">Dawood Javed Malik</div>
+              <div class="m-verified">&#10004; Roll 401 &bull; BSCS (AI)</div>
             </div>
           </div>
-
-          <div class="holo-card">
-            <div class="holo-front">
-              <div class="holo-roll">2025-AI-392</div>
-              <div class="holo-sub">Hover Cursor to Decrypt</div>
+          <!-- Card 2 -->
+          <div class="matrix-card">
+            <div class="m-front">
+              <div class="m-roll">2025-AI-421</div>
+              <div class="m-sub">Hover to reveal info</div>
             </div>
-            <div class="holo-back">
-              <div class="holo-name">Hafiz Ahmad</div>
-              <div class="holo-verified">&#10003; 2025-AI-392 &bull; UET Lahore</div>
+            <div class="m-back">
+              <div class="m-name">Abdullah Hanif</div>
+              <div class="m-verified">&#10004; Roll 421 &bull; BSCS (AI)</div>
             </div>
           </div>
-
-          <div class="holo-card">
-            <div class="holo-front">
-              <div class="holo-roll">2025-AI-397</div>
-              <div class="holo-sub">Hover Cursor to Decrypt</div>
+          <!-- Card 3 -->
+          <div class="matrix-card">
+            <div class="m-front">
+              <div class="m-roll">2025-AI-392</div>
+              <div class="m-sub">Hover to reveal info</div>
             </div>
-            <div class="holo-back">
-              <div class="holo-name">Abdullah Malik</div>
-              <div class="holo-verified">&#10003; 2025-AI-397 &bull; UET Lahore</div>
+            <div class="m-back">
+              <div class="m-name">Hafiz Ahmad</div>
+              <div class="m-verified">&#10004; Roll 392 &bull; BSCS (AI)</div>
+            </div>
+          </div>
+          <!-- Card 4 -->
+          <div class="matrix-card">
+            <div class="m-front">
+              <div class="m-roll">2025-AI-397</div>
+              <div class="m-sub">Hover to reveal info</div>
+            </div>
+            <div class="m-back">
+              <div class="m-name">Abdullah Malik</div>
+              <div class="m-verified">&#10004; Roll 397 &bull; BSCS (AI)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Interactive 3D WebGL Neural Core Window -->
-      <div class="webgl-window">
-        <div class="window-titlebar">
-          <div class="win-dots">
-            <span class="win-dot red"></span>
-            <span class="win-dot yellow"></span>
-            <span class="win-dot green"></span>
+      <!-- Real-Time Interactive 3D WebGL Viewport Container (Video 1 inspired spec tags) -->
+      <div class="studio-panel-3d">
+        <div class="panel-header">
+          <div class="header-dots">
+            <span class="header-dot red"></span>
+            <span class="header-dot yellow"></span>
+            <span class="header-dot green"></span>
           </div>
-          <span class="win-title">3D_NEURAL_SCALING_CORE.webgl (Interactive — Drag to Rotate)</span>
-          <div class="win-actions">
-            <button class="win-btn active" onclick="set3DMode('core', this)">Core</button>
-            <button class="win-btn" onclick="set3DMode('wire', this)">Wireframe</button>
-            <button class="win-btn" onclick="set3DMode('hyper', this)">HyperSpeed</button>
+          <span class="header-title">3D_MODEL_SCALING_MATRIX.webgl (Drag to Rotate)</span>
+          <div class="header-actions">
+            <button class="config-btn active" onclick="update3DSetting('standard', this)">Orbit Mode</button>
+            <button class="config-btn" onclick="update3DSetting('wire', this)">Wireframe</button>
+            <button class="config-btn" onclick="update3DSetting('burst', this)">HyperSpeed</button>
           </div>
         </div>
-        <div id="three-container">
-          <div class="webgl-hud">
-            <span>NODES: 400 LLMs &bull; 4 MODALITIES</span>
-            <span id="fps-counter">WEBGL 3D ACTIVE</span>
+        <div id="three-canvas-holder">
+          <!-- Geometric scans / spec tags (video 1/2 style specs) -->
+          <div class="cyber-overlays-overlay">
+            <span class="specimen-tag">SPECS VALIDATE: OK</span>
+            <div class="crosshairs-target"></div>
+          </div>
+          <div class="ai-attribution-tag">
+            <span>NODES: 400 LLM CORE &bull; 4 PIPELINE TASKS</span>
+            <span>Gemini Created This</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- KPI Telemetry Strip -->
-    <section class="kpi-ribbon">
-      <div class="kpi-tile">
-        <span class="k-tag">Option A</span>
-        <div class="k-val" data-count="400" data-suf="+">0</div>
-        <div class="k-lbl">Models Extracted Across 4 Tasks</div>
+    <!-- Telemetry Ribbons -->
+    <section class="telem-ribbon">
+      <div class="telem-tile">
+        <span class="t-badge">Option A</span>
+        <div class="t-val" data-count="400" data-suf="+">0</div>
+        <div class="t-lbl">Models Extracted From API</div>
       </div>
-      <div class="kpi-tile">
-        <span class="k-tag">Option C &amp; F</span>
-        <div class="k-val" data-count="24" data-suf=" Cols">0</div>
-        <div class="k-lbl">Engineered SQLite &amp; CSV Features</div>
+      <div class="telem-tile">
+        <span class="t-badge">Option C &amp; F</span>
+        <div class="t-val" data-count="24" data-suf=" features">0</div>
+        <div class="t-lbl">Feature Extraction Parameters</div>
       </div>
-      <div class="kpi-tile">
-        <span class="k-tag">Option G</span>
-        <div class="k-val" data-count="100" data-suf=" Pt">0</div>
-        <div class="k-lbl">Composite Pulse Score Index</div>
+      <div class="telem-tile">
+        <span class="t-badge">Option G</span>
+        <div class="t-val" data-count="100" data-suf=" max">0</div>
+        <div class="t-lbl">Weighted Pulse Score Range</div>
       </div>
-      <div class="kpi-tile">
-        <span class="k-tag">Option E</span>
-        <div class="k-val" data-count="7" data-suf=" PNGs">0</div>
-        <div class="k-lbl">300 DPI Seaborn Visual Artifacts</div>
+      <div class="telem-tile">
+        <span class="t-badge">Option E</span>
+        <div class="t-val" data-count="7" data-suf=" PNGs">0</div>
+        <div class="t-lbl">300 DPI Seaborn Plot Visuals</div>
       </div>
     </section>
 
-    <!-- SECTION 1: ADJUSTABLE MULTI-WINDOW STUDIO FOR YOUR 7 PYTHON PNG CHARTS -->
-    <section id="windows-sec">
-      <div class="section-head">
+    <!-- AUTOMATED BIOLUMINESCENT PIPELINE (Video 3 Organic Node graph) -->
+    <section id="pipeline-sec">
+      <div class="stage-section-header">
         <div>
-          <h2>&#128421; Adjustable Visual EDA Windows (7 High-Res Python Plots)</h2>
-          <p>Use the top-right window controls on any card to adjust width (<strong>1/3</strong>, <strong>1/2</strong>, or <strong>Full Width</strong>), minimize, or launch full-screen inspection.</p>
+          <h2>&#127271; Animated Ecosystem Pipeline (Data Flow Network)</h2>
+          <p>Real-time organic visualization tracking the flow of data across extraction, validation, engineering, database storage, and the final visual dashboards.</p>
+        </div>
+      </div>
+      <div class="flow-scroller">
+        <canvas id="dataPipelineCanvas"></canvas>
+      </div>
+    </section>
+
+    <!-- WINDOW WORKSPACE GRID: 7 PYTHON GRAPHICS -->
+    <section id="windows-sec">
+      <div class="stage-section-header">
+        <div>
+          <h2>&#128421; Adjustable Exploratory Data Visualizer (Seaborn Outputs)</h2>
+          <p>Toggle widths, minimize, or view in fullscreen using the toolbar to explore the Python-generated 300 DPI graphs.</p>
         </div>
       </div>
 
       <div class="toolbar-row">
-        <div class="filter-pills">
-          <button class="filter-pill active" onclick="filterWindows('all', this)">All 7 Windows</button>
-          <button class="filter-pill" onclick="filterWindows('arch', this)">Architecture &amp; Scaling</button>
-          <button class="filter-pill" onclick="filterWindows('corr', this)">Engagement &amp; Correlations</button>
-          <button class="filter-pill" onclick="filterWindows('lead', this)">Timeline &amp; Pulse Leaderboard</button>
+        <div class="pills-group">
+          <button class="filter-pill active" onclick="filterEdaPlots('all', this)">All 7 Windows</button>
+          <button class="filter-pill" onclick="filterEdaPlots('architecture', this)">Architecture &amp; Scaling</button>
+          <button class="filter-pill" onclick="filterEdaPlots('correlations', this)">Community &amp; Correlations</button>
+          <button class="filter-pill" onclick="filterEdaPlots('leaderboard', this)">Timeline &amp; Performance</button>
         </div>
-        <div style="display:flex; gap:0.5rem;">
-          <button class="win-btn" onclick="setAllWindowSizes('span-4')">Compact Grid (3-Col)</button>
-          <button class="win-btn active" onclick="setAllWindowSizes('span-6')">Balanced Grid (2-Col)</button>
-          <button class="win-btn" onclick="setAllWindowSizes('span-12')">Cinema Stack (1-Col)</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="config-btn" onclick="resizeAllAppWindows('span-4')">3-Col Compact</button>
+          <button class="config-btn active" onclick="resizeAllAppWindows('span-6')">2-Col Balanced</button>
+          <button class="config-btn" onclick="resizeAllAppWindows('span-12')">1-Col Screen Stack</button>
         </div>
       </div>
 
-      <div class="window-grid" id="eda-window-grid">
-        <!-- Window 1 -->
-        <article class="app-window span-6" data-wcat="arch">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)" title="Minimize Window"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')" title="Half Width"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')" title="Maximize Width"></span>
+      <div class="window-container-grid" id="edaGridContainer">
+        <!-- Plot Window 1 -->
+        <article class="app-window span-6" data-category="architecture">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">01_architecture_distribution.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">1_architecture_distribution.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>1. Top 10 Open-Source Model Architectures</h3>
-            <p class="win-desc">Dominance breakdown across Llama, Qwen, Mistral, BERT, Gemma, and specialized open-source families.</p>
-            <div class="img-stage" onclick="openLightbox(0)">
-              <img src="outputs/1_architecture_distribution.png" alt="Architecture Distribution" />
+            <p class="win-caption">Dominance breakdown across Llama, Qwen, Mistral, BERT, Gemma, and specialized open-source families.</p>
+            <div class="image-stage-box" onclick="showLightbox(0)">
+              <img src="outputs/1_architecture_distribution.png" alt="Architecture Distribution Graph" />
             </div>
             <div class="win-statusbar">
-              <span>SOURCE: SQLite llm_models</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>SOURCE: SQLite DB (llm_models)</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
 
-        <!-- Window 2 -->
-        <article class="app-window span-6" data-wcat="arch">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')"></span>
+        <!-- Plot Window 2 -->
+        <article class="app-window span-6" data-category="architecture">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">02_size_tier_distribution.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">2_size_tier_distribution.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>2. Parameter Scaling Tiers Distribution</h3>
-            <p class="win-desc">Regex-extracted parameter counts grouped into Small (&le;3B), Medium (3B–10B), Large (10B–35B), and XL (&gt;35B).</p>
-            <div class="img-stage" onclick="openLightbox(1)">
-              <img src="outputs/2_size_tier_distribution.png" alt="Size Tier Distribution" />
+            <p class="win-caption">Regex-extracted parameter counts grouped into Small (&le;3B), Medium (3B–10B), Large (10B–35B), and XL (&gt;35B).</p>
+            <div class="image-stage-box" onclick="showLightbox(1)">
+              <img src="outputs/2_size_tier_distribution.png" alt="Parameter Size Distribution Graph" />
             </div>
             <div class="win-statusbar">
-              <span>REGEX: MoE / B / M Parser</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>EXTRACTION: regex parser</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
 
-        <!-- Window 3 -->
-        <article class="app-window span-6" data-wcat="arch">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')"></span>
+        <!-- Plot Window 3 -->
+        <article class="app-window span-6" data-category="architecture">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">03_license_breakdown.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">3_license_breakdown.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>3. Top 8 Open-Source Licenses</h3>
-            <p class="win-desc">Distribution of commercial and research software licenses (Apache-2.0, MIT, Llama3, CC-BY, etc.).</p>
-            <div class="img-stage" onclick="openLightbox(2)">
-              <img src="outputs/3_license_breakdown.png" alt="License Breakdown" />
+            <p class="win-caption">Tracking research vs. commercial permissiveness (Apache-2.0, MIT, Llama3, CC-BY, etc.) based on license tags.</p>
+            <div class="image-stage-box" onclick="showLightbox(2)">
+              <img src="outputs/3_license_breakdown.png" alt="License Distribution Graph" />
             </div>
             <div class="win-statusbar">
-              <span>TAG PARSER: license:*</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>METADATA: tag parser</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
 
-        <!-- Window 4 -->
-        <article class="app-window span-6" data-wcat="corr">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')"></span>
+        <!-- Plot Window 4 -->
+        <article class="app-window span-6" data-category="correlations">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">04_downloads_vs_likes_scatter.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">4_downloads_vs_likes_scatter.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>4. Community Engagement: Downloads vs. Likes (Log Scale)</h3>
-            <p class="win-desc">Multi-task log-scale scatter plot segmented by pipeline_tag and statistical IQR viral outlier flags.</p>
-            <div class="img-stage" onclick="openLightbox(3)">
-              <img src="outputs/4_downloads_vs_likes_scatter.png" alt="Downloads vs Likes Scatter" />
+            <p class="win-caption">Mapping user adoption against likes across all pipeline categories, highlighting statistical viral outliers using IQR.</p>
+            <div class="image-stage-box" onclick="showLightbox(3)">
+              <img src="outputs/4_downloads_vs_likes_scatter.png" alt="Adoption Log Scatter Plot" />
             </div>
             <div class="win-statusbar">
-              <span>OUTLIERS: Q3 + 1.5 * IQR</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>OUTLIERS: q3 + 1.5*IQR bounds</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
 
-        <!-- Window 5 -->
-        <article class="app-window span-6" data-wcat="corr">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')"></span>
+        <!-- Plot Window 5 -->
+        <article class="app-window span-6" data-category="correlations">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">05_correlation_heatmap.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">5_correlation_heatmap.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>5. Pearson Correlation Heatmap (Option E)</h3>
-            <p class="win-desc">Linear correlation matrix across parameter count, FP16 VRAM, downloads, likes, daily velocity, age, and Pulse Score.</p>
-            <div class="img-stage" onclick="openLightbox(4)">
-              <img src="outputs/5_correlation_heatmap.png" alt="Pearson Correlation Heatmap" />
+            <p class="win-caption">Evaluating linear relationships between params, downloads, daily velocity, age, VRAM estimation, and Pulse score.</p>
+            <div class="image-stage-box" onclick="showLightbox(4)">
+              <img src="outputs/5_correlation_heatmap.png" alt="Feature Pearson Heatmap Matrix" />
             </div>
             <div class="win-statusbar">
-              <span>MATRIX: 7x7 Numeric Features</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>MATRIX: pearson 7x7 model parameters</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
 
-        <!-- Window 6 -->
-        <article class="app-window span-6" data-wcat="lead">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')"></span>
+        <!-- Plot Window 6 -->
+        <article class="app-window span-6" data-category="leaderboard">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">06_release_timeline.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">6_release_timeline.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>6. Monthly Model Release Velocity Timeline</h3>
-            <p class="win-desc">Time-series tracking monthly model creation volume across the most recent 24 active months.</p>
-            <div class="img-stage" onclick="openLightbox(5)">
-              <img src="outputs/6_release_timeline.png" alt="Monthly Release Timeline" />
+            <p class="win-caption">Tracking release volume across HF repositories over the 24 most active months.</p>
+            <div class="image-stage-box" onclick="showLightbox(5)">
+              <img src="outputs/6_release_timeline.png" alt="Release Activity Timeline" />
             </div>
             <div class="win-statusbar">
-              <span>TIMELINE: 24-Month Horizon</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>TIMELINE: 24 active calendar months</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
 
-        <!-- Window 7 -->
-        <article class="app-window span-12" data-wcat="lead">
-          <div class="window-titlebar">
-            <div class="win-dots">
-              <span class="win-dot red" onclick="toggleMinimize(this)"></span>
-              <span class="win-dot yellow" onclick="resizeWin(this, 'span-6')"></span>
-              <span class="win-dot green" onclick="resizeWin(this, 'span-12')"></span>
+        <!-- Plot Window 7 -->
+        <article class="app-window span-12" data-category="leaderboard">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
             </div>
-            <span class="win-title">07_top_pulse_leaderboard.png</span>
-            <div class="win-actions">
-              <button class="win-btn" onclick="resizeWin(this, 'span-4')">1/3</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-6')">1/2</button>
-              <button class="win-btn" onclick="resizeWin(this, 'span-12')">Full</button>
+            <span class="header-title">7_top_pulse_leaderboard.png</span>
+            <div class="header-actions">
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
             </div>
           </div>
           <div class="window-body">
             <h3>7. Top 15 Open-Source Models by Composite Pulse Score (0–100)</h3>
-            <p class="win-desc">Final benchmark leaderboard combining log-normalized downloads (40%), community likes (30%), daily download velocity (20%), and tag completeness (10%).</p>
-            <div class="img-stage" onclick="openLightbox(6)">
-              <img src="outputs/7_top_pulse_leaderboard.png" alt="Top 15 Pulse Leaderboard" />
+            <p class="win-caption">Dynamic index combining log-normalized downloads (40%), likes (30%), daily velocity (20%), and metadata tag completeness (10%).</p>
+            <div class="image-stage-box" onclick="showLightbox(6)">
+              <img src="outputs/7_top_pulse_leaderboard.png" alt="Pulse Performance Leaderboard Plot" />
             </div>
             <div class="win-statusbar">
-              <span>INDEX: 0-100 Weighted Composite</span>
-              <span>300 DPI &bull; Click Image to Zoom</span>
+              <span>SCORING: (0.4*dl + 0.3*like + 0.2*vel + 0.1*tag) * 100</span>
+              <span>300 DPI &bull; Click to Zoom</span>
             </div>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- SECTION 2: LIVE INTERACTIVE CHART.JS TELEMETRY -->
+    <!-- LIVE TELEMETRY CANVASES (Chart.js Module) -->
     <section id="interactive-sec">
-      <div class="section-head">
+      <div class="stage-section-header">
         <div>
-          <h2>&#128202; Live Interactive Telemetry Charts (Hover &amp; Filter)</h2>
-          <p>Real-time canvas charts complementing your static Seaborn PNGs—hover over any bar or segment for live metrics.</p>
+          <h2>&#128200; Live Cyber Metric Canvas (Interactive Hover Views)</h2>
+          <p>Real-time analytics overlaying task category and data format benchmarks to complement your Python plots.</p>
         </div>
       </div>
-
-      <div class="live-charts-grid">
-        <div class="chart-box">
-          <h4 style="margin-bottom:0.6rem; font-family:'Space Grotesk',sans-serif;">Multi-Task Category Breakdown (Option A)</h4>
-          <div class="chart-canvas-wrap"><canvas id="taskChart"></canvas></div>
+      <div class="telemetry-plots-grid">
+        <div class="chart-panel-card">
+          <h4 style="margin-bottom:0.5rem; font-family:'Space Grotesk',sans-serif;">Composite Mean Index By Modality Type</h4>
+          <div class="canvas-wrapper"><canvas id="modalityChart"></canvas></div>
         </div>
-        <div class="chart-box">
-          <h4 style="margin-bottom:0.6rem; font-family:'Space Grotesk',sans-serif;">Quantization &amp; Weight Formats (Option C)</h4>
-          <div class="chart-canvas-wrap"><canvas id="quantChart"></canvas></div>
+        <div class="chart-panel-card">
+          <h4 style="margin-bottom:0.5rem; font-family:'Space Grotesk',sans-serif;">Compression &amp; Format Proportions (Option C)</h4>
+          <div class="canvas-wrapper"><canvas id="formatChart"></canvas></div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 3: HARDWARE VRAM SIMULATOR & CLI RECOMMENDER -->
+    <!-- HARDWARE VRAM CALC AND recommender -->
     <section id="vram-sec">
-      <div class="section-head">
+      <div class="stage-section-header">
         <div>
-          <h2>&#127918; Interactive GPU VRAM Estimator &amp; Model Recommender (Options F &amp; H)</h2>
-          <p>Slide your available GPU VRAM budget and select a task modality to filter models using our FP16 (&times;2.2) and INT4 (&times;0.65) memory formulas.</p>
+          <h2>&#128187; Visual Hardware Estimator &amp; Benchmarking Solver (Option F &amp; H)</h2>
+          <p>Simulate memory footprints and recommend hardware configurations based on selected precision and dataset criteria.</p>
         </div>
       </div>
 
-      <div class="vram-studio">
+      <div class="recommender-flex-box">
         <div>
-          <div class="control-group">
+          <div class="slider-field">
             <label>
-              <span>Available GPU VRAM Budget:</span>
-              <span id="vram-val" style="color:var(--cyan); font-family:'JetBrains Mono',monospace;">24 GB (Consumer GPU)</span>
+              <span>VRAM Resource Threshold:</span>
+              <span id="vramDisplayValue" style="color:var(--cyan); font-family:'JetBrains Mono',monospace;">24 GB (Standard Consumer GP)</span>
             </label>
-            <input type="range" id="vram-slider" min="4" max="96" step="2" value="24" oninput="updateRecommender()" />
+            <input type="range" id="vramInputRange" min="4" max="96" step="2" value="24" oninput="runHardwareSolver()" />
           </div>
-
-          <div class="control-group">
-            <label><span>AI Task Pipeline (Option A):</span></label>
-            <select id="rec-task" class="control-select" onchange="updateRecommender()">
+          <div class="slider-field">
+            <label><span>Model Modality Type:</span></label>
+            <select id="taskFilter" class="control-dropdown" onchange="runHardwareSolver()">
               <option value="all">All 4 Task Categories</option>
               <option value="text-generation">text-generation</option>
               <option value="text2text-generation">text2text-generation</option>
@@ -994,241 +893,361 @@
               <option value="sentence-similarity">sentence-similarity</option>
             </select>
           </div>
-
-          <div class="control-group">
-            <label><span>Inference Precision Mode:</span></label>
-            <select id="rec-prec" class="control-select" onchange="updateRecommender()">
-              <option value="fp16">FP16 / BF16 Full Precision (params &times; 2.2 GB)</option>
-              <option value="int4">INT4 / GGUF / AWQ Quantized (params &times; 0.65 GB)</option>
+          <div class="slider-field">
+            <label><span>Resource Precision Optimization:</span></label>
+            <select id="precisionMode" class="control-dropdown" onchange="runHardwareSolver()">
+              <option value="fp16">Full Weight Precision FP16 (Params &times; 2.2 GB)</option>
+              <option value="int4">Quantized Model Precision INT4 (Params &times; 0.65 GB)</option>
             </select>
           </div>
-
-          <div style="background:rgba(3,6,14,0.75); padding:1rem; border-radius:12px; border:1px solid rgba(56,189,248,0.2); font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--text-secondary);">
-            <div style="color:var(--emerald); font-weight:700; margin-bottom:0.3rem;">SQL QUERY GENERATED:</div>
-            <div id="sql-preview">SELECT * FROM llm_models WHERE vram_fp16_gb &lt;= 24 ORDER BY pulse_score DESC;</div>
+          <div style="background:rgba(3,6,14,0.75); padding:1.15rem; border-radius:12px; border:1px solid rgba(56,189,248,0.2); font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--text-secondary);">
+            <div style="color:var(--emerald); font-weight:700; margin-bottom:0.2rem;">SQL ESTIMATION CLAUSE:</div>
+            <div id="sqlTextCode">SELECT * FROM llm_models WHERE vram_fp16_gb &lt;= 24 ORDER BY pulse_score DESC;</div>
           </div>
         </div>
 
         <div>
-          <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--cyan); margin-bottom:0.75rem;" id="rec-count">Matching Models:</div>
-          <div class="rec-grid" id="rec-results"></div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--cyan); margin-bottom:0.75rem;" id="matchedHeading">Matched Repositories (Searching...):</div>
+          <div class="model-cards-holder" id="modelsGridDisplay"></div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 4: INTERACTIVE SQLITE DATASET EXPLORER -->
+    <!-- SEARCH EXPLORER DATA MATRIX -->
     <section id="explorer-sec">
-      <div class="section-head">
+      <div class="stage-section-header">
         <div>
-          <h2>&#128451; Interactive 24-Column Dataset Explorer (llm_models)</h2>
-          <p>Search by repository ID, architecture, quantization format, or license. Click any column header to sort.</p>
+          <h2>&#128451; 24-Column Data Index Exploratory Sorter (llm_models Table)</h2>
+          <p>Filter rows by ID, licensing, parameters, or compression types. Click any column heading to change the sort order.</p>
         </div>
       </div>
 
-      <div class="table-controls">
-        <input type="text" id="table-search" class="search-input" placeholder="Search model_id, architecture (Llama, Qwen, Bert), license, or quantization..." oninput="renderTable()" />
+      <div class="toolbar-search">
+        <input type="text" id="filterTextSearch" class="text-search" placeholder="Type Model ID, License, Format, or Parameters to evaluate..." oninput="updateMatrixDisplay()" />
       </div>
 
-      <div class="data-table-wrap">
-        <table class="pulse-table">
+      <div class="data-matrix-box">
+        <table class="data-matrix">
           <thead>
             <tr>
-              <th onclick="sortTable('model_id')">Model ID &#8597;</th>
-              <th onclick="sortTable('pipeline_tag')">Task Pipeline &#8597;</th>
-              <th onclick="sortTable('architecture')">Arch &#8597;</th>
-              <th onclick="sortTable('params_b')">Params (B) &#8597;</th>
-              <th onclick="sortTable('quant')">Quantization &#8597;</th>
-              <th onclick="sortTable('vram_fp16')">FP16 VRAM &#8597;</th>
-              <th onclick="sortTable('vram_int4')">INT4 VRAM &#8597;</th>
-              <th onclick="sortTable('downloads')">Downloads (30d) &#8597;</th>
-              <th onclick="sortTable('velocity')">Velocity/Day &#8597;</th>
-              <th onclick="sortTable('pulse')">Pulse Score &#8597;</th>
+              <th onclick="toggleMatrixSort('model_id')">Model ID (PK) &#8597;</th>
+              <th onclick="toggleMatrixSort('pipeline_tag')">Task Modality &#8597;</th>
+              <th onclick="toggleMatrixSort('architecture')">Architecture &#8597;</th>
+              <th onclick="toggleMatrixSort('params_b')">Parameters (B) &#8597;</th>
+              <th onclick="toggleMatrixSort('quant')">Format Type &#8597;</th>
+              <th onclick="toggleMatrixSort('vram_fp16')">FP16 VRAM &#8597;</th>
+              <th onclick="toggleMatrixSort('vram_int4')">INT4 VRAM &#8597;</th>
+              <th onclick="toggleMatrixSort('downloads')">30-day Downloads &#8597;</th>
+              <th onclick="toggleMatrixSort('velocity')">Adoption Velocity &#8597;</th>
+              <th onclick="toggleMatrixSort('pulse')">Weighted Pulse &#8597;</th>
             </tr>
           </thead>
-          <tbody id="table-body"></tbody>
+          <tbody id="matrixTbody"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- SECTION 5: INTERACTIVE PYTHON ETL SOURCE & TERMINAL CONSOLE -->
+    <!-- CODE CONSOLE SIMULATION -->
     <section id="terminal-sec">
-      <div class="section-head">
+      <div class="stage-section-header">
         <div>
-          <h2>&#128187; Pipeline Source Architecture &amp; Execution Console</h2>
-          <p>Inspect the modular Python source files (<code>extract.py</code>, <code>schema.py</code>, <code>transform.py</code>, <code>load.py</code>, <code>eda.py</code>) and live execution logs.</p>
+          <h2>&#128187; Virtual Server execution Monitor &amp; Scripts Code Console</h2>
+          <p>Inspect code files (<code>extract.py</code>, <code>schema.py</code>, <code>transform.py</code>, <code>load.py</code>, <code>eda.py</code>) and active process pipeline validation logging outputs.</p>
         </div>
       </div>
 
-      <div class="terminal-window">
-        <div class="term-tabs">
-          <button class="term-tab active" onclick="showTerminal('logs', this)">Terminal Execution Log</button>
-          <button class="term-tab" onclick="showTerminal('extract', this)">src/extract.py (Option A)</button>
-          <button class="term-tab" onclick="showTerminal('schema', this)">src/schema.py (Pydantic)</button>
-          <button class="term-tab" onclick="showTerminal('transform', this)">src/transform.py (Options C,F,G)</button>
-          <button class="term-tab" onclick="showTerminal('eda', this)">src/eda.py (Option E)</button>
+      <div class="console-box-sim">
+        <div class="sim-bar-tabs">
+          <button class="sim-tab-item active" onclick="updateTerminalTab('exec_logs', this)">Pipelines Trace output (DPI Visuals)</button>
+          <button class="sim-tab-item" onclick="updateTerminalTab('file_ext', this)">extract.py (Option A)</button>
+          <button class="sim-tab-item" onclick="updateTerminalTab('file_schema', this)">schema.py (Pydantic validator)</button>
+          <button class="sim-tab-item" onclick="updateTerminalTab('file_trans', this)">transform.py (Options C, F, G features)</button>
+          <button class="sim-tab-item" onclick="updateTerminalTab('file_eda_plot', this)">eda.py (Option E graphs)</button>
         </div>
-        <div class="term-body" id="term-content"></div>
+        <div class="sim-output" id="outputTerminalContent"></div>
       </div>
     </section>
 
     <footer>
       <p>
-        <strong>OpenLLM Pulse — Automated Ecosystem Intelligence, Benchmark &amp; Scaling Pipeline</strong><br />
-        Developed at UET Lahore &bull; <strong>2025-AI-401</strong> (Dawood Javed Malik) &bull; <strong>2025-AI-421</strong> (Abdullah Hanif) &bull; <strong>2025-AI-392</strong> (Hafiz Ahmad) &bull; <strong>2025-AI-397</strong> (Abdullah Malik)
+        <strong>OpenLLM Pulse — Automated Ecosystem Pipeline, Scaling &amp; Visualization Studio</strong><br />
+        Built at UET Lahore &bull; <strong>2025-AI-401</strong> (Dawood Javed Malik) &bull; <strong>2025-AI-421</strong> (Abdullah Hanif) &bull; <strong>2025-AI-392</strong> (Hafiz Ahmad) &bull; <strong>2025-AI-397</strong> (Abdullah Malik)
       </p>
     </footer>
   </div>
 
-  <!-- Full-Screen Lightbox Modal -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <img id="lb-img" src="" alt="Expanded View" />
-    <div class="lb-controls">
-      <button class="win-btn" onclick="stepLightbox(-1, event)">&larr; Prev Plot</button>
-      <span id="lb-title" style="font-weight:700; color:#fff; padding:0 1rem;"></span>
-      <button class="win-btn" onclick="stepLightbox(1, event)">Next Plot &rarr;</button>
-      <button class="win-btn" onclick="zoomLightboxImage(event)">Toggle 1.5x Zoom</button>
-      <a id="lb-dl" class="win-btn" href="" download style="text-decoration:none;">Download PNG</a>
+  <!-- Full-Screen Lightbox Model Frame -->
+  <div class="lightbox-frame-modal" id="lightboxViewOverlay" onclick="dismissLightbox(event)">
+    <img id="modalLightboxImage" src="" alt="DPI visual zoom display" />
+    <div class="lightbox-panel-ui">
+      <button class="config-btn" onclick="slideLightboxSlide(-1, event)">&larr; Prev Plot</button>
+      <span id="lbImageCaption" style="font-weight:700; color:#fff; padding:0 1rem;"></span>
+      <button class="config-btn" onclick="slideLightboxSlide(1, event)">Next Plot &rarr;</button>
+      <button class="config-btn" onclick="toggleZoomImageScale(event)">Scale View</button>
+      <a id="downloadButtonAnchor" class="config-btn" href="" download style="text-decoration:none;">Download PNG</a>
     </div>
   </div>
 
   <script>
-    // 1. Scroll Progress Bar
+    // 1. Scroll percentage tracker progress
     window.addEventListener('scroll', () => {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      document.getElementById('scroll-bar').style.width = (sh > 0 ? (st / sh) * 100 : 0) + '%';
+      const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+      const totalScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-tracker').style.width = (totalScroll > 0 ? (scrollY / totalScroll) * 100 : 0) + '%';
     });
 
-    // 2. THREE.JS REAL 3D WEBGL NEURAL CORE
-    const container = document.getElementById('three-container');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 5.2;
+    // 2. REAL 3D WEBGL ENGINE (THREE.JS MATRIX)
+    const glContainer = document.getElementById('three-canvas-holder');
+    const glScene = new THREE.Scene();
+    const glCamera = new THREE.PerspectiveCamera(50, glContainer.clientWidth / glContainer.clientHeight, 0.1, 1000);
+    glCamera.position.z = 5.2;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
+    const glRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    glRenderer.setSize(glContainer.clientWidth, glContainer.clientHeight);
+    glRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    glContainer.appendChild(glRenderer.domElement);
 
-    const group = new THREE.Group();
-    scene.add(group);
+    const spinGroup = new THREE.Group();
+    glScene.add(spinGroup);
 
-    // Outer Wireframe Icosahedron
-    const icoGeo = new THREE.IcosahedronGeometry(1.75, 2);
-    const icoMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, wireframe: true, transparent: true, opacity: 0.38 });
-    const icoMesh = new THREE.Mesh(icoGeo, icoMat);
-    group.add(icoMesh);
+    // Wireframe poly-structure
+    const polyGeometry = new THREE.IcosahedronGeometry(1.7, 2);
+    const polyMaterial = new THREE.MeshBasicMaterial({ color: 0x38bdf8, wireframe: true, transparent: true, opacity: 0.38 });
+    const polyMesh = new THREE.Mesh(polyGeometry, polyMaterial);
+    spinGroup.add(polyMesh);
 
-    // Inner Glowing Core
-    const coreGeo = new THREE.OctahedronGeometry(0.95, 1);
-    const coreMat = new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true, transparent: true, opacity: 0.75 });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    group.add(coreMesh);
+    // Inner glowing core
+    const centerGeometry = new THREE.OctahedronGeometry(0.9, 1);
+    const centerMaterial = new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true, transparent: true, opacity: 0.72 });
+    const centerMesh = new THREE.Mesh(centerGeometry, centerMaterial);
+    spinGroup.add(centerMesh);
 
-    // Orbiting Particle Ring (400 Model Nodes)
-    const partGeo = new THREE.BufferGeometry();
-    const partCount = 400;
-    const posArr = new Float32Array(partCount * 3);
-    for (let i = 0; i < partCount * 3; i++) {
-      posArr[i] = (Math.random() - 0.5) * 6.5;
+    // Galaxy particle ring (400 models)
+    const scatterGeometry = new THREE.BufferGeometry();
+    const pointsAmt = 400;
+    const positions = new Float32Array(pointsAmt * 3);
+    for (let j = 0; j < pointsAmt * 3; j++) {
+      positions[j] = (Math.random() - 0.5) * 6.5;
     }
-    partGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
-    const partMat = new THREE.PointsMaterial({ color: 0xc084fc, size: 0.045 });
-    const partSystem = new THREE.Points(partGeo, partMat);
-    group.add(partSystem);
+    scatterGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const scatterMaterial = new THREE.PointsMaterial({ color: 0xc084fc, size: 0.045 });
+    const galaxyPoints = new THREE.Points(scatterGeometry, scatterMaterial);
+    spinGroup.add(galaxyPoints);
 
-    let rotSpeed = 0.004;
-    let isDragging = false, prevX = 0, prevY = 0;
+    let speedModifier = 0.004;
+    let isMouseActive = false, originX = 0, originY = 0;
 
-    container.addEventListener('mousedown', (e) => { isDragging = true; prevX = e.clientX; prevY = e.clientY; });
-    window.addEventListener('mouseup', () => { isDragging = false; });
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      group.rotation.y += (e.clientX - prevX) * 0.008;
-      group.rotation.x += (e.clientY - prevY) * 0.008;
-      prevX = e.clientX; prevY = e.clientY;
+    glContainer.addEventListener('mousedown', (evt) => { isMouseActive = true; originX = evt.clientX; originY = evt.clientY; });
+    window.addEventListener('mouseup', () => { isMouseActive = false; });
+    window.addEventListener('mousemove', (evt) => {
+      if (!isMouseActive) return;
+      spinGroup.rotation.y += (evt.clientX - originX) * 0.008;
+      spinGroup.rotation.x += (evt.clientY - originY) * 0.008;
+      originX = evt.clientX; originY = evt.clientY;
     });
 
-    function set3DMode(mode, btn) {
-      btn.parentElement.querySelectorAll('.win-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (mode === 'core') {
-        rotSpeed = 0.004; icoMat.opacity = 0.38; coreMat.color.setHex(0x34d399);
+    function update3DSetting(mode, targetBtn) {
+      targetBtn.parentElement.querySelectorAll('.config-btn').forEach(btn => btn.classList.remove('active'));
+      targetBtn.classList.add('active');
+      if (mode === 'standard') {
+        speedModifier = 0.004; polyMaterial.opacity = 0.38; centerMaterial.color.setHex(0x34d399);
       } else if (mode === 'wire') {
-        rotSpeed = 0.002; icoMat.opacity = 0.85; coreMat.color.setHex(0x38bdf8);
-      } else if (mode === 'hyper') {
-        rotSpeed = 0.022; icoMat.opacity = 0.6; coreMat.color.setHex(0xfb7185);
+        speedModifier = 0.0025; polyMaterial.opacity = 0.85; centerMaterial.color.setHex(0x38bdf8);
+      } else if (mode === 'burst') {
+        speedModifier = 0.024; polyMaterial.opacity = 0.62; centerMaterial.color.setHex(0xfb7185);
       }
     }
 
-    function animate3D() {
-      requestAnimationFrame(animate3D);
-      if (!isDragging) {
-        group.rotation.y += rotSpeed;
-        group.rotation.x += rotSpeed * 0.4;
+    function renderLoop3D() {
+      requestAnimationFrame(renderLoop3D);
+      if (!isMouseActive) {
+        spinGroup.rotation.y += speedModifier;
+        spinGroup.rotation.x += speedModifier * 0.42;
       }
-      coreMesh.rotation.y -= rotSpeed * 1.6;
-      renderer.render(scene, camera);
+      centerMesh.rotation.y -= speedModifier * 1.5;
+      glRenderer.render(glScene, glCamera);
     }
-    animate3D();
+    renderLoop3D();
 
     window.addEventListener('resize', () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
+      glCamera.aspect = glContainer.clientWidth / glContainer.clientHeight;
+      glCamera.updateProjectionMatrix();
+      glRenderer.setSize(glContainer.clientWidth, glContainer.clientHeight);
     });
 
-    // 3. KPI Animated Counters
-    document.querySelectorAll('.k-val').forEach(el => {
-      const target = +el.getAttribute('data-count');
-      const suf = el.getAttribute('data-suf') || '';
-      let start = performance.now();
-      function step(now) {
-        let p = Math.min((now - start) / 1300, 1);
-        el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target) + suf;
-        if (p < 1) requestAnimationFrame(step);
+    // 3. TELEMETRY CARDS ANIMATED TICKERS
+    document.querySelectorAll('.t-val').forEach(field => {
+      const valueTarget = +field.getAttribute('data-count');
+      const suffixCode = field.getAttribute('data-suf') || '';
+      let timerStart = performance.now();
+      function countUp(currTime) {
+        let completion = Math.min((currTime - timerStart) / 1350, 1);
+        field.textContent = Math.floor((1 - Math.pow(1 - completion, 3)) * valueTarget) + suffixCode;
+        if (completion < 1) requestAnimationFrame(countUp);
       }
-      requestAnimationFrame(step);
+      requestAnimationFrame(countUp);
     });
 
-    // 4. Adjustable Window Controls (Resize & Minimize)
-    function resizeWin(btn, spanClass) {
-      const win = btn.closest('.app-window');
-      win.classList.remove('span-4', 'span-6', 'span-12');
-      win.classList.add(spanClass);
+    // 4. PIPELINE DYNAMIC FIBER OPTIC FLOWS (Canvas render Video 3)
+    const nodeCanvas = document.getElementById('dataPipelineCanvas');
+    const nodeCtx = nodeCanvas.getContext('2d');
+    let dynamicW = 0, dynamicH = 0;
+
+    function resizeNodeCanvas() {
+      dynamicW = nodeCanvas.parentNode.clientWidth;
+      dynamicH = 380;
+      nodeCanvas.width = dynamicW;
+      nodeCanvas.height = dynamicH;
+    }
+    window.addEventListener('resize', resizeNodeCanvas);
+    resizeNodeCanvas();
+
+    const dataNodes = [
+      { id: 'start', label: '1. Extraction', details: 'Hugging Face REST API', x: 0.12, y: 0.5, icon: '🌩️' },
+      { id: 'pydantic', label: '2. Validation', details: 'Pydantic BaseModel schemas', x: 0.32, y: 0.32, icon: '🛡️' },
+      { id: 'csv_flat', label: 'Flat storage', details: 'outputs/cleaned_models.csv', x: 0.32, y: 0.68, icon: '📄' },
+      { id: 'transform', label: '3. Transformation', details: 'VRAM, stats, velocity', x: 0.54, y: 0.5, icon: '⚙️' },
+      { id: 'sqlite_load', label: '4. Load', details: 'sqlite3 DB openllm_pulse.db', x: 0.74, y: 0.35, icon: '🗄️' },
+      { id: 'plots_write', label: '5. Visual EDA', details: '7 300 DPI high-res plots', x: 0.74, y: 0.65, icon: '📊' },
+      { id: 'dashboard', label: 'Vercel dashboard v4.0', details: 'index.html deployment interface', x: 0.93, y: 0.5, icon: '🛸' }
+    ];
+
+    const dataRoutes = [
+      { from: 'start', to: 'pydantic' }, { from: 'start', to: 'csv_flat' },
+      { from: 'pydantic', to: 'transform' }, { from: 'csv_flat', to: 'transform' },
+      { from: 'transform', to: 'sqlite_load' }, { from: 'transform', to: 'plots_write' },
+      { from: 'sqlite_load', to: 'dashboard' }, { from: 'plots_write', to: 'dashboard' }
+    ];
+
+    let dynamicGlowParticles = [];
+    setInterval(() => {
+      dataRoutes.forEach(r => {
+        dynamicGlowParticles.push({ route: r, pos: 0, speed: Math.random() * 0.007 + 0.0045 });
+      });
+    }, 450);
+
+    function runPipelineDrawing() {
+      nodeCtx.clearRect(0, 0, dynamicW, dynamicH);
+
+      // 1. Connection lines
+      dataRoutes.forEach(r => {
+        const routeStart = dataNodes.find(n => n.id === r.from);
+        const routeEnd = dataNodes.find(n => n.id === r.to);
+        const stX = routeStart.x * dynamicW;
+        const stY = routeStart.y * dynamicH;
+        const enX = routeEnd.x * dynamicW;
+        const enY = routeEnd.y * dynamicH;
+
+        nodeCtx.beginPath();
+        nodeCtx.moveTo(stX, stY);
+        // Custom Bezier curvy strands
+        nodeCtx.bezierCurveTo((stX + enX) / 2, stY, (stX + enX) / 2, enY, enX, enY);
+        nodeCtx.strokeStyle = 'rgba(56, 189, 248, 0.28)';
+        nodeCtx.lineWidth = 1.5;
+        nodeCtx.stroke();
+      });
+
+      // 2. Animated glow dots (Video 3 bioluminescent flowing)
+      dynamicGlowParticles.forEach((p, index) => {
+        const routeStart = dataNodes.find(n => n.id === p.route.from);
+        const routeEnd = dataNodes.find(n => n.id === p.route.to);
+        const stX = routeStart.x * dynamicW;
+        const stY = routeStart.y * dynamicH;
+        const enX = routeEnd.x * dynamicW;
+        const enY = routeEnd.y * dynamicH;
+
+        p.pos += p.speed;
+        if (p.pos >= 1) {
+          dynamicGlowParticles.splice(index, 1);
+          return;
+        }
+
+        const cp1X = (stX + enX) / 2, cp1Y = stY;
+        const cp2X = (stX + enX) / 2, cp2Y = enY;
+        const invT = 1 - p.pos;
+
+        // Custom Cubic Bezier mathematical formula for visual motion interpolation
+        const traceX = invT**3 * stX + 3 * invT**2 * p.pos * cp1X + 3 * invT * p.pos**2 * cp2X + p.pos**3 * enX;
+        const traceY = invT**3 * stY + 3 * invT**2 * p.pos * cp1Y + 3 * invT * p.pos**2 * cp2Y + p.pos**3 * enY;
+
+        nodeCtx.beginPath();
+        nodeCtx.arc(traceX, traceY, 3.8, 0, Math.PI * 2);
+        nodeCtx.fillStyle = 'rgba(56, 189, 248, 0.95)';
+        nodeCtx.shadowColor = '#38bdf8';
+        nodeCtx.shadowBlur = 12;
+        nodeCtx.fill();
+        nodeCtx.shadowBlur = 0;
+      });
+
+      // 3. UI Boxes Rendering
+      dataNodes.forEach(node => {
+        const centerNodeX = node.x * dynamicW;
+        const centerNodeY = node.y * dynamicH;
+
+        nodeCtx.beginPath();
+        nodeCtx.arc(centerNodeX, centerNodeY, 20, 0, Math.PI * 2);
+        nodeCtx.fillStyle = '#060a15';
+        nodeCtx.strokeStyle = 'rgba(56, 189, 248, 0.55)';
+        nodeCtx.lineWidth = 2;
+        nodeCtx.stroke();
+        nodeCtx.fill();
+
+        nodeCtx.font = '15px sans-serif';
+        nodeCtx.textAlign = 'center';
+        nodeCtx.textBaseline = 'middle';
+        nodeCtx.fillText(node.icon, centerNodeX, centerNodeY);
+
+        nodeCtx.font = '700 11.5px Inter';
+        nodeCtx.fillStyle = '#ffffff';
+        nodeCtx.fillText(node.label, centerNodeX, centerNodeY - 26);
+
+        nodeCtx.font = '500 8.5px JetBrains Mono';
+        nodeCtx.fillStyle = '#94a3b8';
+        nodeCtx.fillText(node.details, centerNodeX, centerNodeY + 30);
+      });
+
+      requestAnimationFrame(runPipelineDrawing);
+    }
+    requestAnimationFrame(runPipelineDrawing);
+
+    // 5. Windows Manipulation (Resize and Minimize)
+    function resizeActiveWin(actionBtn, sizeClass) {
+      const frameWindow = actionBtn.closest('.app-window');
+      frameWindow.classList.remove('span-4', 'span-6', 'span-12');
+      frameWindow.classList.add(sizeClass);
     }
 
-    function setAllWindowSizes(spanClass) {
-      document.querySelectorAll('#eda-window-grid .app-window').forEach(win => {
+    function resizeAllAppWindows(sizeClass) {
+      document.querySelectorAll('#edaGridContainer .app-window').forEach(win => {
         win.classList.remove('span-4', 'span-6', 'span-12');
-        win.classList.add(spanClass);
+        win.classList.add(sizeClass);
       });
     }
 
-    function toggleMinimize(dot) {
-      dot.closest('.app-window').classList.toggle('minimized');
+    function toggleWinMinimize(redDot) {
+      redDot.closest('.app-window').classList.toggle('minimized');
     }
 
-    function filterWindows(cat, btn) {
-      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('#eda-window-grid .app-window').forEach(w => {
-        w.style.display = (cat === 'all' || w.getAttribute('data-wcat') === cat) ? 'flex' : 'none';
+    function filterEdaPlots(category, clickedBtn) {
+      document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+      clickedBtn.classList.add('active');
+      document.querySelectorAll('#edaGridContainer .app-window').forEach(win => {
+        win.style.display = (category === 'all' || win.getAttribute('data-category') === category) ? 'flex' : 'none';
       });
     }
 
-    // 5. Chart.js Interactive Visuals
+    // 6. Interactive Telemetry Canvas
     Chart.defaults.color = '#94a3b8';
     Chart.defaults.font.family = 'Inter';
 
-    new Chart(document.getElementById('taskChart'), {
+    new Chart(document.getElementById('modalityChart'), {
       type: 'bar',
       data: {
         labels: ['text-generation', 'sentence-similarity', 'text2text-generation', 'image-text-to-text'],
         datasets: [{
-          label: 'Mean Composite Pulse Score',
+          label: 'Composite Mean Pulse Score Index (Options A/G)',
           data: [78.4, 74.2, 69.8, 71.5],
-          backgroundColor: ['rgba(56, 189, 248, 0.75)', 'rgba(52, 211, 153, 0.75)', 'rgba(129, 140, 248, 0.75)', 'rgba(192, 132, 252, 0.75)'],
+          backgroundColor: ['rgba(56, 189, 248, 0.72)', 'rgba(52, 211, 153, 0.72)', 'rgba(129, 140, 248, 0.72)', 'rgba(192, 132, 252, 0.72)'],
           borderColor: ['#38bdf8', '#34d399', '#818cf8', '#c084fc'],
           borderWidth: 1.5,
           borderRadius: 8
@@ -1237,10 +1256,10 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    new Chart(document.getElementById('quantChart'), {
+    new Chart(document.getElementById('formatChart'), {
       type: 'doughnut',
       data: {
-        labels: ['Safetensors (FP16/BF16)', 'GGUF', 'AWQ / GPTQ (INT4)', 'FP8 / INT8', 'Standard PyTorch'],
+        labels: ['Safetensors (FP16/BF16)', 'GGUF (GGUF CPU/GPU)', 'AWQ / GPTQ (INT4)', 'FP8 / INT8 Quantized', 'PyTorch (*.pt/.bin)'],
         datasets: [{
           data: [54, 19, 12, 7, 8],
           backgroundColor: ['#38bdf8', '#34d399', '#818cf8', '#fbbf24', '#fb7185'],
@@ -1250,8 +1269,8 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 6. Benchmark Dataset for Live VRAM Recommender & Table Explorer
-    const benchmarkModels = [
+    // 7. Estimators and recommender studio algorithm
+    const coreDatasets = [
       { model_id: 'meta-llama/Llama-3.1-8B-Instruct', pipeline_tag: 'text-generation', architecture: 'Llama', params_b: 8.0, quant: 'Safetensors (FP16/BF16)', vram_fp16: 17.6, vram_int4: 5.2, license: 'llama3', downloads: 14820000, velocity: 52900, pulse: 96.4 },
       { model_id: 'Qwen/Qwen2.5-7B-Instruct', pipeline_tag: 'text-generation', architecture: 'Qwen', params_b: 7.0, quant: 'Safetensors (FP16/BF16)', vram_fp16: 15.4, vram_int4: 4.55, license: 'apache-2.0', downloads: 11940000, velocity: 61200, pulse: 95.1 },
       { model_id: 'sentence-transformers/all-MiniLM-L6-v2', pipeline_tag: 'sentence-similarity', architecture: 'Minilm', params_b: 0.023, quant: 'Safetensors (FP16/BF16)', vram_fp16: 0.1, vram_int4: 0.05, license: 'apache-2.0', downloads: 68400000, velocity: 74500, pulse: 94.8 },
@@ -1266,105 +1285,107 @@
       { model_id: 'microsoft/Phi-3.5-mini-instruct', pipeline_tag: 'text-generation', architecture: 'Phi', params_b: 3.8, quant: 'GGUF', vram_fp16: 8.36, vram_int4: 2.47, license: 'mit', downloads: 4950000, velocity: 24100, pulse: 89.9 }
     ];
 
-    function updateRecommender() {
-      const vram = +document.getElementById('vram-slider').value;
-      const task = document.getElementById('rec-task').value;
-      const prec = document.getElementById('rec-prec').value;
+    function runHardwareSolver() {
+      const currentVramInput = +document.getElementById('vramInputRange').value;
+      const selectedTask = document.getElementById('taskFilter').value;
+      const inferencePrec = document.getElementById('precisionMode').value;
 
-      let tierLabel = vram <= 8 ? 'Edge / Laptop' : vram <= 24 ? 'Consumer GPU' : vram <= 48 ? 'Workstation' : 'Datacenter';
-      document.getElementById('vram-val').textContent = `${vram} GB (${tierLabel})`;
+      let classificationCode = currentVramInput <= 8 ? 'Ultra Thin/Laptop CPU' : currentVramInput <= 24 ? 'Standard Consumer GPU' : currentVramInput <= 48 ? 'Pro Workstation / AI Ring' : 'Cloud Server / Multi Datacenter';
+      document.getElementById('vramDisplayValue').textContent = `${currentVramInput} GB (${classificationCode})`;
 
-      const vramCol = prec === 'fp16' ? 'vram_fp16_gb' : 'vram_int4_gb';
-      const taskClause = task === 'all' ? '' : ` AND pipeline_tag = '${task}'`;
-      document.getElementById('sql-preview').textContent =
-        `SELECT model_id, pulse_score FROM llm_models WHERE ${vramCol} <= ${vram}${taskClause} ORDER BY pulse_score DESC;`;
+      const targetedCol = inferencePrec === 'fp16' ? 'vram_fp16_gb' : 'vram_int4_gb';
+      const sqlWherePipeline = selectedTask === 'all' ? '' : ` AND pipeline_tag = '${selectedTask}'`;
+      document.getElementById('sqlTextCode').textContent =
+        `SELECT model_id, pulse_score FROM llm_models WHERE ${targetedCol} <= ${currentVramInput}${sqlWherePipeline} ORDER BY pulse_score DESC;`;
 
-      const matches = benchmarkModels.filter(m => {
-        const reqVram = prec === 'fp16' ? m.vram_fp16 : m.vram_int4;
-        const taskOk = task === 'all' || m.pipeline_tag === task;
-        return reqVram <= vram && taskOk;
-      }).sort((a, b) => b.pulse - a.pulse);
+      const subsetMatched = coreDatasets.filter(data => {
+        const estVramRequirement = inferencePrec === 'fp16' ? data.vram_fp16 : data.vram_int4;
+        const correctPipeline = selectedTask === 'all' || data.pipeline_tag === selectedTask;
+        return estVramRequirement <= currentVramInput && correctPipeline;
+      }).sort((item1, item2) => item2.pulse - item1.pulse);
 
-      document.getElementById('rec-count').textContent = `Recommended Models Fitting ${vram} GB VRAM (${matches.length} matched):`;
-      document.getElementById('rec-results').innerHTML = matches.map(m => {
-        const req = prec === 'fp16' ? m.vram_fp16 : m.vram_int4;
+      document.getElementById('matchedHeading').textContent = `Matches supporting VRAM threshold of ${currentVramInput} GB (${subsetMatched.length} displayed):`;
+      document.getElementById('modelsGridDisplay').innerHTML = subsetMatched.map(item => {
+        const optimizedVramVal = inferencePrec === 'fp16' ? item.vram_fp16 : item.vram_int4;
         return `
-          <div class="rec-card">
-            <div style="font-weight:700; color:#fff; font-size:0.88rem; margin-bottom:0.25rem;">${m.model_id}</div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:0.74rem; color:var(--cyan); margin-bottom:0.5rem;">
-              ${m.pipeline_tag} &bull; ${m.params_b}B
+          <div class="card-recommendation">
+            <div style="font-weight:700; color:#fff; font-size:0.88rem; margin-bottom:0.25rem;">${item.model_id}</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--cyan); margin-bottom:0.45rem;">
+              ${item.pipeline_tag} &bull; ${item.params_b}B Params
             </div>
             <div style="display:flex; justify-content:space-between; font-size:0.78rem;">
-              <span>Est. VRAM: <strong style="color:var(--amber)">${req} GB</strong></span>
-              <span style="color:var(--emerald); font-weight:700;">Pulse: ${m.pulse}</span>
+              <span>VRAM req: <strong style="color:var(--amber)">${optimizedVramVal} GB</strong></span>
+              <span style="color:var(--emerald); font-weight:700;">Score: ${item.pulse}</span>
             </div>
           </div>
         `;
       }).join('');
     }
-    updateRecommender();
+    runHardwareSolver();
 
-    // 7. Interactive Table Explorer
-    let sortKey = 'pulse', sortAsc = false;
-    function sortTable(key) {
-      if (sortKey === key) sortAsc = !sortAsc;
-      else { sortKey = key; sortAsc = false; }
-      renderTable();
+    // 8. Interactive Explorer Sorting Data Index
+    let matrixSortKey = 'pulse', matrixSortOrderAsc = false;
+    function toggleMatrixSort(columnKey) {
+      if (matrixSortKey === columnKey) matrixSortOrderAsc = !matrixSortOrderAsc;
+      else { matrixSortKey = columnKey; matrixSortOrderAsc = false; }
+      updateMatrixDisplay();
     }
 
-    function renderTable() {
-      const q = document.getElementById('table-search').value.toLowerCase();
-      const filtered = benchmarkModels.filter(m =>
-        m.model_id.toLowerCase().includes(q) ||
-        m.architecture.toLowerCase().includes(q) ||
-        m.pipeline_tag.toLowerCase().includes(q) ||
-        m.quant.toLowerCase().includes(q) ||
-        m.license.toLowerCase().includes(q)
-      ).sort((a, b) => {
-        if (a[sortKey] < b[sortKey]) return sortAsc ? -1 : 1;
-        if (a[sortKey] > b[sortKey]) return sortAsc ? 1 : -1;
+    function updateMatrixDisplay() {
+      const textParam = document.getElementById('filterTextSearch').value.toLowerCase();
+      const visualOutput = coreDatasets.filter(r =>
+        r.model_id.toLowerCase().includes(textParam) ||
+        r.architecture.toLowerCase().includes(textParam) ||
+        r.pipeline_tag.toLowerCase().includes(textParam) ||
+        r.quant.toLowerCase().includes(textParam) ||
+        r.license.toLowerCase().includes(textParam)
+      ).sort((val1, val2) => {
+        if (val1[matrixSortKey] < val2[matrixSortKey]) return matrixSortOrderAsc ? -1 : 1;
+        if (val1[matrixSortKey] > val2[matrixSortKey]) return matrixSortOrderAsc ? 1 : -1;
         return 0;
       });
 
-      document.getElementById('table-body').innerHTML = filtered.map(m => `
+      document.getElementById('matrixTbody').innerHTML = visualOutput.map(row => `
         <tr>
-          <td style="font-weight:700; color:#fff;">${m.model_id}</td>
-          <td><span class="step-pill">${m.pipeline_tag}</span></td>
-          <td>${m.architecture}</td>
-          <td style="font-family:'JetBrains Mono',monospace;">${m.params_b}B</td>
-          <td>${m.quant}</td>
-          <td style="font-family:'JetBrains Mono',monospace; color:var(--amber);">${m.vram_fp16} GB</td>
-          <td style="font-family:'JetBrains Mono',monospace; color:var(--emerald);">${m.vram_int4} GB</td>
-          <td style="font-family:'JetBrains Mono',monospace;">${m.downloads.toLocaleString()}</td>
-          <td style="font-family:'JetBrains Mono',monospace;">${m.velocity.toLocaleString()}/d</td>
-          <td><span class="score-bar">${m.pulse} / 100</span></td>
+          <td style="font-weight:700; color:#fff;">${row.model_id}</td>
+          <td><span class="step-pill">${row.pipeline_tag}</span></td>
+          <td>${row.architecture}</td>
+          <td style="font-family:'JetBrains Mono',monospace;">${row.params_b}B</td>
+          <td>${row.quant}</td>
+          <td style="font-family:'JetBrains Mono',monospace; color:var(--amber);">${row.vram_fp16} GB</td>
+          <td style="font-family:'JetBrains Mono',monospace; color:var(--emerald);">${row.vram_int4} GB</td>
+          <td style="font-family:'JetBrains Mono',monospace;">${row.downloads.toLocaleString()}</td>
+          <td style="font-family:'JetBrains Mono',monospace;">${row.velocity.toLocaleString()}/d</td>
+          <td><span class="pulse-bar">${row.pulse} / 100</span></td>
         </tr>
       `).join('');
     }
-    renderTable();
+    updateMatrixDisplay();
 
-    // 8. Interactive Terminal Tabs
-    const terminalSnippets = {
-      logs: `=================================================================
-  OPENLLM PULSE: AUTOMATED ETL + EDA PIPELINE (EXECUTION LOG)
-=================================================================
-[EXTRACT] Requesting top 100 models across 4 categories (~400 total)...
-  -> Fetching category: 'text-generation' (limit=100)...
-     Retrieved 100 models for 'text-generation'.
-  -> Fetching category: 'text2text-generation' (limit=100)...
-     Retrieved 100 models for 'text2text-generation'.
-  -> Fetching category: 'image-text-to-text' (limit=100)...
-     Retrieved 100 models for 'image-text-to-text'.
-  -> Fetching category: 'sentence-similarity' (limit=100)...
-     Retrieved 100 models for 'sentence-similarity'.
-[VALIDATE] Pydantic validated 400 records (0 invalid records dropped).
-[TRANSFORM] Transformation complete. Final shape: 398 rows, 24 columns.
-[LOAD] Saved cleaned dataset to CSV file: 'data/cleaned_models.csv'
-[LOAD] Loaded 398 records into SQLite database 'data/openllm_pulse.db' (table: 'llm_models').
-[EDA] Automated Markdown summary report saved to 'outputs/eda_summary_report.md'.
-[EDA] Saved 7 high-resolution charts and 1 Markdown report to 'outputs/'.
-[SUCCESS] OpenLLM Pulse ETL + EDA Pipeline finished successfully!`,
-      extract: `# src/extract.py — Multi-Category API Extraction (Option A)
+    // 9. virtual server monitor Execution logging code simulator
+    const executableSnippets = {
+      exec_logs: `========================================================================================
+  [GENAI OVERLAYS ACTIVE] OPENLLM PULSE PIPELINE v4.0 (EXECUTION LOGGING SYSTEM)
+========================================================================================
+[EXTRACT] Establishing Secure REST API Session to Hugging Face Model Repositories...
+[EXTRACT] Gathering download telemetry for four default pipeline categories (limit=100)...
+  -> Scanning 'text-generation'...... Found 100 models (SUCCESS)
+  -> Scanning 'text2text-generation'.. Found 100 models (SUCCESS)
+  -> Scanning 'image-text-to-text'.. Found 100 models (SUCCESS)
+  -> Scanning 'sentence-similarity'.. Found 100 models (SUCCESS)
+[VALIDATE] Executing Pydantic Validation Constraints (400 validation schemas active)...
+  -> Typechecking downloads, parameters, architecture regex groups (is_viral_outlier)
+  -> 0 errors detected. 400 validated successfully. Output payload complete.
+[TRANSFORM] Executing Feature Validation Transform Engine (Options C, F, G)...
+  -> Calculating monthly timeline, Pearson validation heatmap matrices...
+  -> Outliers classified via Q3 + 1.5 * IQR downloads threshold metrics
+  -> Calculating FP16 and INT4 VRAM memory footprint estimations (Option F)...
+  -> Aggregating weight configurations & pipeline engagement scoring metrics (Option G)
+[LOAD] Saved clean dataset metrics to outputs file: 'data/cleaned_models.csv' (398 records)
+[LOAD] Saved SQLite payload records successfully: 'data/openllm_pulse.db' (table: 'llm_models')
+[EDA] Execution report complete: Markdown review 'outputs/eda_summary_report.md' generated
+[SUCCESS] Pipeline Visualizations v4.0 generated successfully! All 7 DPI plots built and saved.`,
+      file_ext: `# src/extract.py — Multi-Category API Extraction (Option A)
 DEFAULT_TASK_CATEGORIES = [
     "text-generation",
     "text2text-generation",
@@ -1380,7 +1401,7 @@ def fetch_models_from_api(limit_per_category: int = 100) -> list:
         response.raise_for_status()
         all_raw_data.extend(response.json())
     return all_raw_data`,
-      schema: `# src/schema.py — Pydantic v2 Schema Enforcement
+      file_schema: `# src/schema.py — Pydantic Validation BaseModel Sorter (Option G schema)
 class RawLLMRecord(BaseModel):
     id: str = Field(..., description="Unique repository ID")
     downloads: int = Field(default=0, ge=0)
@@ -1389,19 +1410,19 @@ class RawLLMRecord(BaseModel):
     library_name: Optional[str] = Field(default="Unknown")
     tags: List[str] = Field(default_factory=list)
     createdAt: Optional[datetime] = Field(default=None)`,
-      transform: `# src/transform.py — 24-Column Engineering (Options C, F, G)
-# Option C: Statistical IQR Viral Outlier Detection
+      file_trans: `# src/transform.py — 24-Column Feature Transformation algorithms (Options C, F, G)
+# Option C: Outlier Detection using mathematical third interquartile downloads
 q1, q3 = df["downloads"].quantile(0.25), df["downloads"].quantile(0.75)
 df["is_viral_outlier"] = df["downloads"] > (q3 + 1.5 * (q3 - q1))
 
-# Option F: Hardware GPU VRAM Estimation (FP16 & INT4)
+# Option F: Memory footprint formulas (FP16 Full precision Bf16 & Quantized INT4 formats)
 df["vram_fp16_gb"] = np.round(df["params_billions"] * 2.2, 2)
 df["vram_int4_gb"] = np.round(df["params_billions"] * 0.65, 2)
 
-# Option G: Composite Pulse Score (0-100)
+# Option G: Pulse composite index
 df["pulse_score"] = np.round((0.40 * norm_dl + 0.30 * norm_likes + 0.20 * norm_vel + 0.10 * norm_tags) * 100, 2)`,
-      eda: `# src/eda.py — 7 High-Res Seaborn Plots + Automated Markdown Report (Option E)
-# Saves 300 DPI PNGs to outputs/:
+      file_eda_plot: `# src/eda.py — Plot engine generating the 7 300 DPI high-res charts (Option E visual graphics)
+# Saves charts below to D:\openllm_pulse\outputs/:
 # 1_architecture_distribution.png
 # 2_size_tier_distribution.png
 # 3_license_breakdown.png
@@ -1411,15 +1432,15 @@ df["pulse_score"] = np.round((0.40 * norm_dl + 0.30 * norm_likes + 0.20 * norm_v
 # 7_top_pulse_leaderboard.png`
     };
 
-    function showTerminal(key, btn) {
-      document.querySelectorAll('.term-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('term-content').textContent = terminalSnippets[key];
+    function updateTerminalTab(snippetKey, actionBtn) {
+      document.querySelectorAll('.sim-tab-item').forEach(btn => btn.classList.remove('active'));
+      actionBtn.classList.add('active');
+      document.getElementById('outputTerminalContent').textContent = executableSnippets[snippetKey];
     }
-    showTerminal('logs', document.querySelector('.term-tab'));
+    updateTerminalTab('exec_logs', document.querySelector('.sim-tab-item'));
 
-    // 9. Fullscreen Lightbox with Zoom Toggle
-    const plotList = [
+    // 10. Lightbox Zoom support
+    const expandedPlots = [
       { src: 'outputs/1_architecture_distribution.png', title: '1. Top 10 Open-Source Model Architectures' },
       { src: 'outputs/2_size_tier_distribution.png', title: '2. Parameter Scaling Tiers Distribution' },
       { src: 'outputs/3_license_breakdown.png', title: '3. Top 8 Open-Source Licenses Breakdown' },
@@ -1428,32 +1449,32 @@ df["pulse_score"] = np.round((0.40 * norm_dl + 0.30 * norm_likes + 0.20 * norm_v
       { src: 'outputs/6_release_timeline.png', title: '6. Monthly Release Velocity Timeline' },
       { src: 'outputs/7_top_pulse_leaderboard.png', title: '7. Top 15 Composite Pulse Score Leaderboard' }
     ];
-    let curPlot = 0, isZoomed = false;
+    let lbIndex = 0, zoomMagnificationState = false;
 
-    function openLightbox(idx) {
-      curPlot = idx; isZoomed = false;
-      const img = document.getElementById('lb-img');
-      img.style.transform = 'scale(1)';
-      img.src = plotList[curPlot].src;
-      document.getElementById('lb-title').textContent = plotList[curPlot].title;
-      document.getElementById('lb-dl').href = plotList[curPlot].src;
-      document.getElementById('lightbox').classList.add('open');
+    function showLightbox(itemIndex) {
+      lbIndex = itemIndex; zoomMagnificationState = false;
+      const overlayImage = document.getElementById('modalLightboxImage');
+      overlayImage.style.transform = 'scale(1)';
+      overlayImage.src = expandedPlots[lbIndex].src;
+      document.getElementById('lbImageCaption').textContent = expandedPlots[lbIndex].title;
+      document.getElementById('downloadButtonAnchor').href = expandedPlots[lbIndex].src;
+      document.getElementById('lightboxViewOverlay').classList.add('open');
     }
 
-    function stepLightbox(dir, e) {
-      if (e) e.stopPropagation();
-      curPlot = (curPlot + dir + plotList.length) % plotList.length;
-      openLightbox(curPlot);
+    function slideLightboxSlide(offsetAmt, evt) {
+      if (evt) evt.stopPropagation();
+      lbIndex = (lbIndex + offsetAmt + expandedPlots.length) % expandedPlots.length;
+      showLightbox(lbIndex);
     }
 
-    function zoomLightboxImage(e) {
-      e.stopPropagation();
-      isZoomed = !isZoomed;
-      document.getElementById('lb-img').style.transform = isZoomed ? 'scale(1.45)' : 'scale(1)';
+    function toggleZoomImageScale(evt) {
+      evt.stopPropagation();
+      zoomMagnificationState = !zoomMagnificationState;
+      document.getElementById('modalLightboxImage').style.transform = zoomMagnificationState ? 'scale(1.45)' : 'scale(1)';
     }
 
-    function closeLightbox(e) {
-      if (e.target.id === 'lightbox') document.getElementById('lightbox').classList.remove('open');
+    function dismissLightbox(evt) {
+      if (evt.target.id === 'lightboxViewOverlay') document.getElementById('lightboxViewOverlay').classList.remove('open');
     }
   </script>
 </body>
