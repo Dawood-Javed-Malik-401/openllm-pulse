@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenLLM Pulse — 3D Cyber Intelligence Studio & Generative Pipeline Benchmark</title>
+  <title>OpenLLM Pulse — Motion Prelude & 3D Cyber Intelligence Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
       --amber: #fbbf24;
       --rose: #fb7185;
       --red-alert: #f43f5e;
+      --crimson: #e11d48;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +40,474 @@
       min-height: 100vh;
     }
 
-    /* Cinematic Cyber overlays */
+    /* ==========================================================================
+       TOP SECTION PAGE: AFTER EFFECTS + GEMINI MOTION PRELUDE & SCROLL-MORPH
+       ========================================================================== */
+    .top-prelude-track {
+      position: relative;
+      height: 360vh;
+      width: 100%;
+      z-index: 500;
+    }
+
+    .top-prelude-sticky {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #04060c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+    }
+
+    /* Architectural Hairline Grid Overlay (Video 1 Style) */
+    .ae-grid-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background-image:
+        linear-gradient(to right, rgba(225, 29, 72, 0.16) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(225, 29, 72, 0.16) 1px, transparent 1px);
+      background-size: 20vw 25vh;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Golden Ratio Compass Circles */
+    .ae-compass-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(225, 29, 72, 0.28);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ae-compass-ring.r1 { width: 420px; height: 420px; }
+    .ae-compass-ring.r2 {
+      width: 660px; height: 660px;
+      border-style: dashed;
+      border-color: rgba(56, 189, 248, 0.24);
+      animation: slowSpin 38s linear infinite;
+    }
+    @keyframes slowSpin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Top Prelude HUD Header & Controls */
+    .prelude-hud-top {
+      position: absolute;
+      top: 22px;
+      left: 28px;
+      right: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 30;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .specimen-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--crimson);
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 0.38rem 0.9rem;
+      border-radius: 3px;
+      text-transform: uppercase;
+      box-shadow: 0 0 22px rgba(225, 29, 72, 0.55);
+    }
+
+    .prelude-scene-switcher {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(6, 10, 21, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.32rem;
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+    }
+
+    .scene-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .scene-tab.active {
+      background: linear-gradient(135deg, var(--crimson), var(--cyan));
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+    }
+
+    .skip-studio-btn {
+      background: rgba(52, 211, 153, 0.14);
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      color: var(--emerald);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.42rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .skip-studio-btn:hover {
+      background: var(--emerald);
+      color: #03060e;
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.5);
+    }
+
+    /* Bottom Prelude HUD Telemetry & Scroll Prompt */
+    .prelude-hud-bottom {
+      position: absolute;
+      bottom: 24px;
+      left: 28px;
+      right: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .hud-micro-block {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      max-width: 290px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .hud-micro-block strong {
+      color: #ffffff;
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.74rem;
+    }
+
+    .scroll-morph-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .scroll-mouse {
+      width: 22px;
+      height: 36px;
+      border: 1.5px solid var(--cyan);
+      border-radius: 12px;
+      position: relative;
+    }
+    .scroll-wheel {
+      width: 4px;
+      height: 7px;
+      background: var(--emerald);
+      border-radius: 2px;
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: wheelDrop 1.6s infinite;
+    }
+    @keyframes wheelDrop {
+      0% { opacity: 1; top: 6px; }
+      100% { opacity: 0; top: 20px; }
+    }
+
+    /* Motion Stage Layers */
+    .motion-scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.92);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      padding: 2rem;
+    }
+
+    .motion-scene.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    /* SCENE 1: Video 2 Kinetic Vortex Disassembly & Neon Floor Horizon */
+    .vortex-stage {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vortex-char {
+      position: absolute;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 6.5vw, 5.6rem);
+      font-weight: 800;
+      color: var(--emerald);
+      text-shadow:
+        0 0 18px rgba(52, 211, 153, 0.75),
+        4px 4px 0px rgba(244, 63, 94, 0.6),
+        -4px -4px 0px rgba(56, 189, 248, 0.6);
+      transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1), color 0.6s ease, opacity 0.6s ease;
+      user-select: none;
+      will-change: transform;
+    }
+
+    .vortex-char.echo-outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--cyan);
+      text-shadow: none;
+      opacity: 0.45;
+      z-index: -1;
+    }
+
+    .neon-floor-horizon {
+      position: absolute;
+      bottom: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 75vw;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--emerald), var(--cyan), var(--rose), transparent);
+      box-shadow: 0 0 38px 8px rgba(52, 211, 153, 0.45);
+      border-radius: 50%;
+    }
+
+    /* SCENE 2: Video 1 Geometric Trace & Polar Lotus Blueprint */
+    .geometric-trace-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lotusTraceCanvas {
+      width: 440px;
+      height: 440px;
+      max-width: 82vw;
+      max-height: 55vh;
+    }
+
+    .trace-title-overlay {
+      position: absolute;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ffffff;
+      mix-blend-mode: exclusion;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    /* SCENE 3: Video 1 5-Stage Anatomical Pipeline Dissection Strip */
+    .dissection-backdrop {
+      background: linear-gradient(135deg, rgba(159, 18, 57, 0.25), rgba(6, 10, 22, 0.92));
+      border: 1px solid rgba(225, 29, 72, 0.45);
+      border-radius: 18px;
+      padding: 2.2rem 1.8rem;
+      width: 100%;
+      max-width: 1260px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dissection-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.15rem;
+      position: relative;
+      z-index: 2;
+    }
+    @media (max-width: 960px) {
+      .dissection-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .specimen-box {
+      border: 1px dashed rgba(255, 255, 255, 0.35);
+      padding: 0.9rem;
+      background: rgba(3, 6, 14, 0.78);
+      position: relative;
+      transition: all 0.35s ease;
+    }
+    .specimen-box:hover {
+      border-style: solid;
+      border-color: var(--cyan);
+      transform: translateY(-6px);
+      box-shadow: 0 14px 30px rgba(56, 189, 248, 0.22);
+    }
+
+    /* Corner Anchor Handles like After Effects */
+    .specimen-box::before, .specimen-box::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: #ffffff;
+      border: 1px solid var(--crimson);
+    }
+    .specimen-box::before { top: -4px; left: -4px; }
+    .specimen-box::after { bottom: -4px; right: -4px; }
+
+    .spec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .spec-visual {
+      height: 120px;
+      border-radius: 6px;
+      background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.22), rgba(4, 7, 17, 0.95));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 1.55rem;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 0.55rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spec-caption {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* SCENE 4: Split-Word Archive Viewport ("PULSE" + Central Morph Box) */
+    .archive-split-scene {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hex-matrix-bg {
+      position: absolute;
+      inset: 5% 8%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      line-height: 1.55;
+      color: rgba(225, 29, 72, 0.28);
+      overflow: hidden;
+      word-break: break-all;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .giant-split-word {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3.4rem, 11vw, 9.5rem);
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.04em;
+      z-index: 5;
+    }
+
+    .central-morph-portal {
+      width: clamp(160px, 22vw, 290px);
+      height: clamp(160px, 22vw, 290px);
+      border: 3px solid #ffffff;
+      background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.35), rgba(3, 6, 14, 0.95));
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 60px rgba(225, 29, 72, 0.55), inset 0 0 30px rgba(56, 189, 248, 0.35);
+      transition: transform 0.2s linear;
+      overflow: hidden;
+    }
+
+    .central-morph-portal .portal-ring {
+      width: 72%;
+      height: 72%;
+      border: 1.5px dashed var(--cyan);
+      border-radius: 50%;
+      animation: slowSpin 14s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Pixel Halftone Transition Overlay */
+    #morphTransitionOverlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      background: radial-gradient(circle at 50% 50%, transparent 0%, #03060e 100%);
+      opacity: 0;
+      transition: opacity 0.2s linear;
+    }
+
+    /* Main Studio Wrapper that Morphs In */
+    #main-studio-wrapper {
+      position: relative;
+      z-index: 600;
+      background: var(--bg-void);
+      box-shadow: 0 -40px 90px rgba(3, 6, 14, 1);
+      transition: transform 0.35s ease-out;
+    }
+
+    /* ==========================================================================
+       EXISTING v4.0 STUDIO STYLES (100% PRESERVED BELOW)
+       ========================================================================== */
     .cyber-grid {
       position: fixed; inset: 0; z-index: -2; pointer-events: none;
       background-image:
@@ -51,7 +519,7 @@
 
     #progress-tracker {
       position: fixed; top: 0; left: 0; height: 4px; width: 0%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--emerald));
+      background: linear-gradient(90deg, var(--crimson), var(--cyan), var(--violet), var(--emerald));
       z-index: 11000; box-shadow: 0 0 16px var(--cyan);
     }
 
@@ -65,7 +533,7 @@
     header.topbar {
       position: sticky; top: 0; z-index: 1000;
       backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      background: rgba(3, 6, 14, 0.85);
+      background: rgba(3, 6, 14, 0.88);
       border-bottom: 1px solid rgba(56, 189, 248, 0.14);
       padding: 0.8rem 1.75rem;
     }
@@ -439,6 +907,13 @@
 
     .pulse-bar { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--emerald); }
 
+    .step-pill {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+      padding: 0.2rem 0.55rem; border-radius: 6px;
+      background: rgba(56, 189, 248, 0.12); color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
     /* Source code simulation panel */
     .console-box-sim { background: #050811; border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 16px; overflow: hidden; }
     .sim-bar-tabs { display: flex; gap: 0.3rem; background: #090f1e; padding: 0.5rem 0.85rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); overflow-x: auto; }
@@ -470,510 +945,640 @@
   <div id="progress-tracker"></div>
   <div class="cyber-grid"></div>
 
-  <!-- Command Control Top Navbar with Roll-Number Hover Pills -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="brand">
-        <span class="pulse-orb"></span>
-        <span>OpenLLM Pulse <small style="font-size:0.72rem; color:var(--cyan); font-family:'JetBrains Mono',monospace;">v4.0 STUDIO</small></span>
-      </a>
+  <!-- ========================================================================
+       NEW TOP SECTION PAGE: MOTION GRAPHICS PRELUDE (SCROLL OR CLICK TO MORPH)
+       ======================================================================== -->
+  <section class="top-prelude-track" id="top-section-page">
+    <div class="top-prelude-sticky" id="preludeStickyStage">
+      <!-- Architectural Red/Cyan Hairlines & Golden Ratio Rings (Video 1) -->
+      <div class="ae-grid-lines"></div>
+      <div class="ae-compass-ring r1" id="compassR1"></div>
+      <div class="ae-compass-ring r2" id="compassR2"></div>
 
-      <nav class="nav-links nav-tabs">
-        <a href="#pipeline-sec">Bioluminescent Pipeline</a>
-        <a href="#windows-sec">Adjustable EDA Windows</a>
-        <a href="#interactive-sec">Telemetry Dashboard</a>
-        <a href="#vram-sec">VRAM Solver</a>
-        <a href="#explorer-sec">Explorer Matrix</a>
-        <a href="#terminal-sec">Simulation Panel</a>
-      </nav>
+      <!-- Top HUD Controls -->
+      <div class="prelude-hud-top">
+        <div class="specimen-pill">
+          <span>&#9632; SPECIMEN_01 // OPENLLM_PULSE</span>
+        </div>
 
-      <!-- Glassmorphic navbar hover-reveal chips (BSCS BS-UET Student Group) -->
-      <div class="pills-container" title="Hover roll number to decrypt student group">
-        <div class="chip-pills"><span class="c-id">2025-AI-401</span><span class="c-name">Dawood Javed Malik</span></div>
-        <div class="chip-pills"><span class="c-id">2025-AI-421</span><span class="c-name">Abdullah Hanif</span></div>
-        <div class="chip-pills"><span class="c-id">2025-AI-392</span><span class="c-name">Hafiz Ahmad</span></div>
-        <div class="chip-pills"><span class="c-id">2025-AI-397</span><span class="c-name">Abdullah Malik</span></div>
+        <div class="prelude-scene-switcher">
+          <button class="scene-tab active" onclick="jumpToPreludeScene(0)">01. Kinetic Vortex</button>
+          <button class="scene-tab" onclick="jumpToPreludeScene(1)">02. Geometric Trace</button>
+          <button class="scene-tab" onclick="jumpToPreludeScene(2)">03. Pipeline Anatomy</button>
+          <button class="scene-tab" onclick="jumpToPreludeScene(3)">04. Archive Morph</button>
+        </div>
+
+        <a href="#main-studio-wrapper" class="skip-studio-btn">Morph to v4.0 Studio &darr;</a>
+      </div>
+
+      <!-- SCENE 01: KINETIC VORTEX TYPOGRAPHY (Video 2 Style) -->
+      <div class="motion-scene active" id="pScene0">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:0.76rem; color:var(--cyan); letter-spacing:0.16em; text-transform:uppercase; margin-bottom:0.5rem;">
+          [ AE + GEMINI KINETIC ENGINE // CLICK OR SCROLL TO VORTEX MORPH ]
+        </div>
+        <div class="vortex-stage" id="vortexStage" onclick="triggerVortexCycle()" style="cursor:pointer;" title="Click to trigger vortex disassembly"></div>
+        <div class="neon-floor-horizon"></div>
+      </div>
+
+      <!-- SCENE 02: GEOMETRIC TRACE & 60° RADIAL BLUEPRINT (Video 1 Style) -->
+      <div class="motion-scene" id="pScene1">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--amber); letter-spacing:0.15em; margin-bottom:0.4rem;">
+          60&deg; RADIAL SCALING SYMMETRY &bull; 400 REPOSITORIES
+        </div>
+        <div class="geometric-trace-wrap">
+          <canvas id="lotusTraceCanvas" width="460" height="460"></canvas>
+          <div class="trace-title-overlay">IN GLORY<br><span style="font-size:0.42em; letter-spacing:0.25em; color:var(--cyan);">GEOMETRIC TRACE</span></div>
+        </div>
+      </div>
+
+      <!-- SCENE 03: 5-STAGE ANATOMICAL PIPELINE DISSECTION STRIP (Video 1 Style) -->
+      <div class="motion-scene" id="pScene2">
+        <div class="dissection-backdrop">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+            <span style="font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:1.35rem; letter-spacing:0.04em;">
+              ANATOMICAL PIPELINE DISSECTION // 5 SPECIMEN CROPS
+            </span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--rose);">
+              GOLDEN_RATIO_TRACE: ACTIVE
+            </span>
+          </div>
+          <div class="dissection-grid">
+            <div class="specimen-box">
+              <div class="spec-label"><span>01. Extract</span><span>API</span></div>
+              <div class="spec-visual">400+<span style="font-size:0.68rem; color:var(--cyan); font-family:'JetBrains Mono',monospace; margin-top:4px;">HF REST JSON</span></div>
+              <div class="spec-caption">Multi-category extraction across 4 AI task modalities.</div>
+            </div>
+            <div class="specimen-box">
+              <div class="spec-label"><span>02. Validate</span><span>SCHEMA</span></div>
+              <div class="spec-visual" style="color:var(--emerald);">100%<span style="font-size:0.68rem; color:#fff; font-family:'JetBrains Mono',monospace; margin-top:4px;">Pydantic v2</span></div>
+              <div class="spec-caption">Strict type coercion, non-negative bounds &amp; tag lists.</div>
+            </div>
+            <div class="specimen-box">
+              <div class="spec-label"><span>03. Transform</span><span>PANDAS</span></div>
+              <div class="spec-visual" style="color:var(--amber);">24 Cols<span style="font-size:0.68rem; color:#fff; font-family:'JetBrains Mono',monospace; margin-top:4px;">VRAM &amp; IQR</span></div>
+              <div class="spec-caption">Regex parameter parsing, FP16/INT4 VRAM &amp; viral outliers.</div>
+            </div>
+            <div class="specimen-box">
+              <div class="spec-label"><span>04. Load</span><span>PERSIST</span></div>
+              <div class="spec-visual" style="color:var(--violet);">SQLite3<span style="font-size:0.68rem; color:#fff; font-family:'JetBrains Mono',monospace; margin-top:4px;">+ Cleaned CSV</span></div>
+              <div class="spec-caption">Dual persistence into indexed relational tables &amp; flat files.</div>
+            </div>
+            <div class="specimen-box">
+              <div class="spec-label"><span>05. Visual EDA</span><span>300 DPI</span></div>
+              <div class="spec-visual" style="color:var(--rose);">7 PNGs<span style="font-size:0.68rem; color:#fff; font-family:'JetBrains Mono',monospace; margin-top:4px;">Seaborn Suite</span></div>
+              <div class="spec-caption">High-resolution statistical artifacts &amp; executive report.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 04: GIANT SPLIT-WORD ARCHIVE VIEWPORT & IRIS MORPH (Video 1 Finale) -->
+      <div class="motion-scene" id="pScene3">
+        <div class="archive-split-scene">
+          <div class="hex-matrix-bg" id="hexMatrixBg"></div>
+          <div class="giant-split-word">
+            <span>PUL</span>
+            <div class="central-morph-portal" id="morphPortalBox">
+              <div class="portal-ring">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--emerald); text-align:center; padding:0.5rem;">
+                  SCROLL TO<br>ENTER STUDIO
+                </span>
+              </div>
+            </div>
+            <span>SE</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="morphTransitionOverlay"></div>
+
+      <!-- Bottom HUD Telemetry -->
+      <div class="prelude-hud-bottom">
+        <div class="hud-micro-block">
+          <strong>GEOMETRIC TRACE // UET LAHORE</strong>
+          2025-AI-401 &bull; 2025-AI-421 &bull; 2025-AI-392 &bull; 2025-AI-397
+        </div>
+        <div class="scroll-morph-indicator">
+          <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+          <span id="scrollStageText">Scroll Down to Morph into Studio (Scene 1 / 4)</span>
+        </div>
+        <div class="hud-micro-block" style="text-align:right;">
+          <strong>ORGANIC TECH-FOCUSED PIPELINE</strong>
+          PYDANTIC V2 &bull; PANDAS &bull; SQLITE3 &bull; THREE.JS
+        </div>
       </div>
     </div>
-  </header>
+  </section>
 
-  <div class="workspace studio-workspace">
-    <!-- CINEMATIC DENSE HERO & 3D WebGL GRAPH ICS MODULE -->
-    <section class="hero-panel">
-      <div>
-        <div class="tagline">&#128304; Programming for AI &bull; Project 1: Pipeline Dashboard</div>
-        <h1 class="headline">OpenLLM Pulse: Automated Ecosystem &amp; Scaling Studio</h1>
-        <p class="synopsis">
-          A multi-category data engineering pipeline that extracts 400+ open-source AI models from the Hugging Face REST API, validates schemas via <strong>Pydantic v2</strong>, engineers 24 benchmark features (VRAM footprints, quantization formats, IQR viral outliers &amp; 0–100 Pulse Score) with <strong>Pandas &amp; NumPy</strong>, and persists to <strong>SQLite3 &amp; CSV</strong>.
+  <!-- ========================================================================
+       PRE-BUILT OPENLLM PULSE v4.0 STUDIO (MORPHS IN SEAMLESSLY BELOW)
+       ======================================================================== -->
+  <div id="main-studio-wrapper">
+    <!-- Command Control Top Navbar with Roll-Number Hover Pills -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="#top-section-page" class="brand">
+          <span class="pulse-orb"></span>
+          <span>OpenLLM Pulse <small style="font-size:0.72rem; color:var(--cyan); font-family:'JetBrains Mono',monospace;">v4.0 STUDIO</small></span>
+        </a>
+
+        <nav class="nav-links nav-tabs">
+          <a href="#top-section-page" style="color:var(--rose);">&#9650; Top Motion Prelude</a>
+          <a href="#pipeline-sec">Bioluminescent Pipeline</a>
+          <a href="#windows-sec">Adjustable EDA Windows</a>
+          <a href="#interactive-sec">Telemetry Dashboard</a>
+          <a href="#vram-sec">VRAM Solver</a>
+          <a href="#explorer-sec">Explorer Matrix</a>
+          <a href="#terminal-sec">Simulation Panel</a>
+        </nav>
+
+        <!-- Glassmorphic navbar hover-reveal chips (BSCS BS-UET Student Group) -->
+        <div class="pills-container" title="Hover roll number to decrypt student group">
+          <div class="chip-pills"><span class="c-id">2025-AI-401</span><span class="c-name">Dawood Javed Malik</span></div>
+          <div class="chip-pills"><span class="c-id">2025-AI-421</span><span class="c-name">Abdullah Hanif</span></div>
+          <div class="chip-pills"><span class="c-id">2025-AI-392</span><span class="c-name">Hafiz Ahmad</span></div>
+          <div class="chip-pills"><span class="c-id">2025-AI-397</span><span class="c-name">Abdullah Malik</span></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="workspace studio-workspace">
+      <!-- CINEMATIC DENSE HERO & 3D WebGL GRAPHICS MODULE -->
+      <section class="hero-panel">
+        <div>
+          <div class="tagline">&#128304; Programming for AI &bull; Project 1: Pipeline Dashboard</div>
+          <h1 class="headline">OpenLLM Pulse: Automated Ecosystem &amp; Scaling Studio</h1>
+          <p class="synopsis">
+            A multi-category data engineering pipeline that extracts 400+ open-source AI models from the Hugging Face REST API, validates schemas via <strong>Pydantic v2</strong>, engineers 24 benchmark features (VRAM footprints, quantization formats, IQR viral outliers &amp; 0–100 Pulse Score) with <strong>Pandas &amp; NumPy</strong>, and persists to <strong>SQLite3 &amp; CSV</strong>.
+          </p>
+
+          <!-- 4-Member 3D Holographic Identity Showcase -->
+          <div class="team-holo-title">&#9672; Project Engineering Group (Hover ID to Decrypt)</div>
+          <div class="matrix-grid">
+            <!-- Card 1 -->
+            <div class="matrix-card">
+              <div class="m-front">
+                <div class="m-roll">2025-AI-401</div>
+                <div class="m-sub">Hover to reveal info</div>
+              </div>
+              <div class="m-back">
+                <div class="m-name">Dawood Javed Malik</div>
+                <div class="m-verified">&#10004; Roll 401 &bull; BSCS (AI)</div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="matrix-card">
+              <div class="m-front">
+                <div class="m-roll">2025-AI-421</div>
+                <div class="m-sub">Hover to reveal info</div>
+              </div>
+              <div class="m-back">
+                <div class="m-name">Abdullah Hanif</div>
+                <div class="m-verified">&#10004; Roll 421 &bull; BSCS (AI)</div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="matrix-card">
+              <div class="m-front">
+                <div class="m-roll">2025-AI-392</div>
+                <div class="m-sub">Hover to reveal info</div>
+              </div>
+              <div class="m-back">
+                <div class="m-name">Hafiz Ahmad</div>
+                <div class="m-verified">&#10004; Roll 392 &bull; BSCS (AI)</div>
+              </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="matrix-card">
+              <div class="m-front">
+                <div class="m-roll">2025-AI-397</div>
+                <div class="m-sub">Hover to reveal info</div>
+              </div>
+              <div class="m-back">
+                <div class="m-name">Abdullah Malik</div>
+                <div class="m-verified">&#10004; Roll 397 &bull; BSCS (AI)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Interactive 3D WebGL Viewport Container -->
+        <div class="studio-panel-3d">
+          <div class="panel-header">
+            <div class="header-dots">
+              <span class="header-dot red"></span>
+              <span class="header-dot yellow"></span>
+              <span class="header-dot green"></span>
+            </div>
+            <span class="header-title">3D_MODEL_SCALING_MATRIX.webgl (Drag to Rotate)</span>
+            <div class="header-actions">
+              <button class="config-btn active" onclick="update3DSetting('standard', this)">Orbit Mode</button>
+              <button class="config-btn" onclick="update3DSetting('wire', this)">Wireframe</button>
+              <button class="config-btn" onclick="update3DSetting('burst', this)">HyperSpeed</button>
+            </div>
+          </div>
+          <div id="three-canvas-holder">
+            <div class="cyber-overlays-overlay">
+              <span class="specimen-tag">SPECS VALIDATE: OK</span>
+              <div class="crosshairs-target"></div>
+            </div>
+            <div class="ai-attribution-tag">
+              <span>NODES: 400 LLM CORE &bull; 4 PIPELINE TASKS</span>
+              <span>Gemini Created This</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Telemetry Ribbons -->
+      <section class="telem-ribbon">
+        <div class="telem-tile">
+          <span class="t-badge">Option A</span>
+          <div class="t-val" data-count="400" data-suf="+">0</div>
+          <div class="t-lbl">Models Extracted From API</div>
+        </div>
+        <div class="telem-tile">
+          <span class="t-badge">Option C &amp; F</span>
+          <div class="t-val" data-count="24" data-suf=" features">0</div>
+          <div class="t-lbl">Feature Extraction Parameters</div>
+        </div>
+        <div class="telem-tile">
+          <span class="t-badge">Option G</span>
+          <div class="t-val" data-count="100" data-suf=" max">0</div>
+          <div class="t-lbl">Weighted Pulse Score Range</div>
+        </div>
+        <div class="telem-tile">
+          <span class="t-badge">Option E</span>
+          <div class="t-val" data-count="7" data-suf=" PNGs">0</div>
+          <div class="t-lbl">300 DPI Seaborn Plot Visuals</div>
+        </div>
+      </section>
+
+      <!-- AUTOMATED BIOLUMINESCENT PIPELINE -->
+      <section id="pipeline-sec">
+        <div class="stage-section-header">
+          <div>
+            <h2>&#127271; Animated Ecosystem Pipeline (Data Flow Network)</h2>
+            <p>Real-time organic visualization tracking the flow of data across extraction, validation, engineering, database storage, and the final visual dashboards.</p>
+          </div>
+        </div>
+        <div class="flow-scroller">
+          <canvas id="dataPipelineCanvas"></canvas>
+        </div>
+      </section>
+
+      <!-- WINDOW WORKSPACE GRID: 7 PYTHON GRAPHICS -->
+      <section id="windows-sec">
+        <div class="stage-section-header">
+          <div>
+            <h2>&#128421; Adjustable Exploratory Data Visualizer (Seaborn Outputs)</h2>
+            <p>Toggle widths, minimize, or view in fullscreen using the toolbar to explore the Python-generated 300 DPI graphs.</p>
+          </div>
+        </div>
+
+        <div class="toolbar-row">
+          <div class="pills-group">
+            <button class="filter-pill active" onclick="filterEdaPlots('all', this)">All 7 Windows</button>
+            <button class="filter-pill" onclick="filterEdaPlots('architecture', this)">Architecture &amp; Scaling</button>
+            <button class="filter-pill" onclick="filterEdaPlots('correlations', this)">Community &amp; Correlations</button>
+            <button class="filter-pill" onclick="filterEdaPlots('leaderboard', this)">Timeline &amp; Performance</button>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="config-btn" onclick="resizeAllAppWindows('span-4')">3-Col Compact</button>
+            <button class="config-btn active" onclick="resizeAllAppWindows('span-6')">2-Col Balanced</button>
+            <button class="config-btn" onclick="resizeAllAppWindows('span-12')">1-Col Screen Stack</button>
+          </div>
+        </div>
+
+        <div class="window-container-grid" id="edaGridContainer">
+          <!-- Plot Window 1 -->
+          <article class="app-window span-6" data-category="architecture">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">1_architecture_distribution.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>1. Top 10 Open-Source Model Architectures</h3>
+              <p class="win-caption">Dominance breakdown across Llama, Qwen, Mistral, BERT, Gemma, and specialized open-source families.</p>
+              <div class="image-stage-box" onclick="showLightbox(0)">
+                <img src="outputs/1_architecture_distribution.png" alt="Architecture Distribution Graph" />
+              </div>
+              <div class="win-statusbar">
+                <span>SOURCE: SQLite DB (llm_models)</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Plot Window 2 -->
+          <article class="app-window span-6" data-category="architecture">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">2_size_tier_distribution.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>2. Parameter Scaling Tiers Distribution</h3>
+              <p class="win-caption">Regex-extracted parameter counts grouped into Small (&le;3B), Medium (3B–10B), Large (10B–35B), and XL (&gt;35B).</p>
+              <div class="image-stage-box" onclick="showLightbox(1)">
+                <img src="outputs/2_size_tier_distribution.png" alt="Parameter Size Distribution Graph" />
+              </div>
+              <div class="win-statusbar">
+                <span>EXTRACTION: regex parser</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Plot Window 3 -->
+          <article class="app-window span-6" data-category="architecture">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">3_license_breakdown.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>3. Top 8 Open-Source Licenses</h3>
+              <p class="win-caption">Tracking research vs. commercial permissiveness (Apache-2.0, MIT, Llama3, CC-BY, etc.) based on license tags.</p>
+              <div class="image-stage-box" onclick="showLightbox(2)">
+                <img src="outputs/3_license_breakdown.png" alt="License Distribution Graph" />
+              </div>
+              <div class="win-statusbar">
+                <span>METADATA: tag parser</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Plot Window 4 -->
+          <article class="app-window span-6" data-category="correlations">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">4_downloads_vs_likes_scatter.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>4. Community Engagement: Downloads vs. Likes (Log Scale)</h3>
+              <p class="win-caption">Mapping user adoption against likes across all pipeline categories, highlighting statistical viral outliers using IQR.</p>
+              <div class="image-stage-box" onclick="showLightbox(3)">
+                <img src="outputs/4_downloads_vs_likes_scatter.png" alt="Adoption Log Scatter Plot" />
+              </div>
+              <div class="win-statusbar">
+                <span>OUTLIERS: q3 + 1.5*IQR bounds</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Plot Window 5 -->
+          <article class="app-window span-6" data-category="correlations">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">5_correlation_heatmap.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>5. Pearson Correlation Heatmap (Option E)</h3>
+              <p class="win-caption">Evaluating linear relationships between params, downloads, daily velocity, age, VRAM estimation, and Pulse score.</p>
+              <div class="image-stage-box" onclick="showLightbox(4)">
+                <img src="outputs/5_correlation_heatmap.png" alt="Feature Pearson Heatmap Matrix" />
+              </div>
+              <div class="win-statusbar">
+                <span>MATRIX: pearson 7x7 model parameters</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Plot Window 6 -->
+          <article class="app-window span-6" data-category="leaderboard">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">6_release_timeline.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>6. Monthly Model Release Velocity Timeline</h3>
+              <p class="win-caption">Tracking release volume across HF repositories over the 24 most active months.</p>
+              <div class="image-stage-box" onclick="showLightbox(5)">
+                <img src="outputs/6_release_timeline.png" alt="Release Activity Timeline" />
+              </div>
+              <div class="win-statusbar">
+                <span>TIMELINE: 24 active calendar months</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Plot Window 7 -->
+          <article class="app-window span-12" data-category="leaderboard">
+            <div class="panel-header">
+              <div class="header-dots">
+                <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
+                <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
+                <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
+              </div>
+              <span class="header-title">7_top_pulse_leaderboard.png</span>
+              <div class="header-actions">
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
+                <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <h3>7. Top 15 Open-Source Models by Composite Pulse Score (0–100)</h3>
+              <p class="win-caption">Dynamic index combining log-normalized downloads (40%), likes (30%), daily velocity (20%), and metadata tag completeness (10%).</p>
+              <div class="image-stage-box" onclick="showLightbox(6)">
+                <img src="outputs/7_top_pulse_leaderboard.png" alt="Pulse Performance Leaderboard Plot" />
+              </div>
+              <div class="win-statusbar">
+                <span>SCORING: (0.4*dl + 0.3*like + 0.2*vel + 0.1*tag) * 100</span>
+                <span>300 DPI &bull; Click to Zoom</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- LIVE TELEMETRY CANVASES (Chart.js Module) -->
+      <section id="interactive-sec">
+        <div class="stage-section-header">
+          <div>
+            <h2>&#128200; Live Cyber Metric Canvas (Interactive Hover Views)</h2>
+            <p>Real-time analytics overlaying task category and data format benchmarks to complement your Python plots.</p>
+          </div>
+        </div>
+        <div class="telemetry-plots-grid">
+          <div class="chart-panel-card">
+            <h4 style="margin-bottom:0.5rem; font-family:'Space Grotesk',sans-serif;">Composite Mean Index By Modality Type</h4>
+            <div class="canvas-wrapper"><canvas id="modalityChart"></canvas></div>
+          </div>
+          <div class="chart-panel-card">
+            <h4 style="margin-bottom:0.5rem; font-family:'Space Grotesk',sans-serif;">Compression &amp; Format Proportions (Option C)</h4>
+            <div class="canvas-wrapper"><canvas id="formatChart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HARDWARE VRAM CALC AND RECOMMENDER -->
+      <section id="vram-sec">
+        <div class="stage-section-header">
+          <div>
+            <h2>&#128187; Visual Hardware Estimator &amp; Benchmarking Solver (Option F &amp; H)</h2>
+            <p>Simulate memory footprints and recommend hardware configurations based on selected precision and dataset criteria.</p>
+          </div>
+        </div>
+
+        <div class="recommender-flex-box">
+          <div>
+            <div class="slider-field">
+              <label>
+                <span>VRAM Resource Threshold:</span>
+                <span id="vramDisplayValue" style="color:var(--cyan); font-family:'JetBrains Mono',monospace;">24 GB (Standard Consumer GPU)</span>
+              </label>
+              <input type="range" id="vramInputRange" min="4" max="96" step="2" value="24" oninput="runHardwareSolver()" />
+            </div>
+            <div class="slider-field">
+              <label><span>Model Modality Type:</span></label>
+              <select id="taskFilter" class="control-dropdown" onchange="runHardwareSolver()">
+                <option value="all">All 4 Task Categories</option>
+                <option value="text-generation">text-generation</option>
+                <option value="text2text-generation">text2text-generation</option>
+                <option value="image-text-to-text">image-text-to-text</option>
+                <option value="sentence-similarity">sentence-similarity</option>
+              </select>
+            </div>
+            <div class="slider-field">
+              <label><span>Resource Precision Optimization:</span></label>
+              <select id="precisionMode" class="control-dropdown" onchange="runHardwareSolver()">
+                <option value="fp16">Full Weight Precision FP16 (Params &times; 2.2 GB)</option>
+                <option value="int4">Quantized Model Precision INT4 (Params &times; 0.65 GB)</option>
+              </select>
+            </div>
+            <div style="background:rgba(3,6,14,0.75); padding:1.15rem; border-radius:12px; border:1px solid rgba(56,189,248,0.2); font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--text-secondary);">
+              <div style="color:var(--emerald); font-weight:700; margin-bottom:0.2rem;">SQL ESTIMATION CLAUSE:</div>
+              <div id="sqlTextCode">SELECT * FROM llm_models WHERE vram_fp16_gb &lt;= 24 ORDER BY pulse_score DESC;</div>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--cyan); margin-bottom:0.75rem;" id="matchedHeading">Matched Repositories (Searching...):</div>
+            <div class="model-cards-holder" id="modelsGridDisplay"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEARCH EXPLORER DATA MATRIX -->
+      <section id="explorer-sec">
+        <div class="stage-section-header">
+          <div>
+            <h2>&#128451; 24-Column Data Index Exploratory Sorter (llm_models Table)</h2>
+            <p>Filter rows by ID, licensing, parameters, or compression types. Click any column heading to change the sort order.</p>
+          </div>
+        </div>
+
+        <div class="toolbar-search">
+          <input type="text" id="filterTextSearch" class="text-search" placeholder="Type Model ID, License, Format, or Parameters to evaluate..." oninput="updateMatrixDisplay()" />
+        </div>
+
+        <div class="data-matrix-box">
+          <table class="data-matrix">
+            <thead>
+              <tr>
+                <th onclick="toggleMatrixSort('model_id')">Model ID (PK) &#8597;</th>
+                <th onclick="toggleMatrixSort('pipeline_tag')">Task Modality &#8597;</th>
+                <th onclick="toggleMatrixSort('architecture')">Architecture &#8597;</th>
+                <th onclick="toggleMatrixSort('params_b')">Parameters (B) &#8597;</th>
+                <th onclick="toggleMatrixSort('quant')">Format Type &#8597;</th>
+                <th onclick="toggleMatrixSort('vram_fp16')">FP16 VRAM &#8597;</th>
+                <th onclick="toggleMatrixSort('vram_int4')">INT4 VRAM &#8597;</th>
+                <th onclick="toggleMatrixSort('downloads')">30-day Downloads &#8597;</th>
+                <th onclick="toggleMatrixSort('velocity')">Adoption Velocity &#8597;</th>
+                <th onclick="toggleMatrixSort('pulse')">Weighted Pulse &#8597;</th>
+              </tr>
+            </thead>
+            <tbody id="matrixTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CODE CONSOLE SIMULATION -->
+      <section id="terminal-sec">
+        <div class="stage-section-header">
+          <div>
+            <h2>&#128187; Virtual Server Execution Monitor &amp; Scripts Code Console</h2>
+            <p>Inspect code files (<code>extract.py</code>, <code>schema.py</code>, <code>transform.py</code>, <code>load.py</code>, <code>eda.py</code>) and active process pipeline validation logging outputs.</p>
+          </div>
+        </div>
+
+        <div class="console-box-sim">
+          <div class="sim-bar-tabs">
+            <button class="sim-tab-item active" onclick="updateTerminalTab('exec_logs', this)">Pipelines Trace output (DPI Visuals)</button>
+            <button class="sim-tab-item" onclick="updateTerminalTab('file_ext', this)">extract.py (Option A)</button>
+            <button class="sim-tab-item" onclick="updateTerminalTab('file_schema', this)">schema.py (Pydantic validator)</button>
+            <button class="sim-tab-item" onclick="updateTerminalTab('file_trans', this)">transform.py (Options C, F, G features)</button>
+            <button class="sim-tab-item" onclick="updateTerminalTab('file_eda_plot', this)">eda.py (Option E graphs)</button>
+          </div>
+          <div class="sim-output" id="outputTerminalContent"></div>
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          <strong>OpenLLM Pulse — Automated Ecosystem Pipeline, Scaling &amp; Visualization Studio</strong><br />
+          Built at UET Lahore &bull; <strong>2025-AI-401</strong> (Dawood Javed Malik) &bull; <strong>2025-AI-421</strong> (Abdullah Hanif) &bull; <strong>2025-AI-392</strong> (Hafiz Ahmad) &bull; <strong>2025-AI-397</strong> (Abdullah Malik)
         </p>
-
-        <!-- 4-Member 3D Holographic Identity Showcase -->
-        <div class="team-holo-title">&#9672; Project Engineering Group (Hover ID to Decrypt)</div>
-        <div class="matrix-grid">
-          <!-- Card 1 -->
-          <div class="matrix-card">
-            <div class="m-front">
-              <div class="m-roll">2025-AI-401</div>
-              <div class="m-sub">Hover to reveal info</div>
-            </div>
-            <div class="m-back">
-              <div class="m-name">Dawood Javed Malik</div>
-              <div class="m-verified">&#10004; Roll 401 &bull; BSCS (AI)</div>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="matrix-card">
-            <div class="m-front">
-              <div class="m-roll">2025-AI-421</div>
-              <div class="m-sub">Hover to reveal info</div>
-            </div>
-            <div class="m-back">
-              <div class="m-name">Abdullah Hanif</div>
-              <div class="m-verified">&#10004; Roll 421 &bull; BSCS (AI)</div>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div class="matrix-card">
-            <div class="m-front">
-              <div class="m-roll">2025-AI-392</div>
-              <div class="m-sub">Hover to reveal info</div>
-            </div>
-            <div class="m-back">
-              <div class="m-name">Hafiz Ahmad</div>
-              <div class="m-verified">&#10004; Roll 392 &bull; BSCS (AI)</div>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div class="matrix-card">
-            <div class="m-front">
-              <div class="m-roll">2025-AI-397</div>
-              <div class="m-sub">Hover to reveal info</div>
-            </div>
-            <div class="m-back">
-              <div class="m-name">Abdullah Malik</div>
-              <div class="m-verified">&#10004; Roll 397 &bull; BSCS (AI)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Real-Time Interactive 3D WebGL Viewport Container (Video 1 inspired spec tags) -->
-      <div class="studio-panel-3d">
-        <div class="panel-header">
-          <div class="header-dots">
-            <span class="header-dot red"></span>
-            <span class="header-dot yellow"></span>
-            <span class="header-dot green"></span>
-          </div>
-          <span class="header-title">3D_MODEL_SCALING_MATRIX.webgl (Drag to Rotate)</span>
-          <div class="header-actions">
-            <button class="config-btn active" onclick="update3DSetting('standard', this)">Orbit Mode</button>
-            <button class="config-btn" onclick="update3DSetting('wire', this)">Wireframe</button>
-            <button class="config-btn" onclick="update3DSetting('burst', this)">HyperSpeed</button>
-          </div>
-        </div>
-        <div id="three-canvas-holder">
-          <!-- Geometric scans / spec tags (video 1/2 style specs) -->
-          <div class="cyber-overlays-overlay">
-            <span class="specimen-tag">SPECS VALIDATE: OK</span>
-            <div class="crosshairs-target"></div>
-          </div>
-          <div class="ai-attribution-tag">
-            <span>NODES: 400 LLM CORE &bull; 4 PIPELINE TASKS</span>
-            <span>Gemini Created This</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Telemetry Ribbons -->
-    <section class="telem-ribbon">
-      <div class="telem-tile">
-        <span class="t-badge">Option A</span>
-        <div class="t-val" data-count="400" data-suf="+">0</div>
-        <div class="t-lbl">Models Extracted From API</div>
-      </div>
-      <div class="telem-tile">
-        <span class="t-badge">Option C &amp; F</span>
-        <div class="t-val" data-count="24" data-suf=" features">0</div>
-        <div class="t-lbl">Feature Extraction Parameters</div>
-      </div>
-      <div class="telem-tile">
-        <span class="t-badge">Option G</span>
-        <div class="t-val" data-count="100" data-suf=" max">0</div>
-        <div class="t-lbl">Weighted Pulse Score Range</div>
-      </div>
-      <div class="telem-tile">
-        <span class="t-badge">Option E</span>
-        <div class="t-val" data-count="7" data-suf=" PNGs">0</div>
-        <div class="t-lbl">300 DPI Seaborn Plot Visuals</div>
-      </div>
-    </section>
-
-    <!-- AUTOMATED BIOLUMINESCENT PIPELINE (Video 3 Organic Node graph) -->
-    <section id="pipeline-sec">
-      <div class="stage-section-header">
-        <div>
-          <h2>&#127271; Animated Ecosystem Pipeline (Data Flow Network)</h2>
-          <p>Real-time organic visualization tracking the flow of data across extraction, validation, engineering, database storage, and the final visual dashboards.</p>
-        </div>
-      </div>
-      <div class="flow-scroller">
-        <canvas id="dataPipelineCanvas"></canvas>
-      </div>
-    </section>
-
-    <!-- WINDOW WORKSPACE GRID: 7 PYTHON GRAPHICS -->
-    <section id="windows-sec">
-      <div class="stage-section-header">
-        <div>
-          <h2>&#128421; Adjustable Exploratory Data Visualizer (Seaborn Outputs)</h2>
-          <p>Toggle widths, minimize, or view in fullscreen using the toolbar to explore the Python-generated 300 DPI graphs.</p>
-        </div>
-      </div>
-
-      <div class="toolbar-row">
-        <div class="pills-group">
-          <button class="filter-pill active" onclick="filterEdaPlots('all', this)">All 7 Windows</button>
-          <button class="filter-pill" onclick="filterEdaPlots('architecture', this)">Architecture &amp; Scaling</button>
-          <button class="filter-pill" onclick="filterEdaPlots('correlations', this)">Community &amp; Correlations</button>
-          <button class="filter-pill" onclick="filterEdaPlots('leaderboard', this)">Timeline &amp; Performance</button>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="config-btn" onclick="resizeAllAppWindows('span-4')">3-Col Compact</button>
-          <button class="config-btn active" onclick="resizeAllAppWindows('span-6')">2-Col Balanced</button>
-          <button class="config-btn" onclick="resizeAllAppWindows('span-12')">1-Col Screen Stack</button>
-        </div>
-      </div>
-
-      <div class="window-container-grid" id="edaGridContainer">
-        <!-- Plot Window 1 -->
-        <article class="app-window span-6" data-category="architecture">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">1_architecture_distribution.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>1. Top 10 Open-Source Model Architectures</h3>
-            <p class="win-caption">Dominance breakdown across Llama, Qwen, Mistral, BERT, Gemma, and specialized open-source families.</p>
-            <div class="image-stage-box" onclick="showLightbox(0)">
-              <img src="outputs/1_architecture_distribution.png" alt="Architecture Distribution Graph" />
-            </div>
-            <div class="win-statusbar">
-              <span>SOURCE: SQLite DB (llm_models)</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plot Window 2 -->
-        <article class="app-window span-6" data-category="architecture">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">2_size_tier_distribution.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>2. Parameter Scaling Tiers Distribution</h3>
-            <p class="win-caption">Regex-extracted parameter counts grouped into Small (&le;3B), Medium (3B–10B), Large (10B–35B), and XL (&gt;35B).</p>
-            <div class="image-stage-box" onclick="showLightbox(1)">
-              <img src="outputs/2_size_tier_distribution.png" alt="Parameter Size Distribution Graph" />
-            </div>
-            <div class="win-statusbar">
-              <span>EXTRACTION: regex parser</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plot Window 3 -->
-        <article class="app-window span-6" data-category="architecture">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">3_license_breakdown.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>3. Top 8 Open-Source Licenses</h3>
-            <p class="win-caption">Tracking research vs. commercial permissiveness (Apache-2.0, MIT, Llama3, CC-BY, etc.) based on license tags.</p>
-            <div class="image-stage-box" onclick="showLightbox(2)">
-              <img src="outputs/3_license_breakdown.png" alt="License Distribution Graph" />
-            </div>
-            <div class="win-statusbar">
-              <span>METADATA: tag parser</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plot Window 4 -->
-        <article class="app-window span-6" data-category="correlations">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">4_downloads_vs_likes_scatter.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>4. Community Engagement: Downloads vs. Likes (Log Scale)</h3>
-            <p class="win-caption">Mapping user adoption against likes across all pipeline categories, highlighting statistical viral outliers using IQR.</p>
-            <div class="image-stage-box" onclick="showLightbox(3)">
-              <img src="outputs/4_downloads_vs_likes_scatter.png" alt="Adoption Log Scatter Plot" />
-            </div>
-            <div class="win-statusbar">
-              <span>OUTLIERS: q3 + 1.5*IQR bounds</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plot Window 5 -->
-        <article class="app-window span-6" data-category="correlations">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">5_correlation_heatmap.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>5. Pearson Correlation Heatmap (Option E)</h3>
-            <p class="win-caption">Evaluating linear relationships between params, downloads, daily velocity, age, VRAM estimation, and Pulse score.</p>
-            <div class="image-stage-box" onclick="showLightbox(4)">
-              <img src="outputs/5_correlation_heatmap.png" alt="Feature Pearson Heatmap Matrix" />
-            </div>
-            <div class="win-statusbar">
-              <span>MATRIX: pearson 7x7 model parameters</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plot Window 6 -->
-        <article class="app-window span-6" data-category="leaderboard">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">6_release_timeline.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>6. Monthly Model Release Velocity Timeline</h3>
-            <p class="win-caption">Tracking release volume across HF repositories over the 24 most active months.</p>
-            <div class="image-stage-box" onclick="showLightbox(5)">
-              <img src="outputs/6_release_timeline.png" alt="Release Activity Timeline" />
-            </div>
-            <div class="win-statusbar">
-              <span>TIMELINE: 24 active calendar months</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plot Window 7 -->
-        <article class="app-window span-12" data-category="leaderboard">
-          <div class="panel-header">
-            <div class="header-dots">
-              <span class="header-dot red" onclick="toggleWinMinimize(this)"></span>
-              <span class="header-dot yellow" onclick="resizeActiveWin(this, 'span-6')"></span>
-              <span class="header-dot green" onclick="resizeActiveWin(this, 'span-12')"></span>
-            </div>
-            <span class="header-title">7_top_pulse_leaderboard.png</span>
-            <div class="header-actions">
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-4')">1/3</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-6')">1/2</button>
-              <button class="config-btn" onclick="resizeActiveWin(this, 'span-12')">Full</button>
-            </div>
-          </div>
-          <div class="window-body">
-            <h3>7. Top 15 Open-Source Models by Composite Pulse Score (0–100)</h3>
-            <p class="win-caption">Dynamic index combining log-normalized downloads (40%), likes (30%), daily velocity (20%), and metadata tag completeness (10%).</p>
-            <div class="image-stage-box" onclick="showLightbox(6)">
-              <img src="outputs/7_top_pulse_leaderboard.png" alt="Pulse Performance Leaderboard Plot" />
-            </div>
-            <div class="win-statusbar">
-              <span>SCORING: (0.4*dl + 0.3*like + 0.2*vel + 0.1*tag) * 100</span>
-              <span>300 DPI &bull; Click to Zoom</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- LIVE TELEMETRY CANVASES (Chart.js Module) -->
-    <section id="interactive-sec">
-      <div class="stage-section-header">
-        <div>
-          <h2>&#128200; Live Cyber Metric Canvas (Interactive Hover Views)</h2>
-          <p>Real-time analytics overlaying task category and data format benchmarks to complement your Python plots.</p>
-        </div>
-      </div>
-      <div class="telemetry-plots-grid">
-        <div class="chart-panel-card">
-          <h4 style="margin-bottom:0.5rem; font-family:'Space Grotesk',sans-serif;">Composite Mean Index By Modality Type</h4>
-          <div class="canvas-wrapper"><canvas id="modalityChart"></canvas></div>
-        </div>
-        <div class="chart-panel-card">
-          <h4 style="margin-bottom:0.5rem; font-family:'Space Grotesk',sans-serif;">Compression &amp; Format Proportions (Option C)</h4>
-          <div class="canvas-wrapper"><canvas id="formatChart"></canvas></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HARDWARE VRAM CALC AND recommender -->
-    <section id="vram-sec">
-      <div class="stage-section-header">
-        <div>
-          <h2>&#128187; Visual Hardware Estimator &amp; Benchmarking Solver (Option F &amp; H)</h2>
-          <p>Simulate memory footprints and recommend hardware configurations based on selected precision and dataset criteria.</p>
-        </div>
-      </div>
-
-      <div class="recommender-flex-box">
-        <div>
-          <div class="slider-field">
-            <label>
-              <span>VRAM Resource Threshold:</span>
-              <span id="vramDisplayValue" style="color:var(--cyan); font-family:'JetBrains Mono',monospace;">24 GB (Standard Consumer GP)</span>
-            </label>
-            <input type="range" id="vramInputRange" min="4" max="96" step="2" value="24" oninput="runHardwareSolver()" />
-          </div>
-          <div class="slider-field">
-            <label><span>Model Modality Type:</span></label>
-            <select id="taskFilter" class="control-dropdown" onchange="runHardwareSolver()">
-              <option value="all">All 4 Task Categories</option>
-              <option value="text-generation">text-generation</option>
-              <option value="text2text-generation">text2text-generation</option>
-              <option value="image-text-to-text">image-text-to-text</option>
-              <option value="sentence-similarity">sentence-similarity</option>
-            </select>
-          </div>
-          <div class="slider-field">
-            <label><span>Resource Precision Optimization:</span></label>
-            <select id="precisionMode" class="control-dropdown" onchange="runHardwareSolver()">
-              <option value="fp16">Full Weight Precision FP16 (Params &times; 2.2 GB)</option>
-              <option value="int4">Quantized Model Precision INT4 (Params &times; 0.65 GB)</option>
-            </select>
-          </div>
-          <div style="background:rgba(3,6,14,0.75); padding:1.15rem; border-radius:12px; border:1px solid rgba(56,189,248,0.2); font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--text-secondary);">
-            <div style="color:var(--emerald); font-weight:700; margin-bottom:0.2rem;">SQL ESTIMATION CLAUSE:</div>
-            <div id="sqlTextCode">SELECT * FROM llm_models WHERE vram_fp16_gb &lt;= 24 ORDER BY pulse_score DESC;</div>
-          </div>
-        </div>
-
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--cyan); margin-bottom:0.75rem;" id="matchedHeading">Matched Repositories (Searching...):</div>
-          <div class="model-cards-holder" id="modelsGridDisplay"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEARCH EXPLORER DATA MATRIX -->
-    <section id="explorer-sec">
-      <div class="stage-section-header">
-        <div>
-          <h2>&#128451; 24-Column Data Index Exploratory Sorter (llm_models Table)</h2>
-          <p>Filter rows by ID, licensing, parameters, or compression types. Click any column heading to change the sort order.</p>
-        </div>
-      </div>
-
-      <div class="toolbar-search">
-        <input type="text" id="filterTextSearch" class="text-search" placeholder="Type Model ID, License, Format, or Parameters to evaluate..." oninput="updateMatrixDisplay()" />
-      </div>
-
-      <div class="data-matrix-box">
-        <table class="data-matrix">
-          <thead>
-            <tr>
-              <th onclick="toggleMatrixSort('model_id')">Model ID (PK) &#8597;</th>
-              <th onclick="toggleMatrixSort('pipeline_tag')">Task Modality &#8597;</th>
-              <th onclick="toggleMatrixSort('architecture')">Architecture &#8597;</th>
-              <th onclick="toggleMatrixSort('params_b')">Parameters (B) &#8597;</th>
-              <th onclick="toggleMatrixSort('quant')">Format Type &#8597;</th>
-              <th onclick="toggleMatrixSort('vram_fp16')">FP16 VRAM &#8597;</th>
-              <th onclick="toggleMatrixSort('vram_int4')">INT4 VRAM &#8597;</th>
-              <th onclick="toggleMatrixSort('downloads')">30-day Downloads &#8597;</th>
-              <th onclick="toggleMatrixSort('velocity')">Adoption Velocity &#8597;</th>
-              <th onclick="toggleMatrixSort('pulse')">Weighted Pulse &#8597;</th>
-            </tr>
-          </thead>
-          <tbody id="matrixTbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- CODE CONSOLE SIMULATION -->
-    <section id="terminal-sec">
-      <div class="stage-section-header">
-        <div>
-          <h2>&#128187; Virtual Server execution Monitor &amp; Scripts Code Console</h2>
-          <p>Inspect code files (<code>extract.py</code>, <code>schema.py</code>, <code>transform.py</code>, <code>load.py</code>, <code>eda.py</code>) and active process pipeline validation logging outputs.</p>
-        </div>
-      </div>
-
-      <div class="console-box-sim">
-        <div class="sim-bar-tabs">
-          <button class="sim-tab-item active" onclick="updateTerminalTab('exec_logs', this)">Pipelines Trace output (DPI Visuals)</button>
-          <button class="sim-tab-item" onclick="updateTerminalTab('file_ext', this)">extract.py (Option A)</button>
-          <button class="sim-tab-item" onclick="updateTerminalTab('file_schema', this)">schema.py (Pydantic validator)</button>
-          <button class="sim-tab-item" onclick="updateTerminalTab('file_trans', this)">transform.py (Options C, F, G features)</button>
-          <button class="sim-tab-item" onclick="updateTerminalTab('file_eda_plot', this)">eda.py (Option E graphs)</button>
-        </div>
-        <div class="sim-output" id="outputTerminalContent"></div>
-      </div>
-    </section>
-
-    <footer>
-      <p>
-        <strong>OpenLLM Pulse — Automated Ecosystem Pipeline, Scaling &amp; Visualization Studio</strong><br />
-        Built at UET Lahore &bull; <strong>2025-AI-401</strong> (Dawood Javed Malik) &bull; <strong>2025-AI-421</strong> (Abdullah Hanif) &bull; <strong>2025-AI-392</strong> (Hafiz Ahmad) &bull; <strong>2025-AI-397</strong> (Abdullah Malik)
-      </p>
-    </footer>
+      </footer>
+    </div>
   </div>
 
   <!-- Full-Screen Lightbox Model Frame -->
@@ -989,14 +1594,178 @@
   </div>
 
   <script>
-    // 1. Scroll percentage tracker progress
+    // =========================================================================
+    // PART A: TOP SECTION PAGE — KINETIC VORTEX, GEOMETRIC TRACE & SCROLL MORPH
+    // =========================================================================
+    const vortexStage = document.getElementById('vortexStage');
+    const wordsCycle = ['RAW API CHAOS', 'OPENLLM PULSE', '400+ AI MODELS', 'UET AI STUDIO'];
+    let currentWordIdx = 0;
+    let vortexState = 'assembled'; // 'assembled' or 'vortex'
+
+    function buildVortexWord(text) {
+      vortexStage.innerHTML = '';
+      const chars = text.split('');
+      const spacing = Math.min(window.innerWidth * 0.055, 58);
+      const startX = -((chars.length - 1) * spacing) / 2;
+
+      chars.forEach((ch, i) => {
+        if (ch === ' ') return;
+        // Main character
+        const span = document.createElement('span');
+        span.className = 'vortex-char';
+        span.textContent = ch;
+        const homeX = startX + i * spacing;
+        span.dataset.hx = homeX;
+        span.style.transform = `translate3d(${homeX}px, 0px, 0px) rotate(0deg)`;
+        vortexStage.appendChild(span);
+
+        // Wireframe echo clone (Video 2 neon echo style)
+        const echo = document.createElement('span');
+        echo.className = 'vortex-char echo-outline';
+        echo.textContent = ch;
+        echo.dataset.hx = homeX;
+        echo.style.transform = `translate3d(${homeX + 8}px, -8px, -20px) rotate(0deg)`;
+        vortexStage.appendChild(echo);
+      });
+    }
+
+    function triggerVortexCycle() {
+      const allChars = vortexStage.querySelectorAll('.vortex-char');
+      if (vortexState === 'assembled') {
+        vortexState = 'vortex';
+        allChars.forEach((el, idx) => {
+          const angle = (idx / allChars.length) * Math.PI * 2;
+          const radius = el.classList.contains('echo-outline') ? 155 : 120;
+          const vx = Math.cos(angle) * radius;
+          const vy = Math.sin(angle) * radius;
+          const rot = (angle * 180) / Math.PI + 90;
+          el.style.color = idx % 2 === 0 ? '#fb7185' : '#38bdf8';
+          el.style.transform = `translate3d(${vx}px, ${vy}px, 0px) rotate(${rot}deg) scale(0.88)`;
+        });
+        setTimeout(() => {
+          currentWordIdx = (currentWordIdx + 1) % wordsCycle.length;
+          buildVortexWord(wordsCycle[currentWordIdx]);
+          vortexState = 'assembled';
+        }, 1250);
+      }
+    }
+
+    buildVortexWord('OPENLLM PULSE');
+    setInterval(triggerVortexCycle, 3400);
+
+    // Scene 2 Procedural Geometric Lotus / Radial Blueprint Canvas (Video 1 00:05)
+    const lotusCanvas = document.getElementById('lotusTraceCanvas');
+    const lCtx = lotusCanvas.getContext('2d');
+    let lotusAngle = 0;
+
+    function drawGeometricLotus() {
+      const w = lotusCanvas.width, h = lotusCanvas.height;
+      const cx = w / 2, cy = h / 2;
+      lCtx.clearRect(0, 0, w, h);
+
+      // Polar coordinate rings
+      [70, 130, 190].forEach(r => {
+        lCtx.beginPath();
+        lCtx.arc(cx, cy, r, 0, Math.PI * 2);
+        lCtx.strokeStyle = 'rgba(56, 189, 248, 0.22)';
+        lCtx.lineWidth = 1;
+        lCtx.stroke();
+      });
+
+      // 12 Radial Protractor Spokes
+      for (let i = 0; i < 12; i++) {
+        const a = (i * Math.PI) / 6 + lotusAngle * 0.2;
+        lCtx.beginPath();
+        lCtx.moveTo(cx, cy);
+        lCtx.lineTo(cx + Math.cos(a) * 205, cy + Math.sin(a) * 205);
+        lCtx.strokeStyle = 'rgba(225, 29, 72, 0.22)';
+        lCtx.stroke();
+      }
+
+      // Parametric Bioluminescent Petals
+      const petals = 8;
+      for (let layer = 0; layer < 3; layer++) {
+        lCtx.beginPath();
+        for (let deg = 0; deg <= 360; deg += 2) {
+          const rad = (deg * Math.PI) / 180;
+          const r = (95 + layer * 38) * Math.abs(Math.cos((petals / 2) * rad + lotusAngle * (layer % 2 === 0 ? 1 : -1))) + 24;
+          const x = cx + r * Math.cos(rad);
+          const y = cy + r * Math.sin(rad);
+          if (deg === 0) lCtx.moveTo(x, y);
+          else lCtx.lineTo(x, y);
+        }
+        lCtx.closePath();
+        lCtx.strokeStyle = layer === 0 ? '#34d399' : layer === 1 ? '#38bdf8' : '#c084fc';
+        lCtx.lineWidth = 1.6;
+        lCtx.stroke();
+      }
+
+      lotusAngle += 0.008;
+      requestAnimationFrame(drawGeometricLotus);
+    }
+    drawGeometricLotus();
+
+    // Populate Scene 4 Background Matrix Text
+    const hexMatrixBg = document.getElementById('hexMatrixBg');
+    const sampleMatrix = "META-LLAMA-3.1-8B // QWEN-2.5-7B // DEEPSEEK-R1-32B // MIXTRAL-8X7B // PYDANTIC_OK // VRAM_FP16 // PULSE_96.4 // 01001101 // ";
+    hexMatrixBg.textContent = sampleMatrix.repeat(85);
+
+    // Scroll-Driven Scene Switching & Morph Transition into Studio
+    const preludeTrack = document.getElementById('top-section-page');
+    const preludeScenes = [
+      document.getElementById('pScene0'),
+      document.getElementById('pScene1'),
+      document.getElementById('pScene2'),
+      document.getElementById('pScene3')
+    ];
+    const sceneTabs = document.querySelectorAll('.scene-tab');
+    const morphPortalBox = document.getElementById('morphPortalBox');
+    const morphOverlay = document.getElementById('morphTransitionOverlay');
+    const scrollStageText = document.getElementById('scrollStageText');
+
+    function setActivePreludeScene(idx) {
+      preludeScenes.forEach((sc, i) => sc.classList.toggle('active', i === idx));
+      sceneTabs.forEach((tb, i) => tb.classList.toggle('active', i === idx));
+      scrollStageText.textContent = `Scroll Down to Morph into Studio (Scene ${idx + 1} / 4)`;
+    }
+
+    function jumpToPreludeScene(idx) {
+      const trackHeight = preludeTrack.offsetHeight - window.innerHeight;
+      const targetScroll = (idx / 4) * trackHeight + 10;
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    }
+
     window.addEventListener('scroll', () => {
-      const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollY = window.scrollY || window.pageYOffset;
       const totalScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       document.getElementById('progress-tracker').style.width = (totalScroll > 0 ? (scrollY / totalScroll) * 100 : 0) + '%';
+
+      const trackHeight = preludeTrack.offsetHeight - window.innerHeight;
+      if (trackHeight <= 0) return;
+      const p = Math.max(0, Math.min(scrollY / trackHeight, 1));
+
+      if (p < 0.24) {
+        setActivePreludeScene(0);
+        morphOverlay.style.opacity = 0;
+      } else if (p < 0.50) {
+        setActivePreludeScene(1);
+        morphOverlay.style.opacity = 0;
+      } else if (p < 0.76) {
+        setActivePreludeScene(2);
+        morphOverlay.style.opacity = 0;
+      } else {
+        setActivePreludeScene(3);
+        // Morph Portal Expansion as user approaches the Studio section
+        const morphProgress = (p - 0.76) / 0.24; // 0 -> 1
+        const scaleVal = 1 + morphProgress * 9.5;
+        morphPortalBox.style.transform = `scale(${scaleVal}) rotate(${morphProgress * 45}deg)`;
+        morphOverlay.style.opacity = Math.min(morphProgress * 1.15, 1);
+      }
     });
 
-    // 2. REAL 3D WEBGL ENGINE (THREE.JS MATRIX)
+    // =========================================================================
+    // PART B: EXISTING OPENLLM PULSE v4.0 STUDIO SCRIPTS (100% PRESERVED)
+    // =========================================================================
     const glContainer = document.getElementById('three-canvas-holder');
     const glScene = new THREE.Scene();
     const glCamera = new THREE.PerspectiveCamera(50, glContainer.clientWidth / glContainer.clientHeight, 0.1, 1000);
@@ -1010,19 +1779,16 @@
     const spinGroup = new THREE.Group();
     glScene.add(spinGroup);
 
-    // Wireframe poly-structure
     const polyGeometry = new THREE.IcosahedronGeometry(1.7, 2);
     const polyMaterial = new THREE.MeshBasicMaterial({ color: 0x38bdf8, wireframe: true, transparent: true, opacity: 0.38 });
     const polyMesh = new THREE.Mesh(polyGeometry, polyMaterial);
     spinGroup.add(polyMesh);
 
-    // Inner glowing core
     const centerGeometry = new THREE.OctahedronGeometry(0.9, 1);
     const centerMaterial = new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true, transparent: true, opacity: 0.72 });
     const centerMesh = new THREE.Mesh(centerGeometry, centerMaterial);
     spinGroup.add(centerMesh);
 
-    // Galaxy particle ring (400 models)
     const scatterGeometry = new THREE.BufferGeometry();
     const pointsAmt = 400;
     const positions = new Float32Array(pointsAmt * 3);
@@ -1075,7 +1841,7 @@
       glRenderer.setSize(glContainer.clientWidth, glContainer.clientHeight);
     });
 
-    // 3. TELEMETRY CARDS ANIMATED TICKERS
+    // TELEMETRY CARDS ANIMATED TICKERS
     document.querySelectorAll('.t-val').forEach(field => {
       const valueTarget = +field.getAttribute('data-count');
       const suffixCode = field.getAttribute('data-suf') || '';
@@ -1088,7 +1854,7 @@
       requestAnimationFrame(countUp);
     });
 
-    // 4. PIPELINE DYNAMIC FIBER OPTIC FLOWS (Canvas render Video 3)
+    // PIPELINE DYNAMIC FIBER OPTIC FLOWS
     const nodeCanvas = document.getElementById('dataPipelineCanvas');
     const nodeCtx = nodeCanvas.getContext('2d');
     let dynamicW = 0, dynamicH = 0;
@@ -1129,7 +1895,6 @@
     function runPipelineDrawing() {
       nodeCtx.clearRect(0, 0, dynamicW, dynamicH);
 
-      // 1. Connection lines
       dataRoutes.forEach(r => {
         const routeStart = dataNodes.find(n => n.id === r.from);
         const routeEnd = dataNodes.find(n => n.id === r.to);
@@ -1140,14 +1905,12 @@
 
         nodeCtx.beginPath();
         nodeCtx.moveTo(stX, stY);
-        // Custom Bezier curvy strands
         nodeCtx.bezierCurveTo((stX + enX) / 2, stY, (stX + enX) / 2, enY, enX, enY);
         nodeCtx.strokeStyle = 'rgba(56, 189, 248, 0.28)';
         nodeCtx.lineWidth = 1.5;
         nodeCtx.stroke();
       });
 
-      // 2. Animated glow dots (Video 3 bioluminescent flowing)
       dynamicGlowParticles.forEach((p, index) => {
         const routeStart = dataNodes.find(n => n.id === p.route.from);
         const routeEnd = dataNodes.find(n => n.id === p.route.to);
@@ -1166,7 +1929,6 @@
         const cp2X = (stX + enX) / 2, cp2Y = enY;
         const invT = 1 - p.pos;
 
-        // Custom Cubic Bezier mathematical formula for visual motion interpolation
         const traceX = invT**3 * stX + 3 * invT**2 * p.pos * cp1X + 3 * invT * p.pos**2 * cp2X + p.pos**3 * enX;
         const traceY = invT**3 * stY + 3 * invT**2 * p.pos * cp1Y + 3 * invT * p.pos**2 * cp2Y + p.pos**3 * enY;
 
@@ -1179,7 +1941,6 @@
         nodeCtx.shadowBlur = 0;
       });
 
-      // 3. UI Boxes Rendering
       dataNodes.forEach(node => {
         const centerNodeX = node.x * dynamicW;
         const centerNodeY = node.y * dynamicH;
@@ -1210,7 +1971,7 @@
     }
     requestAnimationFrame(runPipelineDrawing);
 
-    // 5. Windows Manipulation (Resize and Minimize)
+    // Windows Manipulation
     function resizeActiveWin(actionBtn, sizeClass) {
       const frameWindow = actionBtn.closest('.app-window');
       frameWindow.classList.remove('span-4', 'span-6', 'span-12');
@@ -1236,7 +1997,7 @@
       });
     }
 
-    // 6. Interactive Telemetry Canvas
+    // Interactive Telemetry Canvas
     Chart.defaults.color = '#94a3b8';
     Chart.defaults.font.family = 'Inter';
 
@@ -1269,7 +2030,7 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 7. Estimators and recommender studio algorithm
+    // Estimators and recommender studio algorithm
     const coreDatasets = [
       { model_id: 'meta-llama/Llama-3.1-8B-Instruct', pipeline_tag: 'text-generation', architecture: 'Llama', params_b: 8.0, quant: 'Safetensors (FP16/BF16)', vram_fp16: 17.6, vram_int4: 5.2, license: 'llama3', downloads: 14820000, velocity: 52900, pulse: 96.4 },
       { model_id: 'Qwen/Qwen2.5-7B-Instruct', pipeline_tag: 'text-generation', architecture: 'Qwen', params_b: 7.0, quant: 'Safetensors (FP16/BF16)', vram_fp16: 15.4, vram_int4: 4.55, license: 'apache-2.0', downloads: 11940000, velocity: 61200, pulse: 95.1 },
@@ -1290,7 +2051,7 @@
       const selectedTask = document.getElementById('taskFilter').value;
       const inferencePrec = document.getElementById('precisionMode').value;
 
-      let classificationCode = currentVramInput <= 8 ? 'Ultra Thin/Laptop CPU' : currentVramInput <= 24 ? 'Standard Consumer GPU' : currentVramInput <= 48 ? 'Pro Workstation / AI Ring' : 'Cloud Server / Multi Datacenter';
+      let classificationCode = currentVramInput <= 8 ? 'Ultra Thin/Laptop CPU' : currentVramInput <= 24 ? 'Standard Consumer GPU' : currentVramInput <= 48 ? 'Pro Workstation / AI Rig' : 'Cloud Server / Multi Datacenter';
       document.getElementById('vramDisplayValue').textContent = `${currentVramInput} GB (${classificationCode})`;
 
       const targetedCol = inferencePrec === 'fp16' ? 'vram_fp16_gb' : 'vram_int4_gb';
@@ -1323,7 +2084,7 @@
     }
     runHardwareSolver();
 
-    // 8. Interactive Explorer Sorting Data Index
+    // Interactive Explorer Sorting Data Index
     let matrixSortKey = 'pulse', matrixSortOrderAsc = false;
     function toggleMatrixSort(columnKey) {
       if (matrixSortKey === columnKey) matrixSortOrderAsc = !matrixSortOrderAsc;
@@ -1362,7 +2123,7 @@
     }
     updateMatrixDisplay();
 
-    // 9. virtual server monitor Execution logging code simulator
+    // Virtual server monitor Execution logging code simulator
     const executableSnippets = {
       exec_logs: `========================================================================================
   [GENAI OVERLAYS ACTIVE] OPENLLM PULSE PIPELINE v4.0 (EXECUTION LOGGING SYSTEM)
@@ -1422,7 +2183,7 @@ df["vram_int4_gb"] = np.round(df["params_billions"] * 0.65, 2)
 # Option G: Pulse composite index
 df["pulse_score"] = np.round((0.40 * norm_dl + 0.30 * norm_likes + 0.20 * norm_vel + 0.10 * norm_tags) * 100, 2)`,
       file_eda_plot: `# src/eda.py — Plot engine generating the 7 300 DPI high-res charts (Option E visual graphics)
-# Saves charts below to D:\openllm_pulse\outputs/:
+# Saves charts below to D:\\openllm_pulse\\outputs/:
 # 1_architecture_distribution.png
 # 2_size_tier_distribution.png
 # 3_license_breakdown.png
@@ -1439,7 +2200,7 @@ df["pulse_score"] = np.round((0.40 * norm_dl + 0.30 * norm_likes + 0.20 * norm_v
     }
     updateTerminalTab('exec_logs', document.querySelector('.sim-tab-item'));
 
-    // 10. Lightbox Zoom support
+    // Lightbox Zoom support
     const expandedPlots = [
       { src: 'outputs/1_architecture_distribution.png', title: '1. Top 10 Open-Source Model Architectures' },
       { src: 'outputs/2_size_tier_distribution.png', title: '2. Parameter Scaling Tiers Distribution' },
